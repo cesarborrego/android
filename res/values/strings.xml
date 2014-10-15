@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">yiepa!</string>
+    <!--string name="titleColors">Todo<b><font color="#FF7A0D">2</font></b>Day</string-->
+    <string name="titleColors">yiepa!<b><font color="#FF7A0D"></font></b></string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="eventos">Eventos</string>
+    <string name="categorias">Categorías</string>
+    <string name="ajustes">Ajustes</string>
+    <string name="categorias_titulo1">Elige las categorías de tu elección</string>
+    <string name="categorias_texto">Toca en las categorías que más te gusten para que recibas los eventos más próximos a ti relacionados a esa categoría y disfruta de miles de espectaculos y eventos de tu elección</string>
+
+    <string-array name="categorias">
+        <item>Antros y Bares</item>
+        <item>Cine y Teatro</item>
+        <item>Cultura</item>
+        <item>Deportes</item>
+        <item>Negocios</item>
+        <item>Con niños</item>
+        <item>Gastronomía</item>
+        <item>Música</item>
+        <item>Salud</item>
+        <item>Sociales</item>
+        <item>Tecnología</item>
+        <item>Verde</item>
+    </string-array>
+    
+    <string name="antrosYBares">Antros y Bares</string>
+    <string name="cineYTeatro">Cine y Teatro</string>
+    <string name="cultura">Cultura</string>
+    <string name="deportes">Deportes</string>
+    <string name="emprendedoresYNegocios">Negocios</string>
+    <string name="eventosInfantiles">Con niños</string>
+    <string name="gastronomia">Gastronomía</string>
+    <string name="musica">Música</string>
+    <string name="salud">Salud</string>
+    <string name="sociales">Sociales</string>
+    <string name="tecnologia">Tecnología</string>
+    <string name="verdeYResponsabilidadSocial">Verde</string>
+    <string name="Otros">Otros</string>
+
+    <string name="distancia">Distancia</string>
+    <string name="que_distancia">¿Distancia de qué?</string>
+    <string name="kmDistancia">5km</string>
+    <string name="tiempo">Tiempo</string>
+    <string name="que_tiempo">¿Tiempo de qué?</string>
+    <string name="hrsTiempo">1 hrs</string>
+    <string name="defaultUser">\&#64;Usuario</string>
+    <string name="donde_ubicacion">¿De dónde?</string>
+    <string name="sesion">Sesión</string>
+    <string name="que_sesion">¿Para qué?</string>
+    <string name="titSesion">Iniciar Sesión</string>
+    <string name="textSesion">Iniciar sesión con Twitter</string>
+    <string name="textCerrarSesion">Cerrar sesión</string>
+    <string name="bienvenido">Bienvenid@ </string>
+    <string name="titUbicacion">Ubicación</string>
+    <string name="miUbicacion">Automática</string>
+    <string name="laUbicacion">Ubícate!</string>
+    <string name="checkInternet">Revisa que este encendida tu conexión Wifi / 3G</string>
+    <string name="checkInternetAvatar">Revisa que este encendida tu conexión Wifi/3G para descargar tu avatar de Twitter</string>
+    <string name="ok">Ok</string>
+    <string name="defaultEventTitle">Título de evento bastante largo</string>
+    <string name="defaultDescripcionEvento">Lorem ipsum ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos.</string>
+    <string name="tituloFuente">Fuente:</string>
+    <string name="defaultFuente">www.google.com.mx</string>
+    <string name="defaultCategoria">Categoria</string>
+    <string name="defaultFecha"> Dia XX de AlgunMes | 23:59</string>
+    <string name="defaultLugar">Teatro Cultural Poliforum</string>
+    <string name="defaultCounter">0</string>
+    <string name="defaultDistancia">A 3.5 km</string>
+    <string name="defaultTelefono">Teléfono: 55-55-55-55</string>
+    <string name="defaultPrecio">Boleto: General $100</string>
+    <string name="defaultDireccion">Paseo de la Reforma 325, Lomas Virreyes, Miguel Hidalgo, D.F.</string>
+    <string name="cadenaTweet_inicio">Checa el evento</string>
+    <string name="cadenaTweet_en">en</string>
+    <string name="tweetMuyLargo">Tweet muy Largo!</string>
+    <string name="title_activity_map">MapActivity</string>
+
+</resources>

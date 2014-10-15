@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent" >
+    
+     <RelativeLayout 
+        android:id="@+id/details_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="180dp">
+        
+         <ImageView 
+             android:id="@+id/imagenHeader"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:scaleType="centerCrop"
+             android:src="@drawable/header_catergories"/>
+         
+         <!-- 
+         <RelativeLayout 
+             android:id="@+id/layoutBannerEditado"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentTop="true"
+             android:layout_alignParentRight="true"
+             android:layout_marginRight="10dp"
+             android:layout_marginTop="10dp"
+             android:visibility="gone">
+             <View 
+                 android:id="@+id/viewEspacio"
+                 android:layout_width="10dp"
+                 android:layout_height="10dp"
+                 android:layout_alignParentLeft="true"
+                 android:layout_centerVertical="true"/>
+             <TextView 
+	             android:id="@+id/textBannerEditado"
+	             android:layout_width="wrap_content"
+	             android:layout_height="wrap_content"
+	             android:paddingTop="5dp"
+	             android:paddingRight="5dp"
+	             android:paddingLeft="30dp"
+	             android:paddingBottom="5dp"
+	             android:textAppearance="?android:attr/textAppearanceLarge" 
+	             android:layout_marginLeft="10dp"
+	             android:text="Editado"
+	             android:layout_centerVertical="true"
+	             android:layout_toRightOf="@id/viewEspacio"
+	             android:textColor="#FFF"
+	             android:background="@drawable/banner_texto_azul"/>
+	         
+	         <ImageView
+		        android:id="@+id/iconoBannerEditado"
+		        android:layout_width="46dp"
+		        android:layout_height="46dp"
+		        android:padding="3dp"
+		        android:layout_marginTop="5dp"
+		        android:background="@drawable/circle_blue_white"
+		        android:layout_alignParentLeft="true"
+		        android:layout_centerVertical="true"
+		        android:src="@drawable/ic_action_edit" 
+		        android:visibility="visible"/>
+         </RelativeLayout>
+         
+         -->
+         
+         <!-- Por lo que se le vaya a agregar, como el banner de descuento -->
+         
+     </RelativeLayout>
+     
+     <TextView 
+        android:id="@+id/detallesTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+        android:layout_below="@id/details_header_layout"
+        android:text="@string/defaultEventTitle"/>
+     
+     
+     
+     <LinearLayout 
+         android:id="@+id/contenedorCategoria"
+         android:orientation="horizontal"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@id/detallesTitulo"
+         android:paddingLeft="10dp">         
+         <ImageView
+	           android:id="@+id/iconCategoria"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	           android:layout_centerVertical="true"
+	           android:layout_marginRight="3dp"
+	           android:adjustViewBounds="true"
+	           android:maxWidth="16dp"
+	           android:src="@drawable/ic_small_musica" />
+         <TextView 
+	         android:id="@+id/detallesCategoria"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:textColor="#000"
+	         android:textStyle="bold"
+	         android:text="@string/defaultCategoria"/>
+     </LinearLayout>
+     
+     <TextView 
+	         android:id="@+id/detallesFecha"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:textColor="#000"
+	         android:text="@string/defaultFecha"
+	         android:layout_below="@id/contenedorCategoria"
+	         android:paddingLeft="10dp"/>
+     
+     <TextView 
+         android:id="@+id/detallesPrecio"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textColor="#000"
+         android:text="@string/defaultPrecio"
+         android:layout_alignParentRight="true"
+         android:layout_below="@id/detallesFecha"
+         android:paddingRight="20dp"
+         android:paddingBottom="5dp"/>
+     
+     <LinearLayout 
+        android:id="@+id/layoutShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/details_header_layout"
+        android:layout_alignRight="@id/details_header_layout"
+        android:orientation="horizontal"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="3dp"
+        android:background="#DDFFFFFF"
+        android:gravity="center">
+            
+        <RelativeLayout
+            android:id="@+id/botonRetweetEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            
+            <ImageView 
+                android:id="@+id/iconRetweetFavorito"
+	          	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	          	android:adjustViewBounds="true"
+	          	android:maxWidth="18dp"
+	          	android:layout_centerVertical="true"
+	          	android:src="@drawable/ic_action_refresh"/>
+            
+            <TextView
+                android:id="@+id/textRetweetCounter" 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#AAA"
+                android:text="@string/defaultCounter"
+                android:layout_toRightOf="@id/iconRetweetFavorito"
+                android:layout_centerVertical="true"
+                android:paddingLeft="5dp"
+                />
+            
+        </RelativeLayout>
+	      
+	      <View android:layout_width="15dp" android:layout_height="1dp"/>
+	      
+	      <RelativeLayout
+            android:id="@+id/botonFavEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            
+            <ImageView 
+                android:id="@+id/iconFavFavorito"
+	          	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	          	android:adjustViewBounds="true"
+	          	android:maxWidth="18dp"
+	          	android:layout_centerVertical="true"
+	          	android:src="@drawable/ic_action_important"/>
+            
+            <TextView
+                android:id="@+id/textFavCounter" 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#AAA"
+                android:text="@string/defaultCounter"
+                android:layout_toRightOf="@id/iconFavFavorito"
+                android:layout_centerVertical="true"
+                android:paddingLeft="5dp"
+                />
+            
+        </RelativeLayout>
+	      
+	      <View android:layout_width="10dp" android:layout_height="1dp"/>
+            
+   	</LinearLayout>
+     
+     
+   	
+     <TextView 
+         android:id="@+id/detallesDescripcion"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:textColor="#000"
+         android:text="@string/defaultDescripcionEvento"
+         android:padding="10dp"
+         android:layout_below="@id/detallesPrecio"/>    
+    
+     <!--LinearLayout android:id="@+id/contenedorFuente"
+         android:layout_width="fill_parent"
+         android:layout_height="50dp"
+         android:orientation="horizontal"
+         android:layout_below="@id/detallesDescripcion" >
+         
+         <TextView 
+	         android:id="@+id/tituloFuente"
+	         android:layout_width="match_parent"
+	         android:layout_height="wrap_content"
+	         android:textColor="#000"
+	         android:text="@string/tituloFuente"/>	
+    	 <TextView 
+	         android:id="@+id/detallesFuente"
+	         android:layout_width="match_parent"
+	         android:layout_height="wrap_content"
+	         android:textColor="#000"
+	         android:text="@string/defaultFuente"/>
+     </LinearLayout-->
+     
+     <TextView 
+			android:id="@+id/detallesFuente"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#000"
+			android:text="@string/defaultFuente"
+			android:layout_below="@id/detallesDescripcion"
+			android:paddingLeft="10dp"/>
+     
+     <TextView 
+         android:id="@+id/detallesLugar"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textColor="#000"
+         android:textStyle="bold"
+         android:text="@string/defaultLugar"
+         android:layout_below="@id/detallesFuente"
+         android:layout_alignParentLeft="true"
+         android:paddingLeft="10dp"/>
+     
+     <TextView
+         android:id="@+id/detallesDireccion"
+         android:layout_width="230dp"
+         android:layout_height="wrap_content"
+         android:lines="2"
+         android:paddingLeft="10dp"
+         android:paddingBottom="10dp"
+         android:text="@string/defaultDireccion"
+         android:layout_alignParentLeft="true"
+         android:layout_below="@id/detallesLugar" />
+     
+     <TextView 
+         android:id="@+id/detallesDistancia"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textColor="#000"
+         android:textStyle="bold"
+         android:text="@string/defaultDistancia"
+         android:layout_below="@id/detallesLugar"
+         android:layout_alignParentRight="true"
+         android:paddingRight="10dp"
+         android:layout_marginTop="45dp"/>
+     
+     <TextView
+         android:id="@+id/detallesTelefono"
+         android:layout_width="230dp"
+         android:layout_height="wrap_content"
+         android:lines="1"
+         android:paddingLeft="10dp"
+         android:paddingBottom="10dp"
+         android:text="@string/defaultTelefono"
+         android:layout_alignParentLeft="true"
+         android:layout_below="@id/detallesDireccion" />
+     
+     <!-- 
+     <fragment
+         android:id="@+id/detallesMap"
+         android:layout_width="match_parent"
+         android:layout_height="140dp"
+         android:layout_below="@id/detallesDistancia"
+         android:layout_marginLeft="15dp"
+         android:layout_marginRight="15dp"
+         android:layout_marginBottom="15dp"
+         class="com.google.android.gms.maps.SupportMapFragment"/>
+     -->
+     <View 
+         android:layout_width="match_parent"
+         android:layout_height="10dp"
+         android:layout_below="@id/detallesTelefono"/>
+     
+     <RelativeLayout 
+         android:id="@+id/capaMapa"
+         android:layout_width="match_parent"
+         android:layout_height="300dp"
+         android:layout_marginLeft="10dp"
+         android:layout_marginRight="10dp"
+         android:layout_below="@id/detallesTelefono"
+         android:background="#66000000">
+	      
+	      <ImageView
+	          android:id="@+id/imgMapa"
+	          android:layout_width="match_parent"
+	          android:layout_height="match_parent"/>
+    
+     </RelativeLayout>
+     
+     <View 
+         android:layout_width="match_parent"
+         android:layout_height="10dp"
+         android:layout_below="@id/capaMapa"/>
+     
+
+</RelativeLayout>
+</ScrollView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

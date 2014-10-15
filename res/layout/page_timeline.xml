@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="#FFF" >
+    
+    <ListView 
+        android:id="@+id/listviewEventos"
+        android:layout_width="match_parent"
+        android:dividerHeight="5dp"
+        android:divider="#E8E8E8"
+        android:layout_height="match_parent"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarFadeDuration="0"/>
+
+</LinearLayout>

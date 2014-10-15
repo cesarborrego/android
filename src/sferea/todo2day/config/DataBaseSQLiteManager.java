@@ -1,0 +1,149 @@
+package sferea.todo2day.config;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+public class DataBaseSQLiteManager {
+	
+	public static final String DB_NAME="FAVORITES";
+	public static final String ID ="ID_EVENTO";
+	//DATOS
+	public static final String TITULO_EVENTO = "TITULO_EVENTO";
+	public static final String CATEGORIA = "CATEGORIA";
+	public static final String FECHA = "FECHA";
+	public static final String DESCRIPCION = "DESCRIPCION";
+	public static final String FUENTE = "FUENTE";
+	public static final String LUGAR = "LUGAR";
+	public static final String DIRECCION = "DIRECCION";
+	public static final String TELEFONO = "TELEFONO";
+	public static final String BOLETO = "BOLETO";
+	public static final String DISTANCIA = "DISTANCIA";
+	public static final String LATITUD = "LATITUD";
+	public static final String LONGITUD = "LONGITUD";
+	public static final String IMAGEN_EVENTO = "IMAGEN_EVENTO";
+	public static final String POSICION = "POSICION";
+	
+	//CREAR TABLA
+//	public static final String CREATE_TABLE = " CREATE TABLE "+DB_NAME+" " +
+//			"( "+ID+" integer primary key autoincrement," +
+//			" "+TITULO_EVENTO+" text not null," +
+//			" "+CATEGORIA+" text not null, " +
+//			" "+FECHA+" text not null, " +
+//			" "+DESCRIPCION+" text not null, " +
+//			" "+FUENTE+" text, " +
+//			" "+LUGAR+" text not null, " +
+//			" "+DIRECCION+" text," +
+//			" "+TELEFONO+" text, " +
+//			" "+BOLETO+" text, " +
+//			" "+DISTANCIA+" text," +
+//			" "+LATITUD+" text not null, " +
+//			" "+LONGITUD+" text not null);";
+	
+//	//CREAR TABLA
+	public static final String CREATE_TABLE = " CREATE TABLE "+DB_NAME+" " +
+			"( "+ID+" integer primary key autoincrement," +
+			" "+TITULO_EVENTO+" text not null," +
+			" "+CATEGORIA+" text not null, " +
+			" "+FECHA+" text not null, " +
+			" "+DESCRIPCION+" text not null, " +
+			" "+FUENTE+" text, " +
+			" "+LUGAR+" text not null, " +
+			" "+DIRECCION+" text," +
+			" "+TELEFONO+" text, " +
+			" "+BOLETO+" text, " +
+			" "+DISTANCIA+" text," +
+			" "+LATITUD+" text not null, " +
+			" "+LONGITUD+" text not null, " +
+			" "+IMAGEN_EVENTO+" blob," +
+			" "+POSICION+" integer);";
+	
+	private SQLiteHelper sqLiteHelper;
+	private SQLiteDatabase db;
+	
+	public DataBaseSQLiteManager (Context context){
+		sqLiteHelper = new SQLiteHelper(context);
+		db = sqLiteHelper.getWritableDatabase();
+	}
+	
+//	public ContentValues generarContentValues (String tituloEvento, String categoriEvento, String fechaEvento, 
+//			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
+//			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
+//			String longitudEvento){
+	public ContentValues generarContentValues (String tituloEvento, String categoriEvento, String fechaEvento, 
+			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
+			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
+			String longitudEvento, byte [] imagen_evento, String posicion){	
+		ContentValues valoresDB = new ContentValues();
+		valoresDB.put(TITULO_EVENTO, tituloEvento);
+		valoresDB.put(CATEGORIA, categoriEvento);
+		valoresDB.put(FECHA, fechaEvento);
+		valoresDB.put(DESCRIPCION, descripcionEvento);
+		valoresDB.put(FUENTE, fuenteEvento);
+		valoresDB.put(LUGAR, lugarEvento);
+		valoresDB.put(DIRECCION, direccionEvento);
+		valoresDB.put(TELEFONO, telefonoEvento);
+		valoresDB.put(BOLETO, boletoEvento);
+		valoresDB.put(DISTANCIA, distanciaEvento);
+		valoresDB.put(LATITUD, latitudEvento);
+		valoresDB.put(LONGITUD, longitudEvento);
+		valoresDB.put(IMAGEN_EVENTO, imagen_evento);
+		valoresDB.put(POSICION, posicion);
+		return valoresDB;
+		
+	}
+	
+	public void insertar(String tituloEvento, String categoriEvento, String fechaEvento, 
+			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
+			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
+			String longitudEvento, byte [] imagen_evento, String posicion){
+		//db.insert(table, nullColumnHack, values)		
+		db.insert(DB_NAME, null, generarContentValues(tituloEvento, categoriEvento, fechaEvento, descripcionEvento, 
+				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, distanciaEvento, latitudEvento, longitudEvento,
+				imagen_evento, posicion));		
+	}
+	
+	public void eliminar(String tituloEvento){
+		//db.delete(table, whereClause, whereArgs)
+		db.delete(DB_NAME, TITULO_EVENTO+"=?", new String[]{tituloEvento});
+	}
+	
+	public void eliminarAllItems(){
+		db.execSQL("Delete from favorites;");
+	}
+	
+	public void eliminarTabla(){
+		db.execSQL("Drop table favorites;");
+	}
+	
+	public void crearTabla(){
+		db.execSQL("CREATE TABLE FAVORITES (ID_EVENTO INTEGER PRIMARY KEY AUTOINCREMENT, TITULO_EVENTO TEXT NOT NULL, CATEGORIA TEXT NOT NULL, FECHA TEXT NOT NULL, DESCRIPCION TEXT NOT NULL, FUENTE TEXT, LUGAR TEXT NOT NULL, DIRECCION TEXT, TELEFONO TEXT, BOLETO TEXT, DISTANCIA TEXT, LATITUD TEXT NOT NULL, LONGITUD TEXT NOT NULL, IMAGEN_EVENTO BLOB, POSICION INTEGER);");
+	}
+	
+	public void eliminarMultiple(String tituloEvento, String tituloEvento2){
+		//db.delete(table, whereClause, whereArgs)
+		db.delete(DB_NAME, TITULO_EVENTO+" IN (?,?)", new String[]{tituloEvento, tituloEvento2});
+	}
+	
+	public void modificarValoresDB(String tituloEvento, String categoriEvento, String fechaEvento, 
+			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
+			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
+			String longitudEvento, byte [] imagen_evento, String posicion){
+		//db.update(table, values, whereClause, whereArgs)
+		db.update(DB_NAME, generarContentValues(tituloEvento, categoriEvento, fechaEvento, descripcionEvento,
+				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, distanciaEvento, 
+				latitudEvento, longitudEvento, imagen_evento, posicion), TITULO_EVENTO+"=?", new String[]{tituloEvento});
+	}
+		
+	public Cursor cargarTablas(){
+		String [] columnas = new String[]{ID,TITULO_EVENTO,CATEGORIA,FECHA,DESCRIPCION,FUENTE,LUGAR,DIRECCION,TELEFONO,BOLETO,DISTANCIA,LATITUD,LONGITUD};
+		//db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
+//		return db.query(DB_NAME, columnas, null, null, null, null, TITULO_EVENTO);
+		return db.rawQuery("SELECT * FROM FAVORITES", null);
+	}
+	
+	public void cerrarDB(){
+		db.close();
+	}
+}

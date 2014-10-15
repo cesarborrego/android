@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="activity_main_responsive" type="layout">@layout/responsive_tablet_landscape</item>
+    <item name="row_event_responsive" type="layout">@layout/row_event_tablet</item>
+    <bool name="doublePane">false</bool>
+    <bool name="landscape">false</bool>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="96dp" >
+    
+    <!-- Imagen de fondo -->
+    <ImageView 
+        android:id="@+id/cell_categorie_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/header_orange"
+        android:scaleType="centerCrop"/>
+    
+    <!-- Layout titulo categoria -->
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#66000000">
+        
+      	<TextView 
+      	    android:id="@+id/cellCategorieTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Categorie"
+            android:textColor="#FFF"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="?android:attr/textAppearanceMedium" 
+            android:background="#00000000"/>
+        
+    </RelativeLayout>
+    
+    <!-- Layout palomita -->
+    <ImageView 
+        android:id="@+id/tick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/check_orange"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="22dp"
+        android:visibility="visible"/>
+    
+</RelativeLayout>

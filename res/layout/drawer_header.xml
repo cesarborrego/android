@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+    
+    
+    <View 
+        android:id="@+id/header_background"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:background="#F9F9F9"/>
+    
+    <!-- 
+    <View 
+        android:id="@+id/header_background"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:src="@drawable/header_orange"
+        android:scaleType="centerCrop"/> -->
+    
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:background="#00000000">
+        
+        <ImageView
+            android:id="@+id/avatarHeaderDefault" 
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_action_user"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/circle_transparent_white"
+            android:layout_marginBottom="15dp"/>
+        
+        <ImageView
+            android:id="@+id/avatarHeaderTwitter" 
+            android:visibility="invisible"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_action_user"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_transparent_white"
+            android:layout_marginBottom="5dp"/>
+        
+        <TextView 
+            android:id="@+id/textUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defaultUser"
+            android:textColor="#888"
+            android:layout_below="@id/avatarHeaderDefault"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="?android:attr/textAppearanceMedium" 
+            android:background="#00000000"/>
+        
+    </RelativeLayout>
+    
+     <View 
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="3dp"
+        android:background="#888"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

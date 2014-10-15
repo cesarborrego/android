@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    android:orientation="vertical" >
+    
+    <!-- 
+    ESTRUCTURA del layout
+    
+    * Header
+    	Contenido en un Relativelayout que tiene de fondo la imagen header_catergories
+    	Hay un RelativeLayout sobrepuesto color negro con transparencia (#66000000)
+    	Centrado hay un RelativeLayout centrado que contiene 2 cadenas 
+    		El nombre de la app
+    		La palabra categorias
+     -->
+     
+     <!-- Layout del header -->
+    <RelativeLayout 
+        android:id="@+id/categories_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:background="@drawable/header_catergories"
+        android:scaleType="centerCrop">
+        
+        <!-- Layout transparencia -->
+        <RelativeLayout 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#44000000">
+            
+            <!-- Layout para centrar las cadenas -->
+            <RelativeLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true">
+            
+	            <TextView 
+	                android:id="@+id/titleHeaderCategories"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textColor="#FFF"
+	                android:textSize="36sp"
+	                android:text="@string/app_name"/>
+	            
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textColor="#FFF"
+	                android:textSize="18sp"
+	                android:layout_centerHorizontal="true"
+	                android:layout_below="@id/titleHeaderCategories"
+	                android:text="@string/categorias"/>
+            
+            </RelativeLayout> <!-- FIN Layout cadenas -->
+        </RelativeLayout> <!-- FIN Layout transparencia -->
+    </RelativeLayout> <!-- FIN Layout del header -->
+    
+    <TextView 
+        android:id="@+id/titleContentCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#424242"
+	    android:layout_centerVertical="true"
+	    android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+        android:text="@string/categorias_titulo1"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"/>
+    
+    <TextView 
+        android:id="@+id/textContentCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#626262"
+	    android:layout_centerVertical="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/categorias_texto"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"/>
+    
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="#D5D5D5"/>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
+        <!-- Primera Fila -->
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+            
+            <!-- Antros y bares -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaAntrosYBares"
+                android:clickable = "true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/antros_y_baresImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:minHeight="96dp"
+                    android:src="@drawable/ic_categorias_antrosybares_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/antrosYBares"/>
+                
+            </LinearLayout>
+            
+            <!-- Cultura -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaCultura"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/culturaImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_cultura_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/cultura"/>
+                
+            </LinearLayout>
+            
+            <!-- Cine y Teatro -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaCineYTeatro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/cineImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_cineyteatro_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/cineYTeatro"/>
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+        <!-- Segunda Fila -->
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+            
+            <!-- Deportes -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaDeportes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/deportesImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_deportes_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/deportes"/>
+                
+            </LinearLayout>
+            
+            <!-- Emprendedores y Negocios -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaEmprendedoresYNegocios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/negociosImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_emprendedoresynegocios_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/emprendedoresYNegocios"/>
+                
+            </LinearLayout>
+            
+            <!-- Eventos Infantiles -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaEventosInfantiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/pequesImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_eventosinfantiles_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/eventosInfantiles"/>
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+        <!-- Tercera Fila -->
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+            
+            <!-- Gastronomia -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaGatronomia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/gastronomiaImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_gastronomia_activo"/>
+                
+                <TextView 
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/gastronomia"/>
+                
+            </LinearLayout>
+            
+            <!-- Musica -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaMusica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/musicaImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_musica_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/musica"/>
+                
+            </LinearLayout>
+            
+            <!-- Salud -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaSalud"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/saludImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_salud_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/salud"/>
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+        <!-- Cuarta Fila -->
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+            
+            <!-- Sociales -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaSociales"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/socialesImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_sociales_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/sociales"/>
+                
+            </LinearLayout>
+            
+            <!-- Tecnologia -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaTecnologia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/tecnologiaImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_tecnologia_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/tecnologia"/>
+                
+            </LinearLayout>
+            
+            <!-- Verde -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaVerde"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/verdeImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_verde_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/verdeYResponsabilidadSocial"/>
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+            
+            <LinearLayout 
+                android:id="@+id/botonCategoriaOtherIzq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"/>
+            
+            <!-- Other -->
+            <LinearLayout 
+                android:id="@+id/botonCategoriaOther"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+	            
+                <ImageView 
+                    android:id="@+id/otherImgId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_categorias_sociales_activo"/>
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#AAA"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/Otros"/>                
+            </LinearLayout> 
+            
+            <LinearLayout 
+                android:id="@+id/botonCategoriaOtherRight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"/>
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+
+</LinearLayout>
+</ScrollView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
