@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.BreakIterator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -159,6 +160,7 @@ public class Page_TimeLine extends Fragment {
 	java.text.DateFormat formatoDelTexto ;	
 
 	String json;
+	String jsonAddMore;
 	
 	String categorias = "";
 	String idevento="";
@@ -170,6 +172,25 @@ public class Page_TimeLine extends Fragment {
 	
 	boolean isGpsActive = false;
 	boolean isWirelessActive = false;
+	
+	int totalItemCount = 0;
+	
+	//Aqui tenemos que recuperar los eventos anteriores y juntarlos con los nuevos
+	// para que en la lista el total de eventos sea correcto y no por partes
+	String [] titulo;
+	String []  categoriasSave;
+	String []  fechaSave;
+	String []  descripciones;
+	String []  fuentes;
+	String []  lugares;
+	String []  direcciones;
+	String []  telefonos;
+	Double []  latitudes;
+	Double []  longitudes;
+	String []  distancias;
+	String []  boletos;
+	Bitmap []  imagenEventoSave;
+	int []  imgCategorias;
 	
 	public Page_TimeLine(){}
 	
@@ -258,10 +279,8 @@ public class Page_TimeLine extends Fragment {
 
 			imagenesCategorias = new int[iCantidad];
 
-			img = new Bitmap[iCantidad];
+			img = new Bitmap[iCantidad];		
 			
-			prendeEstrellaTime_Line = new boolean[iCantidad];
-
 			for (int i = 0; i < iCantidad; i++) {
 				JSONObject jsonItem = (JSONObject) jsonInicio.get("Item" + i);
 				Titulos[i] = (String) jsonItem.get("EventName");
@@ -350,13 +369,157 @@ public class Page_TimeLine extends Fragment {
 						Longitudes[j], Distancias[j], Boletos[j], img[j],
 						imagenesCategorias[j], j));
 			}
+			prendeEstrellaTime_Line = new boolean[listaEventos.size()];
 		}else{
 			Toast.makeText(getActivity().getApplicationContext(), "No hay Eventos Disponibles\n" +
 					"Prueba con otras categorías!\n" +
 					"Y/o Aumenta el Radio de búsqueda en los ajustes", Toast.LENGTH_LONG).show();
 		}
 	}
+	
+	private void nuevoJsonObjectAddMore (String line) throws IOException, ParseException{
+		JSONParser parser = new JSONParser();
+		Object object = parser.parse(line);
+		JSONObject jsonObject = (JSONObject) object;
 
+		String totalEvents = (String) jsonObject.get("numberItems");
+		Log.d(null, "Total de eventos " + totalEvents);
+		
+		if(!totalEvents.equals("0")){
+			//Habilitamos la descarga de la/las imagenes
+			descargaImagenesFirstAccess = true;
+			
+			JSONObject jsonInicio = (JSONObject) jsonObject.get("data");
+
+			int iCantidad = Integer.parseInt(totalEvents);
+//			int iCantidad = 10;
+			numeroEventos = iCantidad;
+
+			Titulos = new String[iCantidad];
+			EventoID = new String[iCantidad];
+			Categorias = new String[iCantidad];
+
+			Fechas = new String[iCantidad];
+			fecha = new Date[iCantidad];
+			formatedDate = new String[iCantidad];
+			fechaFinal = new String[iCantidad];
+			strFecha = new String[iCantidad];
+			
+			FechayHoraUnix = new Long[iCantidad];
+			IndexOfEvent = new Long [iCantidad];
+
+			Descripciones = new String[iCantidad];
+			Boletos = new String[iCantidad];
+			Fuentes = new String[iCantidad];
+			Lugares = new String[iCantidad];
+			Direcciones = new String[iCantidad];
+			Telefonos = new String[iCantidad];
+			Distancias = new String[iCantidad];
+			Longitudes = new double[iCantidad];
+			Latitudes = new double[iCantidad];
+			ImagenEvento = new String[iCantidad];
+
+			imagenesCategorias = new int[iCantidad];
+
+			img = new Bitmap[iCantidad];
+			
+			for (int i = 0; i < iCantidad; i++) {
+				JSONObject jsonItem = (JSONObject) jsonInicio.get("Item" + i);
+				Titulos[i] = (String) jsonItem.get("EventName");
+				if(Titulos[i]==null){
+					Titulos[i] = "No Disponible";
+				}else{
+					Titulos[i] = (String) jsonItem.get("EventName");
+				}
+				
+				EventoID[i] = (String)jsonItem.get("EventID");
+				
+				Categorias[i] = (String) jsonItem.get("Category");
+
+				Fechas[i] = (String) jsonItem.get("Date");
+
+				if (!Fechas[i].equals("No disponible")) {
+					try {
+						formatoDelTexto = new SimpleDateFormat(
+								"yyyy-MM-dd'T'HH:mm:ss");
+						Date primeraFecha = (Date) formatoDelTexto.parse(Fechas[i]
+								.toString());
+						java.text.DateFormat writeFormat = new SimpleDateFormat(
+								"EEE, dd MMM yyyy HH:mm");
+						strFecha[i] = writeFormat.format(primeraFecha);
+
+						fechaFinal[i] = strFecha[i].substring(0, 1).toUpperCase()
+								+ "" + strFecha[i].substring(1, 7) + " "
+								+ strFecha[i].substring(8, 9).toUpperCase() + ""
+								+ strFecha[i].substring(9, 22);
+
+					} catch (java.text.ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					fechaFinal[i] = Fechas[i];
+				}
+				
+				FechayHoraUnix[i] = (Long) jsonItem.get("UnixDate");
+				
+				IndexOfEvent[i] = (Long)jsonItem.get("IndexOfEvent");
+				
+				Descripciones[i] = "Descripción: "
+						+ (String) jsonItem.get("Description");
+				
+				Fuentes[i] = "Fuente: " + (String) jsonItem.get("Source");
+				
+				Lugares[i] = "Lugar: " + (String) jsonItem.get("Address");
+				
+//				Direcciones[i] = (String) jsonItem.get("Direccion");
+				Direcciones[i] = "Abundio Martinez";
+
+				if (!jsonItem.get("Phone").equals("No disponible")||
+						jsonItem.get("Phone").equals("")) {
+					Telefonos[i] = (String) jsonItem.get("Phone");
+				} else {
+					Telefonos[i] = "56-58-11-11";
+				}
+
+				Distancias[i] = (String) jsonItem.get("Distance");
+				
+				Boletos[i] = (String) jsonItem.get("TicketType");
+				
+				Longitudes[i] = Double.parseDouble((String) jsonItem
+						.get("Longitude"));
+				
+				Latitudes[i] = Double.parseDouble((String) jsonItem.get("Latitude"));
+
+				if (jsonItem.get("ImgBanner").toString().equals("No disponible")) {
+					ImagenEvento[i] = "http://fernandacharquero.com.ar/img/sociales04.jpg";
+				} else {
+					ImagenEvento[i] = (String) jsonItem.get("ImgBanner");
+				}
+
+				imagenesCategorias[i] = R.drawable.ic_small_antros;
+				
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inSampleSize = 4;
+				img[i] = BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(),
+						R.drawable.evento,options);
+			}
+			for (int j = 0; j < iCantidad; j++) {
+				listaEventos.add(new EventoObjeto(Titulos[j], Categorias[j],
+						fechaFinal[j].toString(), Descripciones[j], Fuentes[j],
+						Lugares[j], Direcciones[j], Telefonos[j], Latitudes[j],
+						Longitudes[j], Distancias[j], Boletos[j], img[j],
+						imagenesCategorias[j], j));
+			}
+			prendeEstrellaTime_Line = new boolean[listaEventos.size()];
+			arrayAdapterEvents.notifyDataSetChanged();
+		}else{
+			Toast.makeText(getActivity().getApplicationContext(), "No hay Eventos Disponibles\n" +
+					"Prueba con otras categorías!\n" +
+					"Y/o Aumenta el Radio de búsqueda en los ajustes", Toast.LENGTH_LONG).show();
+		}
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		
@@ -390,24 +553,24 @@ public class Page_TimeLine extends Fragment {
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
-//				Log.d(null, "firstVisibleItem "+firstVisibleItem);
-//				Log.d(null, "visibleItemCount "+visibleItemCount);
-//				Log.d(null, "totalItemCount "+totalItemCount);
-//				Log.d(null,"firsVisibleItem="+firstVisibleItem+"\n+visibleItemCount="+visibleItemCount+"\ntotalItemCount"+totalItemCount+"\nloadedItems"+(firstVisibleItem + visibleItemCount));
-//				if((visibleItemCount+firstVisibleItem >= totalItemCount) && !isLoading){
-//				if((visibleItemCount+firstVisibleItem) >= totalItemCount){
-//				if(visibleItemCount>totalItemCount){
-//					isLoading=true;
-//					Log.d(null,"Es hora de cargar!");
-//					addMoreItems();
-//				}
-//				numeroEventos = totalItemCount;
+				Log.d(null,"firsVisibleItem="+firstVisibleItem+
+						"\n+visibleItemCount="+visibleItemCount+
+						"\ntotalItemCount"+totalItemCount+
+						"\nloadedItems"+(firstVisibleItem + visibleItemCount));
+				Page_TimeLine.this.totalItemCount = totalItemCount;
+				if(((firstVisibleItem + visibleItemCount)==totalItemCount)&
+						listView_Eventos.getFirstVisiblePosition()>0){
+//					addMoreEvents(latOrigin, lonOrigin);
+					if (listView_Eventos.getLastVisiblePosition() == listView_Eventos.getAdapter().getCount() - 1
+							&& listView_Eventos.getChildAt(listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos.getHeight()) {
+							Log.d(null, "Final");
+							addMoreEvents(latOrigin, lonOrigin);
+					}
+				}
 			}
 		});	
 		
@@ -425,35 +588,25 @@ public class Page_TimeLine extends Fragment {
 							startY=y;
 							downCounterUsed=true;
 						}
-//						if(allowRefresh){
-//							if((y - startY) > REFRESH_THRESHOLD)
-//							{ 
-//								refresh = true;
-//								if(!headerAdded){
-//									//listView_Eventos.addHeaderView(headerView);
-//									((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
-//									headerAdded=true;
-//								}
-//							}
-//							else{ refresh=false; }
-//						}
-						if((y - startY) > REFRESH_THRESHOLD)
-						{ 
-							refresh = true;
-							if(!headerAdded){
-								//listView_Eventos.addHeaderView(headerView);
-								((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
-								headerAdded=true;
+						allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
+						Log.d("FirstVisible", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+						if(allowRefresh){
+							if((y - startY) > REFRESH_THRESHOLD)
+							{ 
+								refresh = true;
+								if(!headerAdded){
+									//listView_Eventos.addHeaderView(headerView);
+									((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
+									headerAdded=true;
+								}
 							}
+							else{ refresh=false; }
 						}
-						else{ refresh=false; }
-						
 						break;
 					}
 					
 					case MotionEvent.ACTION_UP:{
 						Log.d("FirstVisiblePosition", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
-						allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
 						if(refresh){
 							refreshTimeLine();
 						}else{
@@ -468,7 +621,6 @@ public class Page_TimeLine extends Fragment {
 			}
 		});
 		
-		listView_Eventos.setVerticalScrollBarEnabled(true);
 		return view;
 	}
 	
@@ -483,21 +635,10 @@ public class Page_TimeLine extends Fragment {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		//Creamos un hilo para que se descarguen las imagenes en 2do plano
-		new AsyncTask<Void, Void, Void>(){
-
-			@Override
-			protected Void doInBackground(Void... params) {
-				if(descargaImagenesFirstAccess){
-					downloadPictureFirstAccess(ImagenEvento);
-				}
-				return null;
-			}
-			
-		}.execute();
+		downloadPictureFirstAccess(ImagenEvento);
 	}
 	
-	//Se ejecuta solo pa refresh y addmore events
+	//Se ejecuta solo pa refresh
 	public void funcionesRefresh(){
 		//Ejecutamos primero lectura de json y presentamos lista en hilo principal
 		try {
@@ -510,6 +651,34 @@ public class Page_TimeLine extends Fragment {
 			e1.printStackTrace();
 		}
 		downloadPictureSecondAccessRefresh(ImagenEvento);
+	}
+	
+	public void funcionesAddMore(){
+		for (int j = 0; j < titulo.length; j++) {
+		//Limpiamos lista y como ya tenemos cargada la info en los arreglos
+		//eso vamos a setear a la nueva lista			
+		listaEventos.add(new EventoObjeto(titulo[j],
+				categoriasSave[j],
+				fechaSave[j].toString(),
+				descripciones[j], fuentes[j],
+				lugares[j], direcciones[j],
+				telefonos[j], latitudes[j],
+				longitudes[j], distancias[j],
+				boletos[j], imagenEventoSave[j],
+				imgCategorias[j],j));
+	}
+		arrayAdapterEvents.notifyDataSetChanged();
+		//Ejecutamos primero lectura de json y presentamos lista en hilo principal
+		try {
+			nuevoJsonObjectAddMore(jsonAddMore);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+//		downloadPictureSecondAccessMore(ImagenEvento);
 	}
 	
 	/**
@@ -549,13 +718,17 @@ public class Page_TimeLine extends Fragment {
 				}
 				arrayAdapterEvents.notifyDataSetChanged();
 			};
-			
 		}.execute();
 	}
 	
-	public void downloadPictureSecondAccess(final String[] urlsImagenes) {
+	public void downloadPictureSecondAccessMore(final String[] urlsImagenes) {
 		new AsyncTask<Void, Void, Void>(){
 			Bitmap[] downloadBitmap=null;
+			
+			
+			
+			protected void onPreExecute() {};
+			
 			@Override
 			protected Void doInBackground(Void... params) {
 				downloadBitmap = new Bitmap[urlsImagenes.length];
@@ -571,7 +744,21 @@ public class Page_TimeLine extends Fragment {
 			}
 			
 			protected void onPostExecute(Void result) {
-//				listaEventos.clear();
+				
+//				for (int j = 0; j < urlsImagenes.length; j++) {
+//					//Limpiamos lista y como ya tenemos cargada la info en los arreglos
+//					//eso vamos a setear a la nueva lista					
+//					listaEventos.add(new EventoObjeto(titulo[j],
+//							categoriasSave[j],
+//							fechaSave[j].toString(),
+//							descripciones[j], fuentes[j],
+//							lugares[j], direcciones[j],
+//							telefonos[j], latitudes[j],
+//							longitudes[j], distancias[j],
+//							boletos[j], downloadBitmap[j],
+//							imgCategorias[j],j));
+//				}
+				listaEventos.clear();
 				for (int j = 0; j < urlsImagenes.length; j++) {
 					listaEventos.add(new EventoObjeto(Titulos[j],
 							Categorias[j],
@@ -585,10 +772,6 @@ public class Page_TimeLine extends Fragment {
 				}
 				arrayAdapterEvents.notifyDataSetChanged();
 				this.cancel(true);
-//				int tam=listaEventos.size();
-//				for(int i=tam; i<(tam+20); i++){
-//					listaEventos.add(new EventoObjeto("Evento "+i, "Categoria"));
-//				}
 			};
 			
 		}.execute();
@@ -660,43 +843,6 @@ public class Page_TimeLine extends Fragment {
 	public void addMoreItems(){
 		addMoreEvents(latOrigin, lonOrigin);
 	}
-	
-//	public void refreshTimeLine(){
-//		new AsyncTask<Void,Void,Void>() {
-//			
-//			@Override
-//			protected void onPreExecute() {
-//				// TODO El dialog de cargar
-//				super.onPreExecute();
-//				((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
-//				((ProgressBar)headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.VISIBLE);
-//			}
-//
-//			@Override
-//			protected Void doInBackground(Void... params) {
-//				// TODO Crear rutina de actualizacion real
-//				try {
-//					Thread.sleep(1500);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-////				FAKEfill();
-//				return null;
-//			}
-//	
-//			@Override
-//			protected void onPostExecute(Void result) {
-//				super.onPostExecute(result);
-//				//listView_Eventos.removeHeaderView(headerView);
-//				arrayAdapterEvents.notifyDataSetChanged();
-//				((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
-//				((ProgressBar)headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
-//				headerAdded=false;
-//			}
-//			
-//		}.execute();
-//	}
 
 	public void refreshTimeLine(){
 		new AsyncTask<String, Void, InputStream>(){
@@ -779,23 +925,7 @@ public class Page_TimeLine extends Fragment {
 				"&categoria="+categorias+"" +
 				"&numEventos="+numeroEventos+"" +
 				"&idEvento=0&fecha=0");
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 
 	//Consulta mongo
 	public void addMoreEvents(final double lat, final double lon) {	
@@ -824,18 +954,51 @@ public class Page_TimeLine extends Fragment {
 				}
 				coma++;
 			}
-			// System.out.println(prefsCategorias.getString("Categories "+x,
-			// "Desactivada"));
 		}
-		new AsyncTask<String, Void, InputStream>(){
+		
+		//Aqui tenemos que recuperar los eventos anteriores y juntarlos con los nuevos
+		// para que en la lista el total de eventos sea correcto y no por partes
+		titulo = new String[listaEventos.size()];
+		categoriasSave = new String[listaEventos.size()];
+		fechaSave = new String[listaEventos.size()];
+		descripciones = new String[listaEventos.size()];
+		fuentes = new String[listaEventos.size()];
+		lugares = new String[listaEventos.size()];
+		direcciones = new String[listaEventos.size()];
+		telefonos = new String[listaEventos.size()];
+		latitudes = new Double[listaEventos.size()];
+		longitudes = new Double[listaEventos.size()];
+		distancias = new String[listaEventos.size()];
+		boletos = new String[listaEventos.size()];
+		imagenEventoSave = new Bitmap[listaEventos.size()];
+		imgCategorias = new int[listaEventos.size()];
+		
+		for (int j = 0; j < listaEventos.size(); j++) {
+			
+			titulo[j] = listaEventos.get(j).getNombreEvento();
+			Log.e("NUevoArray", titulo[j]);
+			categoriasSave[j] = listaEventos.get(j).getCategoriaEvento();
+			fechaSave[j] = listaEventos.get(j).getFechaEvento();
+			descripciones[j] = listaEventos.get(j).getDescripcion();
+			fuentes[j] = listaEventos.get(j).getFuente();
+			lugares[j] = listaEventos.get(j).getLugarEvento();
+			direcciones[j] = listaEventos.get(j).getDireccion();
+			telefonos[j] = listaEventos.get(j).getTelefono();
+			latitudes[j] = listaEventos.get(j).getLatEvento();
+			longitudes[j] = listaEventos.get(j).getLonEvento();
+			distancias[j] = listaEventos.get(j).getDistancia();
+			boletos[j] = listaEventos.get(j).getBoleto();
+			imagenEventoSave[j] = listaEventos.get(j).getImagenEvento();
+			imgCategorias[j] = listaEventos.get(j).getImagenCategoria();
+		}
+		new AsyncTask<String, Void, Void>(){
 
 			protected void onPreExecute() {
-				((ProgressBar)footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.VISIBLE);
-				//listView_Eventos.addFooterView(footerView);
+				((ProgressBar)footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.VISIBLE);				
 			};
 
 			@Override
-			protected InputStream doInBackground(String... params) {
+			protected Void doInBackground(String... params) {
 				InputStream inputStream = null;
 				if(getActivity()!=null){					
 					URL url = null;
@@ -843,7 +1006,7 @@ public class Page_TimeLine extends Fragment {
 					if(!isCancelled()){					
 						try {
 							url = new URL(params[0]);
-							Log.d(null,params[0]);
+							Log.e(null,params[0]);
 						} catch (MalformedURLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -858,21 +1021,26 @@ public class Page_TimeLine extends Fragment {
 						}
 
 						if(inputStream!=null){
-							readStream(inputStream);
-							//								leerJson();
+							
+							
+							readStreamAddMOre(inputStream);
 						}
 					}					
 				}
-				return inputStream;				
+				Log.d(null, "Ejecutandose Hilo add more");
+				
+				return null;				
 			}
 
 			@Override
-			protected void onPostExecute(InputStream result) {
+			protected void onPostExecute(Void result) {
 				this.cancel(true);
 				//Quita el footer
 				((ProgressBar)footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.GONE);
 				if(getActivity()!=null){
-					funcionesRefresh();
+					listaEventos.clear();
+					arrayAdapterEvents.clear();
+					funcionesAddMore();
 				}
 			};
 
@@ -913,6 +1081,32 @@ public class Page_TimeLine extends Fragment {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
+				if (reader != null) {
+					try {
+						reader.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}	    		
+			}
+		}
+	}
+	
+	private void readStreamAddMOre(InputStream in) {
+		if(in!=null){
+			BufferedReader reader = null;
+			try {
+				reader = new BufferedReader(new InputStreamReader(in));
+				String line = "";
+				while ((line = reader.readLine()) != null) {
+					if(getActivity()!=null){
+						jsonAddMore = line;
+					}
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}  finally {
 				if (reader != null) {
 					try {
 						reader.close();
@@ -999,6 +1193,36 @@ public class Page_TimeLine extends Fragment {
 			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 5, locationListener);
 		}
 	}
+	
+	// convert InputStream to String
+		private static String getStringFromInputStream(InputStream is) {
+	 
+			BufferedReader br = null;
+			StringBuilder sb = new StringBuilder();
+	 
+			String line;
+			try {
+	 
+				br = new BufferedReader(new InputStreamReader(is));
+				while ((line = br.readLine()) != null) {
+					sb.append(line);
+				}
+	 
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (br != null) {
+					try {
+						br.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+	 
+			return sb.toString();
+	 
+		}
 	
 	static{
 	     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();  

@@ -102,7 +102,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 			}
 		});
 		
-		setInfoAndListenersInEvent(newView, position);
+		setInfoAndListenersInEvent(newView, pos);
 		return newView;
 	}
 	

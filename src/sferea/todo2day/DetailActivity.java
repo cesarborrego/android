@@ -114,150 +114,152 @@ public class DetailActivity extends ActionBarActivity {
 		btnR = (ImageView)findViewById(R.id.iconRetweetFavorito);	
 		btnF = (ImageView)findViewById(R.id.iconFavFavorito);
 		
-		if(Page_TimeLine.eventoActivo){			
-			Log.d(null, "Entra por time_line");
-			Bundle extras = getIntent().getExtras();
-			evento = extras.getParcelable("Event");
-			SharedPreferences prefs = getSharedPreferences("latlong",Context.MODE_PRIVATE);		
-			if(evento!=null){			
-				SharedPreferences.Editor editor = prefs.edit();
-				editor.putString("lat", String.valueOf(evento.getLatEvento()));
-				editor.putString("lon", String.valueOf(evento.getLonEvento()));
-				editor.commit(); 
-			}
-			
-			if(Page_TimeLine.prendeEstrellaTime_Line[evento.getPosicion()]){
-				btnF.setImageResource(R.drawable.ic_action_important_active);
-			} else {
-				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inSampleSize = 4;
-				Bitmap bm = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-						R.drawable.ic_action_important,options);
-				btnF.setImageBitmap(bm);
-			}
-			
-			//Colocamos la info del evento en el activity_detail
-			((TextView)findViewById(R.id.detallesTitulo)).setText(evento.getNombreEvento());
-			((ImageView)findViewById(R.id.imagenHeader)).setImageBitmap(evento.getImagenEvento());
-			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(evento.getImagenCategoria());
-			((TextView)findViewById(R.id.detallesCategoria)).setText(evento.getCategoriaEvento());
-			((TextView)findViewById(R.id.detallesFecha)).setText(evento.getFechaEvento());
-			((TextView)findViewById(R.id.detallesLugar)).setText(evento.getLugarEvento());
-			((TextView)findViewById(R.id.detallesDescripcion)).setText(evento.getDescripcion());
-			((TextView)findViewById(R.id.detallesFuente)).setText(evento.getFuente());
-			((TextView)findViewById(R.id.detallesDireccion)).setText(evento.getDireccion());
-			((TextView)findViewById(R.id.detallesTelefono)).setText(evento.getTelefono());
-			((TextView)findViewById(R.id.detallesPrecio)).setText(evento.getBoleto());
-			((TextView)findViewById(R.id.detallesDistancia)).setText("A "+String.valueOf(evento.getDistancia()));
-			tel = (TextView)findViewById(R.id.detallesTelefono);
-			tel.setText(evento.getTelefono());
-			
-			String inicioTweet = getResources().getString(R.string.cadenaTweet_inicio);
-			String enTweet = getResources().getString(R.string.cadenaTweet_en);
-			final String tweetString = inicioTweet+" \""+evento.getNombreEvento()+"\" "+enTweet+" "+evento.getLugarEvento()+" Vía yiepa!";
-			
-			String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
-					"center="+evento.getLatEvento()+","+evento.getLonEvento()+"" +
-					"&zoom=15" +
-					"&size=600x300" +
-					"&scale=2" +
-					"&maptype=roadmap" +
-					"&markers=color:blue%7C"+evento.getLatEvento()+","+evento.getLonEvento()+"" +
-					"&sensor=true_or_false";
-			
-			Log.d(null, imageHttpAddress);
-			
-			downloadPicture(imageHttpAddress);
-			
-		} else {
-			Log.d(null, "Entra por favoritos");
-			Bundle extras1 = getIntent().getExtras();
-			favoritosObjeto = extras1.getParcelable("Favorito");
-			if(favoritosObjeto!=null){
-				SharedPreferences prefs = getSharedPreferences("latlong",Context.MODE_PRIVATE);	
-				SharedPreferences.Editor editor = prefs.edit();
-				editor.putString("lat", String.valueOf(favoritosObjeto.getLatEvento()));
-				editor.putString("lon", String.valueOf(favoritosObjeto.getLonEvento()));
-				editor.commit(); 
-			}
-			
-			if(Page_TimeLine.prendeEstrellaTime_Line[favoritosObjeto.getPosicion()]){
-				btnF.setImageResource(R.drawable.ic_action_important_active);
-			} else {
-				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inSampleSize = 4;
-				Bitmap bm = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-						R.drawable.ic_action_important,options);
-				btnF.setImageBitmap(bm);
-			}
-			
-			((TextView)findViewById(R.id.detallesTitulo)).setText(favoritosObjeto.getNombreEvento());
-			((ImageView)findViewById(R.id.imagenHeader)).setImageBitmap(favoritosObjeto.getImagenEvento());
-			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(favoritosObjeto.getImagenCategoria());
-			((TextView)findViewById(R.id.detallesCategoria)).setText(favoritosObjeto.getCategoriaEvento());
-			((TextView)findViewById(R.id.detallesFecha)).setText(favoritosObjeto.getFechaEvento());
-			((TextView)findViewById(R.id.detallesLugar)).setText(favoritosObjeto.getLugarEvento());
-			((TextView)findViewById(R.id.detallesDescripcion)).setText(favoritosObjeto.getDescripcion());
-			((TextView)findViewById(R.id.detallesFuente)).setText(favoritosObjeto.getFuente());
-			((TextView)findViewById(R.id.detallesDireccion)).setText(favoritosObjeto.getDireccion());
-			((TextView)findViewById(R.id.detallesTelefono)).setText(favoritosObjeto.getTelefono());
-			((TextView)findViewById(R.id.detallesPrecio)).setText(favoritosObjeto.getBoleto());
-			((TextView)findViewById(R.id.detallesDistancia)).setText("A "+String.valueOf(favoritosObjeto.getDistanciaEvento()));
-			tel = (TextView)findViewById(R.id.detallesTelefono);
-			tel.setText(favoritosObjeto.getTelefono());
-			
-			String inicioTweet = getResources().getString(R.string.cadenaTweet_inicio);
-			String enTweet = getResources().getString(R.string.cadenaTweet_en);
-			final String tweetString = inicioTweet+" \""+favoritosObjeto.getNombreEvento()+"\" "+enTweet+" "+favoritosObjeto.getLugarEvento()+" Vía yiepa!";
-			
-			String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
-					"center="+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
-					"&zoom=15" +
-					"&size=600x300" +
-					"&scale=2" +
-					"&maptype=roadmap" +
-					"&markers=color:blue%7C"+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
-					"&sensor=true_or_false";
-			
-			Log.d(null, imageHttpAddress);
-			
-			downloadPicture(imageHttpAddress);
-		}
-		
-		tel.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Uri number = Uri.parse("tel:"+tel.getText().toString());
-		        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
-		        startActivity(callIntent);
-			}
-		});
-		
-		((RelativeLayout)findViewById(R.id.botonFavEvent)).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				Log.d(null, "Presionado");
-				agregarFavoritos();
-			}
-		});
-		
-		((RelativeLayout)findViewById(R.id.capaMapa)).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Page_TimeLine.activaRuta= "si";
-				Bundle bundle = new Bundle();
-				if(Page_TimeLine.eventoActivo){
-					bundle.putDoubleArray("LatLon", new double[]{evento.getLonEvento(), evento.getLatEvento()});
-				} else if(Page_TimeLine.favoritoActivo){
-					bundle.putDoubleArray("LatLon", new double[]{favoritosObjeto.getLonEvento(), favoritosObjeto.getLatEvento()});
+		if(this!=null){
+			if(Page_TimeLine.eventoActivo){			
+				Log.d(null, "Entra por time_line");
+				Bundle extras = getIntent().getExtras();
+				evento = extras.getParcelable("Event");
+				SharedPreferences prefs = getSharedPreferences("latlong",Context.MODE_PRIVATE);		
+				if(evento!=null){			
+					SharedPreferences.Editor editor = prefs.edit();
+					editor.putString("lat", String.valueOf(evento.getLatEvento()));
+					editor.putString("lon", String.valueOf(evento.getLonEvento()));
+					editor.commit(); 
 				}
-				Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-				intent.putExtras(bundle);
-				startActivity(intent);
+				
+				if(Page_TimeLine.prendeEstrellaTime_Line[evento.getPosicion()]){
+					btnF.setImageResource(R.drawable.ic_action_important_active);
+				} else {
+					BitmapFactory.Options options = new BitmapFactory.Options();
+					options.inSampleSize = 4;
+					Bitmap bm = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+							R.drawable.ic_action_important,options);
+					btnF.setImageBitmap(bm);
+				}
+				
+				//Colocamos la info del evento en el activity_detail
+				((TextView)findViewById(R.id.detallesTitulo)).setText(evento.getNombreEvento());
+				((ImageView)findViewById(R.id.imagenHeader)).setImageBitmap(evento.getImagenEvento());
+				((ImageView)findViewById(R.id.iconCategoria)).setImageResource(evento.getImagenCategoria());
+				((TextView)findViewById(R.id.detallesCategoria)).setText(evento.getCategoriaEvento());
+				((TextView)findViewById(R.id.detallesFecha)).setText(evento.getFechaEvento());
+				((TextView)findViewById(R.id.detallesLugar)).setText(evento.getLugarEvento());
+				((TextView)findViewById(R.id.detallesDescripcion)).setText(evento.getDescripcion());
+				((TextView)findViewById(R.id.detallesFuente)).setText(evento.getFuente());
+				((TextView)findViewById(R.id.detallesDireccion)).setText(evento.getDireccion());
+				((TextView)findViewById(R.id.detallesTelefono)).setText(evento.getTelefono());
+				((TextView)findViewById(R.id.detallesPrecio)).setText(evento.getBoleto());
+				((TextView)findViewById(R.id.detallesDistancia)).setText("A "+String.valueOf(evento.getDistancia()));
+				tel = (TextView)findViewById(R.id.detallesTelefono);
+				tel.setText(evento.getTelefono());
+				
+				String inicioTweet = getResources().getString(R.string.cadenaTweet_inicio);
+				String enTweet = getResources().getString(R.string.cadenaTweet_en);
+				final String tweetString = inicioTweet+" \""+evento.getNombreEvento()+"\" "+enTweet+" "+evento.getLugarEvento()+" Vía yiepa!";
+				
+				String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
+						"center="+evento.getLatEvento()+","+evento.getLonEvento()+"" +
+						"&zoom=15" +
+						"&size=600x300" +
+						"&scale=2" +
+						"&maptype=roadmap" +
+						"&markers=color:blue%7C"+evento.getLatEvento()+","+evento.getLonEvento()+"" +
+						"&sensor=true_or_false";
+				
+				Log.d(null, imageHttpAddress);
+				
+				downloadPicture(imageHttpAddress);
+				
+			} else {
+				Log.d(null, "Entra por favoritos");
+				Bundle extras1 = getIntent().getExtras();
+				favoritosObjeto = extras1.getParcelable("Favorito");
+				if(favoritosObjeto!=null){
+					SharedPreferences prefs = getSharedPreferences("latlong",Context.MODE_PRIVATE);	
+					SharedPreferences.Editor editor = prefs.edit();
+					editor.putString("lat", String.valueOf(favoritosObjeto.getLatEvento()));
+					editor.putString("lon", String.valueOf(favoritosObjeto.getLonEvento()));
+					editor.commit(); 
+				}
+				
+				if(Page_TimeLine.prendeEstrellaTime_Line[favoritosObjeto.getPosicion()]){
+					btnF.setImageResource(R.drawable.ic_action_important_active);
+				} else {
+					BitmapFactory.Options options = new BitmapFactory.Options();
+					options.inSampleSize = 4;
+					Bitmap bm = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+							R.drawable.ic_action_important,options);
+					btnF.setImageBitmap(bm);
+				}
+				
+				((TextView)findViewById(R.id.detallesTitulo)).setText(favoritosObjeto.getNombreEvento());
+				((ImageView)findViewById(R.id.imagenHeader)).setImageBitmap(favoritosObjeto.getImagenEvento());
+				((ImageView)findViewById(R.id.iconCategoria)).setImageResource(favoritosObjeto.getImagenCategoria());
+				((TextView)findViewById(R.id.detallesCategoria)).setText(favoritosObjeto.getCategoriaEvento());
+				((TextView)findViewById(R.id.detallesFecha)).setText(favoritosObjeto.getFechaEvento());
+				((TextView)findViewById(R.id.detallesLugar)).setText(favoritosObjeto.getLugarEvento());
+				((TextView)findViewById(R.id.detallesDescripcion)).setText(favoritosObjeto.getDescripcion());
+				((TextView)findViewById(R.id.detallesFuente)).setText(favoritosObjeto.getFuente());
+				((TextView)findViewById(R.id.detallesDireccion)).setText(favoritosObjeto.getDireccion());
+				((TextView)findViewById(R.id.detallesTelefono)).setText(favoritosObjeto.getTelefono());
+				((TextView)findViewById(R.id.detallesPrecio)).setText(favoritosObjeto.getBoleto());
+				((TextView)findViewById(R.id.detallesDistancia)).setText("A "+String.valueOf(favoritosObjeto.getDistanciaEvento()));
+				tel = (TextView)findViewById(R.id.detallesTelefono);
+				tel.setText(favoritosObjeto.getTelefono());
+				
+				String inicioTweet = getResources().getString(R.string.cadenaTweet_inicio);
+				String enTweet = getResources().getString(R.string.cadenaTweet_en);
+				final String tweetString = inicioTweet+" \""+favoritosObjeto.getNombreEvento()+"\" "+enTweet+" "+favoritosObjeto.getLugarEvento()+" Vía yiepa!";
+				
+				String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
+						"center="+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
+						"&zoom=15" +
+						"&size=600x300" +
+						"&scale=2" +
+						"&maptype=roadmap" +
+						"&markers=color:blue%7C"+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
+						"&sensor=true_or_false";
+				
+				Log.d(null, imageHttpAddress);
+				
+				downloadPicture(imageHttpAddress);
 			}
-		});		
+			
+			tel.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Uri number = Uri.parse("tel:"+tel.getText().toString());
+			        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+			        startActivity(callIntent);
+				}
+			});
+			
+			((RelativeLayout)findViewById(R.id.botonFavEvent)).setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					Log.d(null, "Presionado");
+					agregarFavoritos();
+				}
+			});
+			
+			((RelativeLayout)findViewById(R.id.capaMapa)).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Page_TimeLine.activaRuta= "si";
+					Bundle bundle = new Bundle();
+					if(Page_TimeLine.eventoActivo){
+						bundle.putDoubleArray("LatLon", new double[]{evento.getLonEvento(), evento.getLatEvento()});
+					} else if(Page_TimeLine.favoritoActivo){
+						bundle.putDoubleArray("LatLon", new double[]{favoritosObjeto.getLonEvento(), favoritosObjeto.getLatEvento()});
+					}
+					Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+			});		
+		}
 	}	
 	
 	/**
