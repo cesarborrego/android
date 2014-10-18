@@ -20,7 +20,6 @@ import sferea.todo2day.subfragments.Page_TimeLine;
 import sferea.todo2day.subfragments.SubF_Categories;
 import sferea.todo2day.subfragments.SubF_Events;
 import sferea.todo2day.subfragments.SubF_Settings;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,21 +36,18 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -78,7 +74,7 @@ public class MainActivity extends ActionBarActivity {
 	private static final int CATEGORIES = 2;
 	private static final int SETTINGS = 3;
 	
-	private boolean atHome;
+	private boolean atHome = true;
 	
 	double latOrigin= 19.355582;
 	double lonOrigin =-99.186726;
@@ -116,7 +112,14 @@ public class MainActivity extends ActionBarActivity {
 		listViewDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-				ShowFragment(position);	
+				drawerLayout.closeDrawer(listViewDrawer);
+				
+				new Handler().postDelayed(new Runnable() {
+			        @Override 
+			        public void run() { 
+			        	ShowFragment(position);
+			        } 
+			    }, 250); 
 			}
 		});
 		
@@ -232,8 +235,11 @@ public class MainActivity extends ActionBarActivity {
 		switch (position) {
 		
 		case EVENTS:{
+			if(!atHome){
+				downloadJSON(19.355582, -99.186726);
+				atHome=true;
+			}
 			fragment = new SubF_Events();
-			atHome=true;
 			break;
 		}
 		
@@ -267,7 +273,6 @@ public class MainActivity extends ActionBarActivity {
 			listViewDrawer.setItemChecked(position, true);
 			listViewDrawer.setSelection(position);
 			//Cerramos el nav drawer
-			drawerLayout.closeDrawer(listViewDrawer);
 		}
 	}
 	
