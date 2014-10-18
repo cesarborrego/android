@@ -635,7 +635,9 @@ public class Page_TimeLine extends Fragment {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		downloadPictureFirstAccess(ImagenEvento);
+		if(ImagenEvento!=null){
+			downloadPictureFirstAccess(ImagenEvento);
+		}
 	}
 	
 	//Se ejecuta solo pa refresh
@@ -704,19 +706,21 @@ public class Page_TimeLine extends Fragment {
 			}
 			
 			protected void onPostExecute(Void result) {
-				
-				for (int j = 0; j < urlsImagenes.length; j++) {
-					listaEventos.add(new EventoObjeto(Titulos[j],
-							Categorias[j],
-							fechaFinal[j].toString(),
-							Descripciones[j], Fuentes[j],
-							Lugares[j], Direcciones[j],
-							Telefonos[j], Latitudes[j],
-							Longitudes[j], Distancias[j],
-							Boletos[j], downloadBitmap[j],
-							imagenesCategorias[j],j));
+				if(getActivity()!=null){
+					for (int j = 0; j < urlsImagenes.length; j++) {
+						listaEventos.add(new EventoObjeto(Titulos[j],
+								Categorias[j],
+								fechaFinal[j].toString(),
+								Descripciones[j], Fuentes[j],
+								Lugares[j], Direcciones[j],
+								Telefonos[j], Latitudes[j],
+								Longitudes[j], Distancias[j],
+								Boletos[j], downloadBitmap[j],
+								imagenesCategorias[j],j));
+					}
+					arrayAdapterEvents.notifyDataSetChanged();
 				}
-				arrayAdapterEvents.notifyDataSetChanged();
+				
 			};
 		}.execute();
 	}

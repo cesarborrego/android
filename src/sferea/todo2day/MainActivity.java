@@ -366,7 +366,9 @@ public class MainActivity extends ActionBarActivity {
 			SharedPreferences prefsCategorias = getSharedPreferences("Categorias",Context.MODE_PRIVATE);
 			int coma =0;
 			//SOn 13 categorias
+			categorias="";
 			for (int x=0; x<13; x++){
+				
 				if(!prefsCategorias.getString("Categories "+x, "Desactivada").equals("Desactivada")&
 						!prefsCategorias.getString("Categories "+x, "Desactivada").equals("")){	
 					if(coma!=0){
