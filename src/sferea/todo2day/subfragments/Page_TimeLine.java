@@ -1,6 +1,7 @@
 package sferea.todo2day.subfragments;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,6 +13,7 @@ import java.text.BreakIterator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -22,6 +24,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -161,6 +164,7 @@ public class Page_TimeLine extends Fragment {
 
 	String json;
 	String jsonAddMore;
+	String jsonCache;
 	
 	String categorias = "";
 	String idevento="";
@@ -192,6 +196,8 @@ public class Page_TimeLine extends Fragment {
 	Bitmap []  imagenEventoSave;
 	int []  imgCategorias;
 	
+	public static boolean leeJSONCache = false;
+	
 	public Page_TimeLine(){}
 	
 	@Override
@@ -199,11 +205,16 @@ public class Page_TimeLine extends Fragment {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 //		gps();
+//		if(!leeJSONCache){
+//			leerJson();
+//		} else {
+//			leerJsonCache();
+//		}
 		leerJson();
 	}
 	
+	@SuppressWarnings("unused")
 	public void leerJson() {
-//		String json ="";
     	BufferedReader bufferedReader=null;
     	try {
     		BufferedReader fin =
@@ -212,20 +223,33 @@ public class Page_TimeLine extends Fragment {
     		                getActivity().getApplicationContext().openFileInput("Json.txt")));
     		
     		while ((json = fin.readLine()) != null) {
-//    			nuevoJsonObject(json);
-//    			Log.d(null, json);
     	    	fin.close();
     		}
 		} catch (Exception e) {}
-//    	finally {
-//    		if (bufferedReader != null) {
-//    			try {
-//    				bufferedReader.close();
-//    			} catch (IOException e) {
-//    				e.printStackTrace();
-//    			}
-//    		}
-//    	}
+    	if (bufferedReader != null) {
+			try {
+				bufferedReader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+    }
+	
+	@SuppressWarnings("unused")
+	public void leerJsonCache() {
+		leeJSONCache = true;
+    	BufferedReader bufferedReader=null;
+    	try {
+    		BufferedReader fin =
+    		        new BufferedReader(
+    		            new InputStreamReader(
+    		                getActivity().getApplicationContext().openFileInput("JsonCache.txt")));
+    		
+    		while ((jsonCache = fin.readLine()) != null) {
+    	    	fin.close();
+    		}
+    		
+		} catch (Exception e) {}
     	if (bufferedReader != null) {
 			try {
 				bufferedReader.close();
@@ -243,7 +267,7 @@ public class Page_TimeLine extends Fragment {
 		String totalEvents = (String) jsonObject.get("numberItems");
 		Log.d(null, "Total de eventos " + totalEvents);
 		
-		if(!totalEvents.equals("0")){
+		if(totalEvents!=null && !totalEvents.equals("0")){
 			//Habilitamos la descarga de la/las imagenes
 			descargaImagenesFirstAccess = true;
 			
@@ -386,8 +410,6 @@ public class Page_TimeLine extends Fragment {
 		Log.d(null, "Total de eventos " + totalEvents);
 		
 		if(!totalEvents.equals("0")){
-			//Habilitamos la descarga de la/las imagenes
-			descargaImagenesFirstAccess = true;
 			
 			JSONObject jsonInicio = (JSONObject) jsonObject.get("data");
 
@@ -520,6 +542,45 @@ public class Page_TimeLine extends Fragment {
 		}
 	}
 	
+	public void cargaJsonCache(){
+		
+		try {
+			JSONParser jsonParser = new JSONParser();
+			JSONObject jsonObject = (JSONObject)jsonParser.parse(jsonCache);
+			JSONArray jsonArray = (JSONArray)jsonObject.get("JsonCache");
+			Iterator iterator = jsonArray.iterator();
+			int iContador =0;
+			
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = 4;
+			Bitmap img = BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(),
+					R.drawable.evento,options);
+			listaEventos.clear();
+			while (iterator.hasNext()){
+				JSONObject jsonObject2 = (JSONObject)iterator.next();
+				listaEventos.add(new EventoObjeto(jsonObject2.get("titulo"+iContador).toString(),
+						jsonObject2.get("categorias"+iContador).toString(),
+						jsonObject2.get("fechas"+iContador).toString(), 
+						jsonObject2.get("descripciones"+iContador).toString(),
+						jsonObject2.get("fuentes"+iContador).toString(),
+						jsonObject2.get("lugares"+iContador).toString(),
+						jsonObject2.get("direcciones"+iContador).toString(),
+						jsonObject2.get("telefonos"+iContador).toString(),
+						Double.parseDouble(jsonObject2.get("latitudes"+iContador).toString()),
+						Double.parseDouble(jsonObject2.get("longuitudes"+iContador).toString()),
+						jsonObject2.get("distancias"+iContador).toString(),
+						jsonObject2.get("boletos"+iContador).toString(),img, 
+						Integer.parseInt(jsonObject2.get("imagenesCat"+iContador).toString()),
+						Integer.parseInt(jsonObject2.get("posiciones"+iContador).toString())));
+				iContador++;
+			}
+			arrayAdapterEvents.notifyDataSetChanged();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		
@@ -533,6 +594,11 @@ public class Page_TimeLine extends Fragment {
 		//Crea un nuevo arraylist de eventos
 		listaEventos = new ArrayList<EventoObjeto>();
 		
+//		if(!leeJSONCache){
+//			funcionesPrincipales();
+//		}else{
+//			cargaJsonCache();
+//		}
 		funcionesPrincipales();
 		
 		//Crea el arrayAdapter de eventos
@@ -627,7 +693,9 @@ public class Page_TimeLine extends Fragment {
 	public void funcionesPrincipales(){
 		try {
 			
-			nuevoJsonObject(json);
+			if(json!=null){
+				nuevoJsonObject(json);
+			}
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -643,22 +711,22 @@ public class Page_TimeLine extends Fragment {
 	//Se ejecuta solo pa refresh
 	public void funcionesRefresh(){
 		//Ejecutamos primero lectura de json y presentamos lista en hilo principal
-		try {
-			nuevoJsonObject(json);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		downloadPictureSecondAccessRefresh(ImagenEvento);
+//		try {
+//			nuevoJsonObject(json);
+//		} catch (IOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (ParseException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		downloadPictureSecondAccessRefresh(ImagenEvento);
+		leerJsonCache();
+		cargaJsonCache();
 	}
 	
 	public void funcionesAddMore(){
-		for (int j = 0; j < titulo.length; j++) {
-		//Limpiamos lista y como ya tenemos cargada la info en los arreglos
-		//eso vamos a setear a la nueva lista			
+		for (int j = 0; j < titulo.length; j++) {		
 		listaEventos.add(new EventoObjeto(titulo[j],
 				categoriasSave[j],
 				fechaSave[j].toString(),
@@ -680,9 +748,71 @@ public class Page_TimeLine extends Fragment {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-//		downloadPictureSecondAccessMore(ImagenEvento);
+		
+		crearJSONCache();
+//		if(ImagenEvento!=null){
+//			downloadPictureSecondAccessMore(ImagenEvento);
+//		}
 	}
 	
+	private void crearJSONCache() {
+		new AsyncTask<Void, Void, Void>(){
+			JSONObject items;
+			JSONObject jsonFinal = new JSONObject();
+			JSONArray jsonArray = new JSONArray();
+
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Void doInBackground(Void... params) {
+				if(getActivity()!=null){
+					for(int j = 0;j<listaEventos.size(); j++){
+						items = new JSONObject();
+						items.put("titulo"+j, listaEventos.get(j).getNombreEvento());
+						items.put("categorias"+j, listaEventos.get(j).getCategoriaEvento());
+						items.put("fechas"+j, listaEventos.get(j).getFechaEvento());
+						items.put("descripciones"+j, listaEventos.get(j).getDescripcion());
+						items.put("fuentes"+j, listaEventos.get(j).getFuente());
+						items.put("lugares"+j, listaEventos.get(j).getLugarEvento());
+						items.put("direcciones"+j, listaEventos.get(j).getDireccion());
+						items.put("telefonos"+j, listaEventos.get(j).getTelefono());
+						items.put("latitudes"+j, listaEventos.get(j).getLatEvento());
+						items.put("longuitudes"+j, listaEventos.get(j).getLonEvento());
+						items.put("distancias"+j, listaEventos.get(j).getDistancia());
+						items.put("boletos"+j, listaEventos.get(j).getBoleto());
+//						imagenEventoSave[j] = listaEventos.get(j).getImagenEvento();
+						items.put("imagenesCat"+j, listaEventos.get(j).getImagenCategoria());
+						items.put("posiciones"+j, listaEventos.get(j).getPosicion());
+						jsonArray.add(items);
+					}
+					jsonFinal.put("JsonCache", jsonArray);
+					
+					OutputStreamWriter outputStreamWriter = null;
+					try {
+						outputStreamWriter = new OutputStreamWriter(getActivity().getApplicationContext().openFileOutput("JsonCache.txt", Context.MODE_PRIVATE));
+						outputStreamWriter.write(jsonFinal.toJSONString());
+						outputStreamWriter.flush();
+						outputStreamWriter.close();
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+				Log.d(null, "Json Cache Creado!");	
+				leerJsonCache();
+				return null;
+			}
+			
+			protected void onPostExecute(Void result) {
+				cargaJsonCache();
+			};
+			
+		}.execute();
+	}
+
 	/**
 	 * 
 	 * @param urlMapaEstatico
@@ -977,10 +1107,9 @@ public class Page_TimeLine extends Fragment {
 		imagenEventoSave = new Bitmap[listaEventos.size()];
 		imgCategorias = new int[listaEventos.size()];
 		
-		for (int j = 0; j < listaEventos.size(); j++) {
-			
+		for (int j = 0; j < listaEventos.size(); j++) {			
 			titulo[j] = listaEventos.get(j).getNombreEvento();
-			Log.e("NUevoArray", titulo[j]);
+			Log.e("NuevoArray", titulo[j]);
 			categoriasSave[j] = listaEventos.get(j).getCategoriaEvento();
 			fechaSave[j] = listaEventos.get(j).getFechaEvento();
 			descripciones[j] = listaEventos.get(j).getDescripcion();
@@ -995,6 +1124,7 @@ public class Page_TimeLine extends Fragment {
 			imagenEventoSave[j] = listaEventos.get(j).getImagenEvento();
 			imgCategorias[j] = listaEventos.get(j).getImagenCategoria();
 		}
+		
 		new AsyncTask<String, Void, Void>(){
 
 			protected void onPreExecute() {
@@ -1025,8 +1155,6 @@ public class Page_TimeLine extends Fragment {
 						}
 
 						if(inputStream!=null){
-							
-							
 							readStreamAddMOre(inputStream);
 						}
 					}					

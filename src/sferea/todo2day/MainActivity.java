@@ -236,7 +236,7 @@ public class MainActivity extends ActionBarActivity {
 		
 		case EVENTS:{
 			if(!atHome){
-				downloadJSON(19.355582, -99.186726);
+//				downloadJSON(19.355582, -99.186726);
 				atHome=true;
 			}
 			fragment = new SubF_Events();
@@ -432,11 +432,10 @@ public class MainActivity extends ActionBarActivity {
 //						readStream(result);
 ////						leerJson();
 //					}
-					
-					ShowFragment(EVENTS);
 	    			refreshFavoritesFragment();
 	    			Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 	    			pDialog.dismiss();
+	    			ShowFragment(EVENTS);
 				};
 				
 				@Override
@@ -463,9 +462,8 @@ public class MainActivity extends ActionBarActivity {
 	    			outputStreamWriter.write(line);	    					
 	    			outputStreamWriter.flush();
 	    			outputStreamWriter.close();
-	    			Log.d(null, "Json Creado!");
-	    			
 	    		}
+	    		Log.d(null, "Json Creado!");
 	    	} catch (IOException e) {
 	    		e.printStackTrace();
 	    	} finally {

@@ -13,6 +13,8 @@ import java.util.TimerTask;
 
 import org.apache.http.impl.conn.Wire;
 
+import sferea.todo2day.Helpers.LecturaJsonCacheHelper;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -76,58 +78,70 @@ public class SplashActivity extends Activity {
 
 	/** contiene la cantidad de tiempo en milisegundos que se mostrara la imagen del splash */
 	private long splashDelay = 500; //3 segundos
+	
+	LecturaJsonCacheHelper lecturaJsonCacheHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_splash);
+		
+		
+		lecturaJsonCacheHelper = new LecturaJsonCacheHelper(getApplicationContext());
+		if(lecturaJsonCacheHelper.leerJsonCache()!=null){
+			
+			Toast.makeText(getApplicationContext(), "Pasa a time", Toast.LENGTH_SHORT).show();
+		}else{
+			setContentView(R.layout.activity_splash);
+			Toast.makeText(getApplicationContext(), "No hay archivo cache", Toast.LENGTH_SHORT).show();
+		}
+			
 //		creaArchivoShared();
 		
-		if(isConnectedToInternet(getApplicationContext())){
-//			gps();
-
-			TimerTask task = new TimerTask() {
-				@Override
-				public void run() {
-
-
-					prefsCategorias = getSharedPreferences("Categorias",Context.MODE_PRIVATE);
-					for (int x=0; x<13; x++){
-						if(prefsCategorias.getString("Categories "+x, null)!=null){
-							creaArchivoShared = false;
-							System.out.println("No");
-							break;
-						}else{
-							System.out.println("Si");
-						}
-					}
-					
-					if(creaArchivoShared){
-						creaArchivoShared();
-					} 
-					else {
-						
-						int coma =0;
-						//SOn 13 categorias
-						for (int x=0; x<13; x++){
-							if(!prefsCategorias.getString("Categories "+x, "Desactivada").equals("Desactivada")
-									&!prefsCategorias.getString("Categories "+x, "Desactivada").equals("")){	
-								if(coma!=0){
-									categorias += ","+prefsCategorias.getString("Categories "+x, null);	
-								} else {
-									categorias += prefsCategorias.getString("Categories "+x, null);	
-								}
-								coma++;		
-							}
-						}
-						downloadJSON(latOrigin, lonOrigin);
-					}
-				}
-			};
-
-			Timer timer = new Timer();
-			timer.schedule(task, splashDelay);//Pasado los X segundos dispara la tarea
-		}
+//		if(isConnectedToInternet(getApplicationContext())){
+////			gps();
+//
+//			TimerTask task = new TimerTask() {
+//				@Override
+//				public void run() {
+//
+//
+//					prefsCategorias = getSharedPreferences("Categorias",Context.MODE_PRIVATE);
+//					for (int x=0; x<13; x++){
+//						if(prefsCategorias.getString("Categories "+x, null)!=null){
+//							creaArchivoShared = false;
+//							System.out.println("No");
+//							break;
+//						}else{
+//							System.out.println("Si");
+//						}
+//					}
+//					
+//					if(creaArchivoShared){
+//						creaArchivoShared();
+//					} 
+//					else {
+//						
+//						int coma =0;
+//						//SOn 13 categorias
+//						for (int x=0; x<13; x++){
+//							if(!prefsCategorias.getString("Categories "+x, "Desactivada").equals("Desactivada")
+//									&!prefsCategorias.getString("Categories "+x, "Desactivada").equals("")){	
+//								if(coma!=0){
+//									categorias += ","+prefsCategorias.getString("Categories "+x, null);	
+//								} else {
+//									categorias += prefsCategorias.getString("Categories "+x, null);	
+//								}
+//								coma++;		
+//							}
+//						}
+//						downloadJSON(latOrigin, lonOrigin);
+//					}
+//				}
+//			};
+//
+//			Timer timer = new Timer();
+//			timer.schedule(task, splashDelay);//Pasado los X segundos dispara la tarea
+//		}
 	}
 
 	public void downloadJSON(final double lat, final double lon) {
@@ -171,6 +185,9 @@ public class SplashActivity extends Activity {
 
 			@Override
 			protected void onPostExecute(InputStream result) {
+				Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
+				startActivity(mainIntent);
+				finish();//Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
 			};
 
 			@Override
@@ -195,13 +212,11 @@ public class SplashActivity extends Activity {
 				outputStreamWriter = new OutputStreamWriter(openFileOutput("Json.txt", Context.MODE_PRIVATE));
 				outputStreamWriter.write(line);	    					
 				outputStreamWriter.flush();
-				outputStreamWriter.close();
-				Log.d(null, "Json Creado!");	
-
-				Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
-				startActivity(mainIntent);
-				finish();//Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
+				outputStreamWriter.close();				
 			}
+			Log.d(null, "Primer Json creado!");	
+
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
