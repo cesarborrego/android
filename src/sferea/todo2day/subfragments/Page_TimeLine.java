@@ -32,6 +32,7 @@ import org.json.simple.parser.ParseException;
 import sferea.todo2day.MainActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.SplashActivity;
+import sferea.todo2day.Helpers.JsonHelper;
 import sferea.todo2day.adapters.ArrayAdapterEvents;
 import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.config.LocationHelper;
@@ -196,69 +197,26 @@ public class Page_TimeLine extends Fragment {
 	Bitmap []  imagenEventoSave;
 	int []  imgCategorias;
 	
-	public static boolean leeJSONCache = false;
-	
+	JsonHelper jsonHelper;
 	public Page_TimeLine(){}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		jsonHelper = new JsonHelper(getActivity().getApplicationContext());
 //		gps();
-//		if(!leeJSONCache){
-//			leerJson();
-//		} else {
-//			leerJsonCache();
-//		}
-		leerJson();
+		if(SplashActivity.leeJSONCache){
+			if(jsonHelper.leerJsonCache()!=null){
+				jsonCache = jsonHelper.leerJsonCache();
+			}
+		}else{
+			if(jsonHelper.leerPrimerJson()!=null){
+				json = jsonHelper.leerPrimerJson();
+			}
+		}
 	}
-	
-	@SuppressWarnings("unused")
-	public void leerJson() {
-    	BufferedReader bufferedReader=null;
-    	try {
-    		BufferedReader fin =
-    		        new BufferedReader(
-    		            new InputStreamReader(
-    		                getActivity().getApplicationContext().openFileInput("Json.txt")));
-    		
-    		while ((json = fin.readLine()) != null) {
-    	    	fin.close();
-    		}
-		} catch (Exception e) {}
-    	if (bufferedReader != null) {
-			try {
-				bufferedReader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    }
-	
-	@SuppressWarnings("unused")
-	public void leerJsonCache() {
-		leeJSONCache = true;
-    	BufferedReader bufferedReader=null;
-    	try {
-    		BufferedReader fin =
-    		        new BufferedReader(
-    		            new InputStreamReader(
-    		                getActivity().getApplicationContext().openFileInput("JsonCache.txt")));
-    		
-    		while ((jsonCache = fin.readLine()) != null) {
-    	    	fin.close();
-    		}
-    		
-		} catch (Exception e) {}
-    	if (bufferedReader != null) {
-			try {
-				bufferedReader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    }
-	
+
 	private void nuevoJsonObject (String line) throws IOException, ParseException{
 		JSONParser parser = new JSONParser();
 		Object object = parser.parse(line);
@@ -594,12 +552,11 @@ public class Page_TimeLine extends Fragment {
 		//Crea un nuevo arraylist de eventos
 		listaEventos = new ArrayList<EventoObjeto>();
 		
-//		if(!leeJSONCache){
-//			funcionesPrincipales();
-//		}else{
-//			cargaJsonCache();
-//		}
-		funcionesPrincipales();
+		if(SplashActivity.leeJSONCache){
+			cargaJsonCache();
+		}else{
+			funcionesPrincipales();
+		}
 		
 		//Crea el arrayAdapter de eventos
 		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(), R.layout.row_event_responsive, R.id.listviewEventos, listaEventos);
@@ -692,7 +649,6 @@ public class Page_TimeLine extends Fragment {
 	
 	public void funcionesPrincipales(){
 		try {
-			
 			if(json!=null){
 				nuevoJsonObject(json);
 			}
@@ -721,8 +677,8 @@ public class Page_TimeLine extends Fragment {
 //			e1.printStackTrace();
 //		}
 //		downloadPictureSecondAccessRefresh(ImagenEvento);
-		leerJsonCache();
-		cargaJsonCache();
+//		leerJsonCache();
+//		cargaJsonCache();
 	}
 	
 	public void funcionesAddMore(){
@@ -802,7 +758,7 @@ public class Page_TimeLine extends Fragment {
 					
 				}
 				Log.d(null, "Json Cache Creado!");	
-				leerJsonCache();
+				jsonCache = jsonHelper.leerJsonCache();
 				return null;
 			}
 			
@@ -1204,11 +1160,11 @@ public class Page_TimeLine extends Fragment {
 						outputStreamWriter = new OutputStreamWriter(getActivity().getApplicationContext().openFileOutput("Json.txt", Context.MODE_PRIVATE));
 						outputStreamWriter.write(line);	    					
 						outputStreamWriter.flush();
-						outputStreamWriter.close();
-						Log.d(null, "Json Creado!");
-						leerJson();
+						outputStreamWriter.close();						
 					}
 				}
+				Log.d(null, "Json Creado!");
+//				leerJson();
 				
 			} catch (IOException e) {
 				e.printStackTrace();

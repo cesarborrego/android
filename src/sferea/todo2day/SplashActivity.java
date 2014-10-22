@@ -13,7 +13,8 @@ import java.util.TimerTask;
 
 import org.apache.http.impl.conn.Wire;
 
-import sferea.todo2day.Helpers.LecturaJsonCacheHelper;
+import sferea.todo2day.Helpers.JsonHelper;
+import sferea.todo2day.Helpers.SharedPreferencesHelper;
 
 import android.app.Activity;
 import android.content.Context;
@@ -46,29 +47,6 @@ public class SplashActivity extends Activity {
 	boolean isGpsActive = false;
 	boolean isWirelessActive = false;
 	
-	public static boolean [][] activaCategorias ={
-		{true,true,true},
-		{true,true,true},
-		{true,true,true},
-		{true,true,true},
-		{true}};
-
-	public static String [] categoriasNoDeseadas = {
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	};
-
 	public static int distanciaEvento=5;
 
 	String categorias ="";
@@ -77,84 +55,98 @@ public class SplashActivity extends Activity {
 	SharedPreferences prefsCategorias;
 
 	/** contiene la cantidad de tiempo en milisegundos que se mostrara la imagen del splash */
-	private long splashDelay = 500; //3 segundos
+	private long splashDelay = 3000; //3 segundos
 	
-	LecturaJsonCacheHelper lecturaJsonCacheHelper;
+	JsonHelper jsonHelper;
+	SharedPreferencesHelper sharedPreferencesHelper;
+	
+	public static boolean leeJSONCache = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_splash);
 		
+		jsonHelper = new JsonHelper(getApplicationContext());
+		sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
 		
-		lecturaJsonCacheHelper = new LecturaJsonCacheHelper(getApplicationContext());
-		if(lecturaJsonCacheHelper.leerJsonCache()!=null){
-			
+		if(jsonHelper.leerJsonCache()!=null){
+			leeJSONCache = true;
 			Toast.makeText(getApplicationContext(), "Pasa a time", Toast.LENGTH_SHORT).show();
+			TimerTask task = new TimerTask() {
+				@Override
+				public void run() {
+					Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
+					startActivity(mainIntent);
+					finish();//Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
+				}
+			};
+
+			Timer timer = new Timer();
+			timer.schedule(task, splashDelay);//Pasado los X segundos dispara la tarea
 		}else{
-			setContentView(R.layout.activity_splash);
+			leeJSONCache = false;
 			Toast.makeText(getApplicationContext(), "No hay archivo cache", Toast.LENGTH_SHORT).show();
+			if(isConnectedToInternet(getApplicationContext())){
+				//		gps();
+
+				TimerTask task = new TimerTask() {
+					@Override
+					public void run() {
+
+
+						prefsCategorias = getSharedPreferences("Categorias",Context.MODE_PRIVATE);
+						for (int x=0; x<13; x++){
+							if(prefsCategorias.getString("Categories "+x, null)!=null){
+								creaArchivoShared = false;
+								System.out.println("No");
+								break;
+							}else{
+								System.out.println("Si");
+							}
+						}
+
+						if(creaArchivoShared){
+							sharedPreferencesHelper.creaArchivoShared();
+							downloadJSON(latOrigin, lonOrigin);
+						} 
+						else {
+
+							int coma =0;
+							//SOn 13 categorias
+							for (int x=0; x<13; x++){
+								if(!prefsCategorias.getString("Categories "+x, "Desactivada").equals("Desactivada")
+										&!prefsCategorias.getString("Categories "+x, "Desactivada").equals("")){	
+									if(coma!=0){
+										categorias += ","+prefsCategorias.getString("Categories "+x, null);	
+									} else {
+										categorias += prefsCategorias.getString("Categories "+x, null);	
+									}
+									coma++;		
+								}
+							}
+							downloadJSON(latOrigin, lonOrigin);
+						}
+					}
+				};
+
+				Timer timer = new Timer();
+				timer.schedule(task, splashDelay);//Pasado los X segundos dispara la tarea
+			}
 		}
-			
-//		creaArchivoShared();
-		
-//		if(isConnectedToInternet(getApplicationContext())){
-////			gps();
-//
-//			TimerTask task = new TimerTask() {
-//				@Override
-//				public void run() {
-//
-//
-//					prefsCategorias = getSharedPreferences("Categorias",Context.MODE_PRIVATE);
-//					for (int x=0; x<13; x++){
-//						if(prefsCategorias.getString("Categories "+x, null)!=null){
-//							creaArchivoShared = false;
-//							System.out.println("No");
-//							break;
-//						}else{
-//							System.out.println("Si");
-//						}
-//					}
-//					
-//					if(creaArchivoShared){
-//						creaArchivoShared();
-//					} 
-//					else {
-//						
-//						int coma =0;
-//						//SOn 13 categorias
-//						for (int x=0; x<13; x++){
-//							if(!prefsCategorias.getString("Categories "+x, "Desactivada").equals("Desactivada")
-//									&!prefsCategorias.getString("Categories "+x, "Desactivada").equals("")){	
-//								if(coma!=0){
-//									categorias += ","+prefsCategorias.getString("Categories "+x, null);	
-//								} else {
-//									categorias += prefsCategorias.getString("Categories "+x, null);	
-//								}
-//								coma++;		
-//							}
-//						}
-//						downloadJSON(latOrigin, lonOrigin);
-//					}
-//				}
-//			};
-//
-//			Timer timer = new Timer();
-//			timer.schedule(task, splashDelay);//Pasado los X segundos dispara la tarea
-//		}
 	}
 
 	public void downloadJSON(final double lat, final double lon) {
 		Log.d(null, "Comienza la descarga del JSON...");
 		
-		new AsyncTask<String, Void, InputStream>(){
+		new AsyncTask<String, Void, Void>(){
 
 			protected void onPreExecute() {
 
 			};
 
 			@Override
-			protected InputStream doInBackground(String... params) {
+			protected Void doInBackground(String... params) {
 				InputStream inputStream = null;
 				URL url = null;
 				HttpURLConnection con = null;
@@ -176,15 +168,14 @@ public class SplashActivity extends Activity {
 					}
 
 					if(inputStream!=null){
-						readStream(inputStream);
-						//							leerJson();
+						jsonHelper.readStreamPrimerJson(inputStream);
 					}
 				}
-				return inputStream;
+				return null;
 			}
 
 			@Override
-			protected void onPostExecute(InputStream result) {
+			protected void onPostExecute(Void result) {
 				Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
 				startActivity(mainIntent);
 				finish();//Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
@@ -202,59 +193,9 @@ public class SplashActivity extends Activity {
 				"&numEventos=0&idEvento=0&fecha=0");
 	}
 
-	private void readStream(InputStream in) {
-		BufferedReader reader = null;
-		OutputStreamWriter outputStreamWriter = null;
-		try {
-			reader = new BufferedReader(new InputStreamReader(in));
-			String line = "";
-			while ((line = reader.readLine()) != null) {
-				outputStreamWriter = new OutputStreamWriter(openFileOutput("Json.txt", Context.MODE_PRIVATE));
-				outputStreamWriter.write(line);	    					
-				outputStreamWriter.flush();
-				outputStreamWriter.close();				
-			}
-			Log.d(null, "Primer Json creado!");	
+	
 
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}	    		
-		}
-	}
-
-	void creaArchivoShared(){
-		Log.d(null, "Creando Archivo...");
-		SharedPreferences prefsCategorias = getSharedPreferences("Categorias",Context.MODE_PRIVATE);	
-		SharedPreferences.Editor editorCategoriasString = prefsCategorias.edit();
-
-		for(int i=0; i<categoriasNoDeseadas.length; i++){
-//			editorCategoriasString.putString("Categories "+i, categoriasNoDeseadas[i]);
-			editorCategoriasString.putString("Categories "+i, "Desactivada");
-		}		   
-		editorCategoriasString.commit();
-
-		SharedPreferences prefsCategoriasBoolean = getSharedPreferences("CategoriasBoolean",Context.MODE_PRIVATE);	
-		SharedPreferences.Editor editorCategoriasBoolean = prefsCategoriasBoolean.edit();
-
-		for(int i=0; i<activaCategorias.length; i++){
-			for(int j =0; j<activaCategorias[i].length; j++){
-//				editorCategoriasBoolean.putString("Activa_Categoria "+i+""+j, String.valueOf(activaCategorias[i]));
-				editorCategoriasBoolean.putString("Activa_Categoria "+i+""+j, "true");
-			}
-		}		   
-		editorCategoriasBoolean.commit();
-		categorias ="";
-		
-		downloadJSON(latOrigin, lonOrigin);
-	}
+	
 
 	public void gps(){
 		LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
