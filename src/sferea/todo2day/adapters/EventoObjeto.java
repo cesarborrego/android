@@ -29,6 +29,8 @@ public class EventoObjeto implements Parcelable{
 	//Nuevos campos para el nuevo constructor
 	String descripcion, fuente, direccion, telefono, boleto;
 	int posicion;
+	int indexOfEvent;
+	int fechaUnix;
 	
 	public EventoObjeto(String nombreEvento, String categoria){
 		this.nombreEvento = nombreEvento;
@@ -44,7 +46,7 @@ public class EventoObjeto implements Parcelable{
 	
 	public EventoObjeto(String nombreEvento, String catEvento, String fechaEvento, String descripcionEvento, String fuenteEvento, String LugarEvento, 
 			String direccionEvento, String telefonoEvento, double lat, double lon, String dist, String boletoEvento, Bitmap imgEvento, int imgCategoria,
-			int posicion){
+			int posicion, int indexOfEvent, int fechaUnix){
 		setNombreEvento(nombreEvento);
 		setCategoriaEvento(catEvento);
 		setFechaEvento(fechaEvento);
@@ -60,6 +62,8 @@ public class EventoObjeto implements Parcelable{
 		setImagenEvento(imgEvento);
 		setImagenCategoria(imgCategoria);
 		setPosicion(posicion);
+		setIndexOfEvent(indexOfEvent);
+		setFechaUnix(fechaUnix);
 	}
 
 	
@@ -153,6 +157,24 @@ public class EventoObjeto implements Parcelable{
 	public void setPosicion(int posicion) {
 		this.posicion = posicion;
 	}
+	
+	
+
+	public int getIndexOfEvent() {
+		return indexOfEvent;
+	}
+
+	public void setIndexOfEvent(int indexOfEvent) {
+		this.indexOfEvent = indexOfEvent;
+	}
+
+	public int getFechaUnix() {
+		return fechaUnix;
+	}
+
+	public void setFechaUnix(int fechaUnix) {
+		this.fechaUnix = fechaUnix;
+	}
 
 	/**
 	 * Parcelable object
@@ -179,6 +201,8 @@ public class EventoObjeto implements Parcelable{
 		dest.writeDouble(latEvento);
 		dest.writeDouble(lonEvento);
 		dest.writeInt(posicion);
+		dest.writeInt(indexOfEvent);
+		dest.writeInt(fechaUnix);
 		
 		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -226,6 +250,8 @@ public class EventoObjeto implements Parcelable{
 		setLatEvento(pc.readDouble());
 		setLonEvento(pc.readDouble());
 		setPosicion(pc.readInt());
+		setIndexOfEvent(pc.readInt());
+		setFechaUnix(pc.readInt());
 		
 		//Obtenemos la imagen 
 		byte[] byteArrayImage= new byte[pc.readInt()];
