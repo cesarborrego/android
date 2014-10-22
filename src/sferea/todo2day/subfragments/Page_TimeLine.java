@@ -196,6 +196,8 @@ public class Page_TimeLine extends Fragment {
 	String []  boletos;
 	Bitmap []  imagenEventoSave;
 	int []  imgCategorias;
+	int [] indexOfEventSave;
+	int [] fechaUnixSave;
 	
 	JsonHelper jsonHelper;
 	public Page_TimeLine(){}
@@ -349,7 +351,8 @@ public class Page_TimeLine extends Fragment {
 						fechaFinal[j].toString(), Descripciones[j], Fuentes[j],
 						Lugares[j], Direcciones[j], Telefonos[j], Latitudes[j],
 						Longitudes[j], Distancias[j], Boletos[j], img[j],
-						imagenesCategorias[j], j));
+						imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
+						Integer.parseInt(String.valueOf(FechayHoraUnix[j]))));
 			}
 			prendeEstrellaTime_Line = new boolean[listaEventos.size()];
 		}else{
@@ -489,7 +492,8 @@ public class Page_TimeLine extends Fragment {
 						fechaFinal[j].toString(), Descripciones[j], Fuentes[j],
 						Lugares[j], Direcciones[j], Telefonos[j], Latitudes[j],
 						Longitudes[j], Distancias[j], Boletos[j], img[j],
-						imagenesCategorias[j], j));
+						imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
+						Integer.parseInt(String.valueOf(FechayHoraUnix[j]))));
 			}
 			prendeEstrellaTime_Line = new boolean[listaEventos.size()];
 			arrayAdapterEvents.notifyDataSetChanged();
@@ -529,7 +533,13 @@ public class Page_TimeLine extends Fragment {
 						jsonObject2.get("distancias"+iContador).toString(),
 						jsonObject2.get("boletos"+iContador).toString(),img, 
 						Integer.parseInt(jsonObject2.get("imagenesCat"+iContador).toString()),
-						Integer.parseInt(jsonObject2.get("posiciones"+iContador).toString())));
+						Integer.parseInt(jsonObject2.get("posiciones"+iContador).toString()),
+						Integer.parseInt(jsonObject2.get("indexOfEvents"+iContador).toString()),
+						Integer.parseInt(jsonObject2.get("fechaUnix"+iContador).toString())));
+				//Aqui vamos a recuperar los valores de index y fecha unix para que al momento de agregar mas eventos
+				//le pasemos estos valores a la URL de mongo
+				fechaUnix = jsonObject2.get("fechaUnix"+iContador).toString();
+				indexEvent = jsonObject2.get("indexOfEvents"+iContador).toString();
 				iContador++;
 			}
 			arrayAdapterEvents.notifyDataSetChanged();
@@ -691,7 +701,7 @@ public class Page_TimeLine extends Fragment {
 				telefonos[j], latitudes[j],
 				longitudes[j], distancias[j],
 				boletos[j], imagenEventoSave[j],
-				imgCategorias[j],j));
+				imgCategorias[j],j, indexOfEventSave[j], fechaUnixSave[j]));
 	}
 		arrayAdapterEvents.notifyDataSetChanged();
 		//Ejecutamos primero lectura de json y presentamos lista en hilo principal
@@ -738,13 +748,16 @@ public class Page_TimeLine extends Fragment {
 //						imagenEventoSave[j] = listaEventos.get(j).getImagenEvento();
 						items.put("imagenesCat"+j, listaEventos.get(j).getImagenCategoria());
 						items.put("posiciones"+j, listaEventos.get(j).getPosicion());
+						items.put("indexOfEvents"+j, listaEventos.get(j).getIndexOfEvent());
+						items.put("fechaUnix"+j, listaEventos.get(j).getFechaUnix());
 						jsonArray.add(items);
 					}
 					jsonFinal.put("JsonCache", jsonArray);
 					
 					OutputStreamWriter outputStreamWriter = null;
 					try {
-						outputStreamWriter = new OutputStreamWriter(getActivity().getApplicationContext().openFileOutput("JsonCache.txt", Context.MODE_PRIVATE));
+						outputStreamWriter = new OutputStreamWriter(getActivity().getApplicationContext()
+								.openFileOutput("JsonCache.txt", Context.MODE_PRIVATE));
 						outputStreamWriter.write(jsonFinal.toJSONString());
 						outputStreamWriter.flush();
 						outputStreamWriter.close();
@@ -802,7 +815,8 @@ public class Page_TimeLine extends Fragment {
 								Telefonos[j], Latitudes[j],
 								Longitudes[j], Distancias[j],
 								Boletos[j], downloadBitmap[j],
-								imagenesCategorias[j],j));
+								imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
+								Integer.parseInt(String.valueOf(FechayHoraUnix[j]))));
 					}
 					arrayAdapterEvents.notifyDataSetChanged();
 				}
@@ -858,7 +872,8 @@ public class Page_TimeLine extends Fragment {
 							Telefonos[j], Latitudes[j],
 							Longitudes[j], Distancias[j],
 							Boletos[j], downloadBitmap[j],
-							imagenesCategorias[j],j));
+							imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
+							Integer.parseInt(String.valueOf(FechayHoraUnix[j]))));
 				}
 				arrayAdapterEvents.notifyDataSetChanged();
 				this.cancel(true);
@@ -896,7 +911,8 @@ public class Page_TimeLine extends Fragment {
 							Telefonos[j], Latitudes[j],
 							Longitudes[j], Distancias[j],
 							Boletos[j], downloadBitmap[j],
-							imagenesCategorias[j],j));
+							imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
+							Integer.parseInt(String.valueOf(FechayHoraUnix[j]))));
 				}
 				arrayAdapterEvents.notifyDataSetChanged();
 			};
@@ -1020,11 +1036,11 @@ public class Page_TimeLine extends Fragment {
 	//Consulta mongo
 	public void addMoreEvents(final double lat, final double lon) {	
 
-		for (int i=0; i<EventoID.length; i++){
-			idevento = String.valueOf(EventoID[i]);
-			fechaUnix = String.valueOf(FechayHoraUnix[i]);
-			indexEvent = String.valueOf(IndexOfEvent[i]);
-		}
+//		for (int i=0; i<listaEventos.size(); i++){
+//			idevento = String.valueOf(listaEventos.get(i).get);
+//			fechaUnix = String.valueOf(FechayHoraUnix[i]);
+//			indexEvent = String.valueOf(IndexOfEvent[i]);
+//		}
 		SharedPreferences prefsCategorias = getActivity().getApplicationContext().getSharedPreferences("Categorias",Context.MODE_PRIVATE);
 		int coma =0;
 		categorias ="";
@@ -1062,6 +1078,8 @@ public class Page_TimeLine extends Fragment {
 		boletos = new String[listaEventos.size()];
 		imagenEventoSave = new Bitmap[listaEventos.size()];
 		imgCategorias = new int[listaEventos.size()];
+		indexOfEventSave = new int[listaEventos.size()];
+		fechaUnixSave = new int[listaEventos.size()];
 		
 		for (int j = 0; j < listaEventos.size(); j++) {			
 			titulo[j] = listaEventos.get(j).getNombreEvento();
@@ -1079,6 +1097,8 @@ public class Page_TimeLine extends Fragment {
 			boletos[j] = listaEventos.get(j).getBoleto();
 			imagenEventoSave[j] = listaEventos.get(j).getImagenEvento();
 			imgCategorias[j] = listaEventos.get(j).getImagenCategoria();
+			indexOfEventSave[j] = listaEventos.get(j).getIndexOfEvent();
+			fechaUnixSave[j] = listaEventos.get(j).getFechaUnix();
 		}
 		
 		new AsyncTask<String, Void, Void>(){
