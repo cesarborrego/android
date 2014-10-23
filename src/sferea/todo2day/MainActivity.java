@@ -116,20 +116,14 @@ public class MainActivity extends ActionBarActivity {
 				
 				new Handler().postDelayed(new Runnable() {
 			        @Override 
-			        public void run() {
-			        	
-			        	if(position == EVENTS){
-			        		downloadJSON(0, 0);
-			        	}
-			        	else{
-			        		ShowFragment(position);
-			        	}
+			        public void run() { 
+			        	ShowFragment(position);
 			        } 
 			    }, 250); 
 			}
 		});
 		
-		downloadJSON(0, 0);	
+		ShowFragment(EVENTS);
 		
 		//Listener para el toggle del nav drawer
 		mDrawerToggle = new ActionBarDrawerToggle(
@@ -239,6 +233,19 @@ public class MainActivity extends ActionBarActivity {
 		
 		//elegimos que opcion se escogido como parametro, entre categorias, ajustes, o timeline
 		switch (position) {
+		
+		case EVENTS:{
+			if(!atHome){
+				downloadJSON(19.355582, -99.186726);
+//				atHome=true;
+			}else{
+				atHome=true;
+				fragment = new SubF_Events();
+			}
+			
+//			fragment = new SubF_Events();
+			break;
+		}
 		
 		case CATEGORIES:{
 			fragment = new SubF_Categories();
@@ -356,113 +363,111 @@ public class MainActivity extends ActionBarActivity {
 		 }		 
 	 }
 	 
+	 private void refreshPage_TimelLineFragment(){
+		 //inicializamos la varible
+		 Fragment fragment = null;
+		 fragment = new SubF_Events();
+
+		 if(fragment!=null){
+			 FragmentManager fragmentManager = getSupportFragmentManager();
+			 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+		 }		 
+	 }
+	 
 	//Consulta mongo
 		public void downloadJSON(final double lat, final double lon) {	
-
-			if(atHome){
-				Fragment home = new SubF_Events();
-				FragmentManager fragmentManager = getSupportFragmentManager();
-				fragmentManager.beginTransaction().replace(R.id.content_frame, home).commit();
+			
+			final ProgressDialog pDialog = new ProgressDialog(MainActivity.this);
+	        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	        pDialog.setMessage("Procesando nueva búsqueda...");
+	        pDialog.setCancelable(true);
+	        pDialog.setMax(100);
+	        
+			SharedPreferences prefsCategorias = getSharedPreferences("Categorias",Context.MODE_PRIVATE);
+			int coma =0;
+			//SOn 13 categorias
+			categorias="";
+			for (int x=0; x<13; x++){
 				
-				//Actualizamos el nav drawer segun la opcion elegida
-				listViewDrawer.setItemChecked(EVENTS, true);
-				listViewDrawer.setSelection(EVENTS);
-			}
-			else{
-				final ProgressDialog pDialog = new ProgressDialog(MainActivity.this);
-		        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		        pDialog.setMessage("Procesando nueva búsqueda...");
-		        pDialog.setCancelable(true);
-		        pDialog.setMax(100);
-		        
-				SharedPreferences prefsCategorias = getSharedPreferences("Categorias",Context.MODE_PRIVATE);
-				int coma =0;
-				//SOn 13 categorias
-				categorias="";
-				for (int x=0; x<13; x++){
-					
-					if(!prefsCategorias.getString("Categories "+x, "Desactivada").equals("Desactivada")&
-							!prefsCategorias.getString("Categories "+x, "Desactivada").equals("")){	
-						if(coma!=0){
-							categorias += ","+prefsCategorias.getString("Categories "+x, null);	
-						} else {
-							categorias += prefsCategorias.getString("Categories "+x, null);	
-						}
-						coma++;		
+				if(!prefsCategorias.getString("Categories "+x, "Desactivada").equals("Desactivada")&
+						!prefsCategorias.getString("Categories "+x, "Desactivada").equals("")){	
+					if(coma!=0){
+						categorias += ","+prefsCategorias.getString("Categories "+x, null);	
+					} else {
+						categorias += prefsCategorias.getString("Categories "+x, null);	
 					}
-	//				System.out.println(prefsCategorias.getString("Categories "+x, "Desactivada"));
+					coma++;		
+				}
+//				System.out.println(prefsCategorias.getString("Categories "+x, "Desactivada"));
+			}
+			
+			pDialog.show();
+	    	new AsyncTask<String, Void, InputStream>(){
+	    		
+	    		protected void onPreExecute() {
+	    			
+	    		};
+
+				@Override
+				protected InputStream doInBackground(String... params) {
+					InputStream inputStream = null;
+					URL url = null;
+					HttpURLConnection con = null;
+					if(!isCancelled()){					
+						try {
+							url = new URL(params[0]);
+							Log.d(null,params[0]);
+						} catch (MalformedURLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		          	  
+		          	  	try {
+		          	  		con = (HttpURLConnection) url.openConnection();
+		          	  		inputStream = con.getInputStream();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		          	  	
+		          	  if(inputStream!=null){
+							readStream(inputStream);
+//							leerJson();
+						}
+					}
+					
+					
+			        
+					return inputStream;
 				}
 				
-				pDialog.show();
-		    	new AsyncTask<String, Void, InputStream>(){
-		    		
-		    		protected void onPreExecute() {
-		    			
-		    		};
-	
-					@Override
-					protected InputStream doInBackground(String... params) {
-						InputStream inputStream = null;
-						URL url = null;
-						HttpURLConnection con = null;
-						if(!isCancelled()){					
-							try {
-								url = new URL(params[0]);
-								Log.d(null,params[0]);
-							} catch (MalformedURLException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-			          	  
-			          	  	try {
-			          	  		con = (HttpURLConnection) url.openConnection();
-			          	  		inputStream = con.getInputStream();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-			          	  	
-			          	  if(inputStream!=null){
-								readStream(inputStream);
-	//							leerJson();
-							}
-						}
-						
-						
-				        
-						return inputStream;
-					}
-					
-					@Override
-					protected void onPostExecute(InputStream result) {
-	//					if(result!=null){
-	//						readStream(result);
-	////						leerJson();
-	//					}
-						Fragment home = new SubF_Events();
-						FragmentManager fragmentManager = getSupportFragmentManager();
-						fragmentManager.beginTransaction().replace(R.id.content_frame, home).commit();
-						
-						//Actualizamos el nav drawer segun la opcion elegida
-						listViewDrawer.setItemChecked(EVENTS, true);
-						listViewDrawer.setSelection(EVENTS);
-		    			refreshFavoritesFragment();
-		    			Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
-		    			pDialog.dismiss();
-					};
-					
-					@Override
-					protected void onCancelled() {
-						super.onCancelled();
-					};
-		    		
-		    	}.execute("http://yapi.sferea.com/?" +
-		    			"latitud="+latOrigin+"" +
-		    			"&longitud="+lonOrigin+"" +
-		    			"&radio="+SplashActivity.distanciaEvento+"" +
-		    			"&categoria="+categorias+"" +
-		    			"&numEventos=0&idEvento=0&fecha=0");
-			}
+				@Override
+				protected void onPostExecute(InputStream result) {
+//					if(result!=null){
+//						readStream(result);
+////						leerJson();
+//					}
+//	    			refreshFavoritesFragment();
+	    			SplashActivity.leeJSONCache = false;
+	    			Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
+	    			pDialog.dismiss();
+//	    			ShowFragment(EVENTS);
+	    			atHome=true;
+	    			refreshPage_TimelLineFragment();
+	    			
+				};
+				
+				@Override
+				protected void onCancelled() {
+					super.onCancelled();
+				};
+	    		
+	    	}.execute("http://yapi.sferea.com/?" +
+	    			"latitud="+latOrigin+"" +
+	    			"&longitud="+lonOrigin+"" +
+	    			"&radio="+SplashActivity.distanciaEvento+"" +
+	    			"&categoria="+categorias+"" +
+	    			"&numEventos=0&idEvento=0&fecha=0");
 	    }
 	   
 	   private void readStream(InputStream in) {
