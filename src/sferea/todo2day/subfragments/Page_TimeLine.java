@@ -196,6 +196,7 @@ public class Page_TimeLine extends Fragment {
 	int []  imgCategorias;
 	int [] indexOfEventSave;
 	int [] fechaUnixSave;
+	String urlImagenes [];
 	
 	
 	JsonHelper jsonHelper;
@@ -350,7 +351,7 @@ public class Page_TimeLine extends Fragment {
 				listaEventos.add(new EventoObjeto(Titulos[j], Categorias[j],
 						fechaFinal[j].toString(), Descripciones[j], Fuentes[j],
 						Lugares[j], Direcciones[j], Telefonos[j], Latitudes[j],
-						Longitudes[j], Distancias[j], Boletos[j], img[j],
+						Longitudes[j], Distancias[j], Boletos[j],
 						imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
 						Integer.parseInt(String.valueOf(FechayHoraUnix[j])), ImagenEvento[j]));
 			}
@@ -491,7 +492,7 @@ public class Page_TimeLine extends Fragment {
 				listaEventos.add(new EventoObjeto(Titulos[j], Categorias[j],
 						fechaFinal[j].toString(), Descripciones[j], Fuentes[j],
 						Lugares[j], Direcciones[j], Telefonos[j], Latitudes[j],
-						Longitudes[j], Distancias[j], Boletos[j], img[j],
+						Longitudes[j], Distancias[j], Boletos[j],
 						imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
 						Integer.parseInt(String.valueOf(FechayHoraUnix[j])), ImagenEvento[j]));
 			}
@@ -512,11 +513,6 @@ public class Page_TimeLine extends Fragment {
 			JSONArray jsonArray = (JSONArray)jsonObject.get("JsonCache");
 			Iterator iterator = jsonArray.iterator();
 			int iContador =0;
-			
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = 4;
-			Bitmap img = BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(),
-					R.drawable.evento,options);
 			listaEventos.clear();
 			while (iterator.hasNext()){
 				JSONObject jsonObject2 = (JSONObject)iterator.next();
@@ -531,12 +527,12 @@ public class Page_TimeLine extends Fragment {
 						Double.parseDouble(jsonObject2.get("latitudes"+iContador).toString()),
 						Double.parseDouble(jsonObject2.get("longuitudes"+iContador).toString()),
 						jsonObject2.get("distancias"+iContador).toString(),
-						jsonObject2.get("boletos"+iContador).toString(),img, 
+						jsonObject2.get("boletos"+iContador).toString(),
 						Integer.parseInt(jsonObject2.get("imagenesCat"+iContador).toString()),
 						Integer.parseInt(jsonObject2.get("posiciones"+iContador).toString()),
 						Integer.parseInt(jsonObject2.get("indexOfEvents"+iContador).toString()),
 						Integer.parseInt(jsonObject2.get("fechaUnix"+iContador).toString()),
-						""));
+						jsonObject2.get("urlImagenes"+iContador).toString()));
 				//Aqui vamos a recuperar los valores de index y fecha unix para que al momento de agregar mas eventos
 				//le pasemos estos valores a la URL de mongo
 				fechaUnix = jsonObject2.get("fechaUnix"+iContador).toString();
@@ -693,6 +689,7 @@ public class Page_TimeLine extends Fragment {
 	}
 	
 	public void funcionesAddMore(){
+		listaEventos.clear();
 		for (int j = 0; j < titulo.length; j++) {		
 		listaEventos.add(new EventoObjeto(titulo[j],
 				categoriasSave[j],
@@ -701,12 +698,8 @@ public class Page_TimeLine extends Fragment {
 				lugares[j], direcciones[j],
 				telefonos[j], latitudes[j],
 				longitudes[j], distancias[j],
-				boletos[j], imagenEventoSave[j],
-				imgCategorias[j],
-				j, 
-				indexOfEventSave[j], 
-				fechaUnixSave[j], 
-				ImagenEvento[j]));
+				boletos[j], 
+				imgCategorias[j],j, indexOfEventSave[j], fechaUnixSave[j], urlImagenes[j]));
 	}
 		arrayAdapterEvents.notifyDataSetChanged();
 		//Ejecutamos primero lectura de json y presentamos lista en hilo principal
@@ -755,6 +748,7 @@ public class Page_TimeLine extends Fragment {
 						items.put("posiciones"+j, listaEventos.get(j).getPosicion());
 						items.put("indexOfEvents"+j, listaEventos.get(j).getIndexOfEvent());
 						items.put("fechaUnix"+j, listaEventos.get(j).getFechaUnix());
+						items.put("urlImagenes"+j, listaEventos.get(j).getUrlImagen());
 						jsonArray.add(items);
 					}
 					jsonFinal.put("JsonCache", jsonArray);
@@ -819,7 +813,7 @@ public class Page_TimeLine extends Fragment {
 								Lugares[j], Direcciones[j],
 								Telefonos[j], Latitudes[j],
 								Longitudes[j], Distancias[j],
-								Boletos[j], downloadBitmap[j],
+								Boletos[j],
 								imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
 								Integer.parseInt(String.valueOf(FechayHoraUnix[j])), ImagenEvento[j]));
 					}
@@ -876,7 +870,7 @@ public class Page_TimeLine extends Fragment {
 							Lugares[j], Direcciones[j],
 							Telefonos[j], Latitudes[j],
 							Longitudes[j], Distancias[j],
-							Boletos[j], downloadBitmap[j],
+							Boletos[j],
 							imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
 							Integer.parseInt(String.valueOf(FechayHoraUnix[j])), ImagenEvento[j]));
 				}
@@ -915,7 +909,7 @@ public class Page_TimeLine extends Fragment {
 							Lugares[j], Direcciones[j],
 							Telefonos[j], Latitudes[j],
 							Longitudes[j], Distancias[j],
-							Boletos[j], downloadBitmap[j],
+							Boletos[j],
 							imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
 							Integer.parseInt(String.valueOf(FechayHoraUnix[j])),
 							ImagenEvento[j]));
@@ -1087,6 +1081,7 @@ public class Page_TimeLine extends Fragment {
 		imgCategorias = new int[listaEventos.size()];
 		indexOfEventSave = new int[listaEventos.size()];
 		fechaUnixSave = new int[listaEventos.size()];
+		urlImagenes = new String[listaEventos.size()];
 		
 		for (int j = 0; j < listaEventos.size(); j++) {			
 			titulo[j] = listaEventos.get(j).getNombreEvento();
@@ -1106,6 +1101,7 @@ public class Page_TimeLine extends Fragment {
 			imgCategorias[j] = listaEventos.get(j).getImagenCategoria();
 			indexOfEventSave[j] = listaEventos.get(j).getIndexOfEvent();
 			fechaUnixSave[j] = listaEventos.get(j).getFechaUnix();
+			urlImagenes[j] = listaEventos.get(j).getUrlImagen();
 		}
 		
 		new AsyncTask<String, Void, Void>(){
@@ -1153,8 +1149,8 @@ public class Page_TimeLine extends Fragment {
 				//Quita el footer
 				((ProgressBar)footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.GONE);
 				if(getActivity()!=null){
-					listaEventos.clear();
-					arrayAdapterEvents.clear();
+//					listaEventos.clear();
+//					arrayAdapterEvents.clear();
 					funcionesAddMore();
 				}
 			};

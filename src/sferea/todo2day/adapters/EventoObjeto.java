@@ -46,7 +46,7 @@ public class EventoObjeto implements Parcelable{
 	}
 	
 	public EventoObjeto(String nombreEvento, String catEvento, String fechaEvento, String descripcionEvento, String fuenteEvento, String LugarEvento, 
-			String direccionEvento, String telefonoEvento, double lat, double lon, String dist, String boletoEvento, Bitmap imgEvento, int imgCategoria,
+			String direccionEvento, String telefonoEvento, double lat, double lon, String dist, String boletoEvento,int imgCategoria,
 			int posicion, int indexOfEvent, int fechaUnix, String urlImgEvento){
 		setNombreEvento(nombreEvento);
 		setCategoriaEvento(catEvento);
@@ -60,7 +60,6 @@ public class EventoObjeto implements Parcelable{
 		setDistancia(dist);
 		setLatEvento(lat);
 		setLonEvento(lon);
-		setImagenEvento(imgEvento);
 		setImagenCategoria(imgCategoria);
 		setPosicion(posicion);
 		setIndexOfEvent(indexOfEvent);
@@ -159,8 +158,6 @@ public class EventoObjeto implements Parcelable{
 	public void setPosicion(int posicion) {
 		this.posicion = posicion;
 	}
-	
-	
 
 	public int getIndexOfEvent() {
 		return indexOfEvent;
