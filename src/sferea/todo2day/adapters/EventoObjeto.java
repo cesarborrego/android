@@ -23,6 +23,7 @@ import android.widget.TextView;
 public class EventoObjeto implements Parcelable{
 	
 	String nombreEvento; String categoriaEvento; String fechaEvento; String horaEvento;
+	String urlImgEvento;
 	String lugarEvento; double latEvento; double lonEvento;
 	String distancia; Bitmap imagenEvento; int imagenCategoria, iContaRet, iContaFav;
 	
@@ -46,7 +47,7 @@ public class EventoObjeto implements Parcelable{
 	
 	public EventoObjeto(String nombreEvento, String catEvento, String fechaEvento, String descripcionEvento, String fuenteEvento, String LugarEvento, 
 			String direccionEvento, String telefonoEvento, double lat, double lon, String dist, String boletoEvento, Bitmap imgEvento, int imgCategoria,
-			int posicion, int indexOfEvent, int fechaUnix){
+			int posicion, int indexOfEvent, int fechaUnix, String urlImgEvento){
 		setNombreEvento(nombreEvento);
 		setCategoriaEvento(catEvento);
 		setFechaEvento(fechaEvento);
@@ -64,6 +65,7 @@ public class EventoObjeto implements Parcelable{
 		setPosicion(posicion);
 		setIndexOfEvent(indexOfEvent);
 		setFechaUnix(fechaUnix);
+		setUrlImagen(urlImgEvento);
 	}
 
 	
@@ -174,6 +176,14 @@ public class EventoObjeto implements Parcelable{
 
 	public void setFechaUnix(int fechaUnix) {
 		this.fechaUnix = fechaUnix;
+	}
+	
+	public String getUrlImagen() {
+		return urlImgEvento;
+	}
+
+	public void setUrlImagen(String urlImg) {
+		this.urlImgEvento = urlImg;
 	}
 
 	/**

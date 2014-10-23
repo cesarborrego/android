@@ -4,17 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Vector;
 
-import org.json.JSONArray;
-
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.DataBaseSQLiteManager;
-import sferea.todo2day.config.SQLiteHelper;
 import sferea.todo2day.config.SharedPreferencesHelper;
-import sferea.todo2day.subfragments.Page_Favorites;
 import sferea.todo2day.subfragments.Page_TimeLine;
-import sferea.todo2day.subfragments.SubF_Details;
 import sferea.todo2day.subfragments.SubF_Events;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -27,11 +22,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -39,10 +31,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -57,6 +46,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 	
 	Context thisContext;
@@ -66,13 +58,14 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 	public static ImageView iconFavoriteInactive = null;
 	private byte[] img=null;
 	int favoritosAdd = 2;
+	DisplayImageOptions _options;
 	
-	
-	public ArrayAdapterEvents(Context context, int resource, int textViewResourceId, List objects){
+	public ArrayAdapterEvents(Context context, int resource, int textViewResourceId, List objects, DisplayImageOptions options){
 		super(context, resource, textViewResourceId, objects);
 		
 		this.objectArrayList = (List<EventoObjeto>)objects;
-		this.thisContext = context;		
+		this.thisContext = context;
+		this._options = options;
 	}
 
 	@Override
@@ -122,7 +115,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 		
 		DataBaseSQLiteManager managerDB = new DataBaseSQLiteManager(thisContext);
 		
-		String nombreEvento; String categoriaEvento; String fechaEvento; String horarioEvento;
+		String nombreEvento; String categoriaEvento; String fechaEvento; String horarioEvento; String urlImagen;
 		String lugarEvento; String distanciaEvento;
 		String inicioTweet; String enTweet; 
 		Bitmap imagenEvento;
@@ -151,6 +144,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 		distanciaEvento = "A "+eventoObjeto.getDistancia();
 		imagenEvento = eventoObjeto.getImagenEvento(); 
 		imagenCategoria = eventoObjeto.getImagenCategoria();
+		urlImagen = eventoObjeto.getUrlImagen();
 		
 		SubF_Events.iFavoritos = new int [objectArrayList.size()];
 		
@@ -196,10 +190,11 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 		((TextView)eventView.findViewById(R.id.lugarFavorito)).setText(lugarEvento);
 		((TextView)eventView.findViewById(R.id.distanciaFavorito)).setText(distanciaEvento);
 		((TextView)eventView.findViewById(R.id.descripcionFavorito)).setText(descripcionEvento);
-		if(imagenEvento!=null){
+		ImageLoader.getInstance().displayImage(urlImagen, (ImageView)eventView.findViewById(R.id.thumbnailFavorite), _options);
+		/*if(imagenEvento!=null){
 			((ImageView)eventView.findViewById(R.id.thumbnailFavorite)).setImageBitmap(imagenEvento);
 		}
-		
+		*/
 		//Obtenemos el array guardado en el sharepreference FAVORITES para activar o desactivar los favoritos
 //		SharedPreferences shrpref_fav = thisContext.getSharedPreferences("FAVORITES", Context.MODE_PRIVATE);
 		

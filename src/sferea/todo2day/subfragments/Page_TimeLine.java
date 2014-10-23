@@ -9,7 +9,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.BreakIterator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,14 +28,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import sferea.todo2day.MainActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.SplashActivity;
 import sferea.todo2day.Helpers.JsonHelper;
 import sferea.todo2day.adapters.ArrayAdapterEvents;
 import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.config.LocationHelper;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -47,7 +44,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,9 +54,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 public class Page_TimeLine extends Fragment {
 	
@@ -199,6 +197,8 @@ public class Page_TimeLine extends Fragment {
 	int [] indexOfEventSave;
 	int [] fechaUnixSave;
 	
+	DisplayImageOptions options;
+	
 	JsonHelper jsonHelper;
 	public Page_TimeLine(){}
 	
@@ -206,6 +206,17 @@ public class Page_TimeLine extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		 
+		options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.ic_small_musica)
+				.showImageForEmptyUri(R.drawable.ic_small_cine)
+				.showImageOnFail(R.drawable.ic_small_sociales)
+				.cacheInMemory(true) 
+				.cacheOnDisk(true) 
+				.considerExifParams(true) 
+				.displayer(new RoundedBitmapDisplayer(20)) 
+				.build(); 
+		
 		jsonHelper = new JsonHelper(getActivity().getApplicationContext());
 //		gps();
 		if(SplashActivity.leeJSONCache){
@@ -352,7 +363,7 @@ public class Page_TimeLine extends Fragment {
 						Lugares[j], Direcciones[j], Telefonos[j], Latitudes[j],
 						Longitudes[j], Distancias[j], Boletos[j], img[j],
 						imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
-						Integer.parseInt(String.valueOf(FechayHoraUnix[j]))));
+						Integer.parseInt(String.valueOf(FechayHoraUnix[j])), ImagenEvento[j]));
 			}
 			prendeEstrellaTime_Line = new boolean[listaEventos.size()];
 		}else{
@@ -493,7 +504,7 @@ public class Page_TimeLine extends Fragment {
 						Lugares[j], Direcciones[j], Telefonos[j], Latitudes[j],
 						Longitudes[j], Distancias[j], Boletos[j], img[j],
 						imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
-						Integer.parseInt(String.valueOf(FechayHoraUnix[j]))));
+						Integer.parseInt(String.valueOf(FechayHoraUnix[j])), ImagenEvento[j]));
 			}
 			prendeEstrellaTime_Line = new boolean[listaEventos.size()];
 			arrayAdapterEvents.notifyDataSetChanged();
@@ -535,7 +546,8 @@ public class Page_TimeLine extends Fragment {
 						Integer.parseInt(jsonObject2.get("imagenesCat"+iContador).toString()),
 						Integer.parseInt(jsonObject2.get("posiciones"+iContador).toString()),
 						Integer.parseInt(jsonObject2.get("indexOfEvents"+iContador).toString()),
-						Integer.parseInt(jsonObject2.get("fechaUnix"+iContador).toString())));
+						Integer.parseInt(jsonObject2.get("fechaUnix"+iContador).toString()),
+						""));
 				//Aqui vamos a recuperar los valores de index y fecha unix para que al momento de agregar mas eventos
 				//le pasemos estos valores a la URL de mongo
 				fechaUnix = jsonObject2.get("fechaUnix"+iContador).toString();
@@ -569,7 +581,7 @@ public class Page_TimeLine extends Fragment {
 		}
 		
 		//Crea el arrayAdapter de eventos
-		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(), R.layout.row_event_responsive, R.id.listviewEventos, listaEventos);
+		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(), R.layout.row_event_responsive, R.id.listviewEventos, listaEventos, options);
 		//Obtiene la vista del listView 
 		listView_Eventos = ((ListView)view.findViewById(R.id.listviewEventos));
 		
@@ -669,9 +681,9 @@ public class Page_TimeLine extends Fragment {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		if(ImagenEvento!=null){
+/*		if(ImagenEvento!=null){
 			downloadPictureFirstAccess(ImagenEvento);
-		}
+		}*/
 	}
 	
 	//Se ejecuta solo pa refresh
@@ -701,7 +713,7 @@ public class Page_TimeLine extends Fragment {
 				telefonos[j], latitudes[j],
 				longitudes[j], distancias[j],
 				boletos[j], imagenEventoSave[j],
-				imgCategorias[j],j, indexOfEventSave[j], fechaUnixSave[j]));
+				imgCategorias[j],j, indexOfEventSave[j], fechaUnixSave[j], ImagenEvento[j]));
 	}
 		arrayAdapterEvents.notifyDataSetChanged();
 		//Ejecutamos primero lectura de json y presentamos lista en hilo principal
@@ -816,7 +828,7 @@ public class Page_TimeLine extends Fragment {
 								Longitudes[j], Distancias[j],
 								Boletos[j], downloadBitmap[j],
 								imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
-								Integer.parseInt(String.valueOf(FechayHoraUnix[j]))));
+								Integer.parseInt(String.valueOf(FechayHoraUnix[j])), ImagenEvento[j]));
 					}
 					arrayAdapterEvents.notifyDataSetChanged();
 				}
@@ -873,7 +885,7 @@ public class Page_TimeLine extends Fragment {
 							Longitudes[j], Distancias[j],
 							Boletos[j], downloadBitmap[j],
 							imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
-							Integer.parseInt(String.valueOf(FechayHoraUnix[j]))));
+							Integer.parseInt(String.valueOf(FechayHoraUnix[j])), ImagenEvento[j]));
 				}
 				arrayAdapterEvents.notifyDataSetChanged();
 				this.cancel(true);
@@ -912,7 +924,8 @@ public class Page_TimeLine extends Fragment {
 							Longitudes[j], Distancias[j],
 							Boletos[j], downloadBitmap[j],
 							imagenesCategorias[j], j, Integer.parseInt(String.valueOf(IndexOfEvent[j])),
-							Integer.parseInt(String.valueOf(FechayHoraUnix[j]))));
+							Integer.parseInt(String.valueOf(FechayHoraUnix[j])),
+							ImagenEvento[j]));
 				}
 				arrayAdapterEvents.notifyDataSetChanged();
 			};
@@ -927,6 +940,7 @@ public class Page_TimeLine extends Fragment {
 	 * @throws IOException
 	 */
    private Bitmap downloadBitmap(String url) throws IOException {
+	   
        HttpUriRequest request = new HttpGet(url.toString());
        HttpClient httpClient = new DefaultHttpClient();
        HttpResponse response = httpClient.execute(request);
