@@ -497,6 +497,8 @@ public class Page_TimeLine extends Fragment {
 			}
 			prendeEstrellaTime_Line = new boolean[listaEventos.size()];
 			arrayAdapterEvents.notifyDataSetChanged();
+			
+			crearJSONCache();
 		}else{
 			Toast.makeText(getActivity().getApplicationContext(), "No hay Eventos Disponibles\n" +
 					"Prueba con otras categorías!\n" +
@@ -669,26 +671,27 @@ public class Page_TimeLine extends Fragment {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		if(ImagenEvento!=null){
+//		if(ImagenEvento!=null){
+//			downloadPictureFirstAccess(ImagenEvento);
+//		}
+		if(descargaImagenesFirstAccess){
 			downloadPictureFirstAccess(ImagenEvento);
 		}
 	}
 	
 	//Se ejecuta solo pa refresh
 	public void funcionesRefresh(){
-		//Ejecutamos primero lectura de json y presentamos lista en hilo principal
-//		try {
-//			nuevoJsonObject(json);
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} catch (ParseException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//		downloadPictureSecondAccessRefresh(ImagenEvento);
-//		leerJsonCache();
-//		cargaJsonCache();
+		if(SplashActivity.leeJSONCache){
+			if(jsonHelper.leerJsonCache()!=null){
+				jsonCache = jsonHelper.leerJsonCache();
+				cargaJsonCache();
+			}
+		}else{
+			if(jsonHelper.leerPrimerJson()!=null){
+				json = jsonHelper.leerPrimerJson();
+				funcionesPrincipales();
+			}
+		}
 	}
 	
 	public void funcionesAddMore(){
@@ -715,7 +718,7 @@ public class Page_TimeLine extends Fragment {
 			e1.printStackTrace();
 		}
 		
-		crearJSONCache();
+//		crearJSONCache();
 //		if(ImagenEvento!=null){
 //			downloadPictureSecondAccessMore(ImagenEvento);
 //		}
@@ -726,12 +729,17 @@ public class Page_TimeLine extends Fragment {
 			JSONObject items;
 			JSONObject jsonFinal = new JSONObject();
 			JSONArray jsonArray = new JSONArray();
+			int iTotal=0;
+			
+			protected void onPreExecute() {
+				iTotal = listaEventos.size();
+			};
 
 			@SuppressWarnings("unchecked")
 			@Override
 			protected Void doInBackground(Void... params) {
 				if(getActivity()!=null){
-					for(int j = 0;j<listaEventos.size(); j++){
+					for(int j = 0;j<iTotal; j++){
 						items = new JSONObject();
 						items.put("titulo"+j, listaEventos.get(j).getNombreEvento());
 						items.put("categorias"+j, listaEventos.get(j).getCategoriaEvento());
@@ -805,7 +813,7 @@ public class Page_TimeLine extends Fragment {
 			}
 			
 			protected void onPostExecute(Void result) {
-				if(getActivity()!=null){
+				if(getActivity()!=null||downloadBitmap!=null){
 					for (int j = 0; j < urlsImagenes.length; j++) {
 						listaEventos.add(new EventoObjeto(Titulos[j],
 								Categorias[j],

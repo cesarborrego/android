@@ -236,10 +236,14 @@ public class MainActivity extends ActionBarActivity {
 		
 		case EVENTS:{
 			if(!atHome){
-//				downloadJSON(19.355582, -99.186726);
+				downloadJSON(19.355582, -99.186726);
+//				atHome=true;
+			}else{
 				atHome=true;
+				fragment = new SubF_Events();
 			}
-			fragment = new SubF_Events();
+			
+//			fragment = new SubF_Events();
 			break;
 		}
 		
@@ -359,6 +363,17 @@ public class MainActivity extends ActionBarActivity {
 		 }		 
 	 }
 	 
+	 private void refreshPage_TimelLineFragment(){
+		 //inicializamos la varible
+		 Fragment fragment = null;
+		 fragment = new SubF_Events();
+
+		 if(fragment!=null){
+			 FragmentManager fragmentManager = getSupportFragmentManager();
+			 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+		 }		 
+	 }
+	 
 	//Consulta mongo
 		public void downloadJSON(final double lat, final double lon) {	
 			
@@ -432,10 +447,14 @@ public class MainActivity extends ActionBarActivity {
 //						readStream(result);
 ////						leerJson();
 //					}
-	    			refreshFavoritesFragment();
+//	    			refreshFavoritesFragment();
+	    			SplashActivity.leeJSONCache = false;
 	    			Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 	    			pDialog.dismiss();
-	    			ShowFragment(EVENTS);
+//	    			ShowFragment(EVENTS);
+	    			atHome=true;
+	    			refreshPage_TimelLineFragment();
+	    			
 				};
 				
 				@Override
