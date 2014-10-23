@@ -22,8 +22,10 @@ public class DataBaseSQLiteManager {
 	public static final String DISTANCIA = "DISTANCIA";
 	public static final String LATITUD = "LATITUD";
 	public static final String LONGITUD = "LONGITUD";
-	public static final String IMAGEN_EVENTO = "IMAGEN_EVENTO";
+	public static final String URL_IMAGEN_EVENTO = "URL_IMAGEN_EVENTO";
 	public static final String POSICION = "POSICION";
+	public static final String INDEX_OF_EVENT = "INDEX_OF_EVENT";
+	public static final String FECHA_UNIX = "FECHA_UNIX";
 	
 	//CREAR TABLA
 //	public static final String CREATE_TABLE = " CREATE TABLE "+DB_NAME+" " +
@@ -56,8 +58,10 @@ public class DataBaseSQLiteManager {
 			" "+DISTANCIA+" text," +
 			" "+LATITUD+" text not null, " +
 			" "+LONGITUD+" text not null, " +
-			" "+IMAGEN_EVENTO+" blob," +
-			" "+POSICION+" integer);";
+			" "+URL_IMAGEN_EVENTO+" text," +
+			" "+POSICION+" integer," +
+			" "+INDEX_OF_EVENT+" text not null," +
+			" "+FECHA_UNIX+" text not null);";
 	
 	private SQLiteHelper sqLiteHelper;
 	private SQLiteDatabase db;
@@ -74,7 +78,7 @@ public class DataBaseSQLiteManager {
 	public ContentValues generarContentValues (String tituloEvento, String categoriEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
-			String longitudEvento, byte [] imagen_evento, String posicion){	
+			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
 		ContentValues valoresDB = new ContentValues();
 		valoresDB.put(TITULO_EVENTO, tituloEvento);
 		valoresDB.put(CATEGORIA, categoriEvento);
@@ -88,8 +92,10 @@ public class DataBaseSQLiteManager {
 		valoresDB.put(DISTANCIA, distanciaEvento);
 		valoresDB.put(LATITUD, latitudEvento);
 		valoresDB.put(LONGITUD, longitudEvento);
-		valoresDB.put(IMAGEN_EVENTO, imagen_evento);
+		valoresDB.put(URL_IMAGEN_EVENTO, urlImagen);
 		valoresDB.put(POSICION, posicion);
+		valoresDB.put(INDEX_OF_EVENT, indexOfEvent);
+		valoresDB.put(FECHA_UNIX, fechaUnix);
 		return valoresDB;
 		
 	}
@@ -97,16 +103,16 @@ public class DataBaseSQLiteManager {
 	public void insertar(String tituloEvento, String categoriEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
-			String longitudEvento, byte [] imagen_evento, String posicion){
+			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
 		//db.insert(table, nullColumnHack, values)		
 		db.insert(DB_NAME, null, generarContentValues(tituloEvento, categoriEvento, fechaEvento, descripcionEvento, 
 				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, distanciaEvento, latitudEvento, longitudEvento,
-				imagen_evento, posicion));		
+				urlImagen, posicion, indexOfEvent, fechaUnix));		
 	}
 	
-	public void eliminar(String tituloEvento){
+	public void eliminar(String indexOfEvent){
 		//db.delete(table, whereClause, whereArgs)
-		db.delete(DB_NAME, TITULO_EVENTO+"=?", new String[]{tituloEvento});
+		db.delete(DB_NAME, INDEX_OF_EVENT+"=?", new String[]{indexOfEvent});
 	}
 	
 	public void eliminarAllItems(){
@@ -118,7 +124,11 @@ public class DataBaseSQLiteManager {
 	}
 	
 	public void crearTabla(){
-		db.execSQL("CREATE TABLE FAVORITES (ID_EVENTO INTEGER PRIMARY KEY AUTOINCREMENT, TITULO_EVENTO TEXT NOT NULL, CATEGORIA TEXT NOT NULL, FECHA TEXT NOT NULL, DESCRIPCION TEXT NOT NULL, FUENTE TEXT, LUGAR TEXT NOT NULL, DIRECCION TEXT, TELEFONO TEXT, BOLETO TEXT, DISTANCIA TEXT, LATITUD TEXT NOT NULL, LONGITUD TEXT NOT NULL, IMAGEN_EVENTO BLOB, POSICION INTEGER);");
+		db.execSQL("CREATE TABLE FAVORITES (ID_EVENTO INTEGER PRIMARY KEY AUTOINCREMENT," +
+				" TITULO_EVENTO TEXT NOT NULL, CATEGORIA TEXT NOT NULL, FECHA TEXT NOT NULL," +
+				" DESCRIPCION TEXT NOT NULL, FUENTE TEXT, LUGAR TEXT NOT NULL, DIRECCION TEXT," +
+				" TELEFONO TEXT, BOLETO TEXT, DISTANCIA TEXT, LATITUD TEXT NOT NULL, LONGITUD TEXT NOT NULL," +
+				" URL_IMAGEN_EVENTO TEXT, POSICION INTEGER, INDEX_OF_EVENT TEXT NOT NULL, FECHA_UNIX TEXT NOT NULL);");
 	}
 	
 	public void eliminarMultiple(String tituloEvento, String tituloEvento2){
@@ -129,11 +139,11 @@ public class DataBaseSQLiteManager {
 	public void modificarValoresDB(String tituloEvento, String categoriEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
-			String longitudEvento, byte [] imagen_evento, String posicion){
+			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
 		//db.update(table, values, whereClause, whereArgs)
 		db.update(DB_NAME, generarContentValues(tituloEvento, categoriEvento, fechaEvento, descripcionEvento,
 				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, distanciaEvento, 
-				latitudEvento, longitudEvento, imagen_evento, posicion), TITULO_EVENTO+"=?", new String[]{tituloEvento});
+				latitudEvento, longitudEvento, urlImagen, posicion, indexOfEvent, fechaUnix), INDEX_OF_EVENT+"=?", new String[]{indexOfEvent});
 	}
 		
 	public Cursor cargarTablas(){

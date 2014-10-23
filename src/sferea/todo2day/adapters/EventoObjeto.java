@@ -213,11 +213,11 @@ public class EventoObjeto implements Parcelable{
 		dest.writeString(urlImgEvento);
 		
 		
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		imagenEvento.compress(Bitmap.CompressFormat.JPEG, 100, stream);		
-		byte[] byteArray = stream.toByteArray();		
-		dest.writeInt(byteArray.length);
-		dest.writeByteArray(byteArray);
+//		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//		imagenEvento.compress(Bitmap.CompressFormat.JPEG, 100, stream);		
+//		byte[] byteArray = stream.toByteArray();		
+//		dest.writeInt(byteArray.length);
+//		dest.writeByteArray(byteArray);
 		
 		/*ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
 		btnRetweet.compress(Bitmap.CompressFormat.JPEG, 100, stream1);		
@@ -263,9 +263,9 @@ public class EventoObjeto implements Parcelable{
 		setUrlImagen(pc.readString());
 		
 		//Obtenemos la imagen 
-		byte[] byteArrayImage= new byte[pc.readInt()];
-		pc.readByteArray(byteArrayImage);		
-		setImagenEvento(BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage.length));
+//		byte[] byteArrayImage= new byte[pc.readInt()];
+//		pc.readByteArray(byteArrayImage);		
+//		setImagenEvento(BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage.length));
 		
 		/*//Obtenemos la imagen Retweet
 		byte[] byteArrayBtnRet= new byte[pc.readInt()];

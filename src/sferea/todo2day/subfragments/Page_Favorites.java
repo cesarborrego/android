@@ -106,8 +106,10 @@ public class Page_Favorites extends Fragment {
 							cursor.getString(cursor.getColumnIndex("BOLETO")), 
 							Double.parseDouble(cursor.getString(cursor.getColumnIndex("LONGITUD"))), 
 							Double.parseDouble(cursor.getString(cursor.getColumnIndex("LATITUD"))),
-							decodBitmap(cursor.getBlob(cursor.getColumnIndex("IMAGEN_EVENTO"))),
-							Integer.parseInt(cursor.getString(cursor.getColumnIndex("POSICION")))));
+							cursor.getString(cursor.getColumnIndex("URL_IMAGEN_EVENTO")),
+							Integer.parseInt(cursor.getString(cursor.getColumnIndex("POSICION"))),
+							Integer.parseInt(cursor.getString(cursor.getColumnIndex("INDEX_OF_EVENT"))),
+							Integer.parseInt(cursor.getString(cursor.getColumnIndex("FECHA_UNIX")))));
 				}while (cursor.moveToNext());	
 			}
 		} finally{

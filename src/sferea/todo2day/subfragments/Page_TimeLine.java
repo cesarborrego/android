@@ -539,7 +539,7 @@ public class Page_TimeLine extends Fragment {
 				indexEvent = jsonObject2.get("indexOfEvents"+iContador).toString();
 				iContador++;
 			}
-			arrayAdapterEvents.notifyDataSetChanged();
+//			arrayAdapterEvents.notifyDataSetChanged();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -560,6 +560,7 @@ public class Page_TimeLine extends Fragment {
 		listaEventos = new ArrayList<EventoObjeto>();
 		
 		if(SplashActivity.leeJSONCache){
+			refreshTimeLine();
 			cargaJsonCache();
 		}else{
 			funcionesPrincipales();
@@ -613,7 +614,7 @@ public class Page_TimeLine extends Fragment {
 				switch (event.getAction()) {
 					
 					case MotionEvent.ACTION_MOVE:{
-						Log.d("Movimiento", String.valueOf(y));
+//						Log.d("Movimiento", String.valueOf(y));
 						if(!downCounterUsed){
 							startY=y;
 							downCounterUsed=true;
@@ -636,15 +637,19 @@ public class Page_TimeLine extends Fragment {
 					}
 					
 					case MotionEvent.ACTION_UP:{
-						Log.d("FirstVisiblePosition", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+//						Log.d("FirstVisiblePosition", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
 						if(refresh){
-							refreshTimeLine();
+//							refreshTimeLine();
 						}else{
 							((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
 							((ProgressBar)headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
 						}
 						downCounterUsed=false;
 						refresh = false;
+					}
+					
+					case MotionEvent.ACTION_DOWN:{
+						Log.d("Movimiento", "Abajo "+y);
 					}
 				}
 				return false;
@@ -674,15 +679,15 @@ public class Page_TimeLine extends Fragment {
 	//Se ejecuta solo pa refresh
 	public void funcionesRefresh(){
 		//Ejecutamos primero lectura de json y presentamos lista en hilo principal
-//		try {
-//			nuevoJsonObject(json);
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} catch (ParseException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+		try {
+			nuevoJsonObject(json);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 //		downloadPictureSecondAccessRefresh(ImagenEvento);
 //		leerJsonCache();
 //		cargaJsonCache();
@@ -775,7 +780,9 @@ public class Page_TimeLine extends Fragment {
 			}
 			
 			protected void onPostExecute(Void result) {
-				cargaJsonCache();
+				if(getActivity()!=null){
+					cargaJsonCache();
+				}
 			};
 			
 		}.execute();
@@ -1003,8 +1010,8 @@ public class Page_TimeLine extends Fragment {
 						}
 
 						if(inputStream!=null){
-//							readStream(inputStream);
-							//								leerJson();
+							jsonHelper.readStreamPrimerJson(inputStream);
+							json = jsonHelper.leerPrimerJson();
 						}
 					}
 				}

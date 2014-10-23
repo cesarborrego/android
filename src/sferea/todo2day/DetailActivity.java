@@ -495,7 +495,7 @@ public class DetailActivity extends ActionBarActivity {
 			//Entro en time_line y ahora obtenemos el estado de la estrella 
 			if(Page_TimeLine.prendeEstrellaTime_Line[evento.getPosicion()]){
 				//Si esta prendida solo apaga y elimina el registro
-				manager.eliminar(evento.getNombreEvento());
+				manager.eliminar(String.valueOf(evento.getIndexOfEvent()));
 				
 				Log.d(null, "Se elimino Registro en DB "+evento.getNombreEvento());
 				//Apagamos estrella en timeline
@@ -521,8 +521,10 @@ public class DetailActivity extends ActionBarActivity {
 						String.valueOf(evento.getDistancia()), 
 						String.valueOf(evento.getLatEvento()), 
 						String.valueOf(evento.getLonEvento()),
-						codificarBitmap(evento.getImagenEvento()),
-						String.valueOf(evento.getPosicion()));
+						evento.getUrlImagen(),
+						String.valueOf(evento.getPosicion()),
+						String.valueOf(evento.getIndexOfEvent()),
+						String.valueOf(evento.getFechaUnix()));
 				Log.d(null, "Registro Insertado en DB");					
 				//Prendemos estrella en timeline
 				Page_TimeLine.prendeEstrellaTime_Line[evento.getPosicion()] = true;		
@@ -538,7 +540,7 @@ public class DetailActivity extends ActionBarActivity {
 			//Entro por favoritos y ahora obtenemos el estado de la estrella 
 			if(Page_TimeLine.prendeEstrellaTime_Line[favoritosObjeto.getPosicion()]){
 				//Si esta prendida solo apaga y elimina el registro
-				manager.eliminar(favoritosObjeto.getNombreEvento());
+				manager.eliminar(String.valueOf(favoritosObjeto.getIndexOfEvent()));
 				
 				Log.d(null, "Se elimino Registro en DB "+favoritosObjeto.getNombreEvento());
 				//Apagamos estrella en timeline
@@ -564,8 +566,10 @@ public class DetailActivity extends ActionBarActivity {
 						String.valueOf(favoritosObjeto.getDistanciaEvento()), 
 						String.valueOf(favoritosObjeto.getLatEvento()), 
 						String.valueOf(favoritosObjeto.getLonEvento()),
-						codificarBitmap(favoritosObjeto.getImagenEvento()),
-						String.valueOf(favoritosObjeto.getPosicion()));
+						favoritosObjeto.getUrlImagen(),
+						String.valueOf(favoritosObjeto.getPosicion()),
+						String.valueOf(favoritosObjeto.getIndexOfEvent()),
+						String.valueOf(favoritosObjeto.getFechaUnix()));
 				Log.d(null, "Registro Insertado en DB");					
 				//Prendemos estrella en timeline
 				Page_TimeLine.prendeEstrellaTime_Line[favoritosObjeto.getPosicion()] = true;		

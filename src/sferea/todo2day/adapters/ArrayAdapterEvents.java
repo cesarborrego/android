@@ -367,7 +367,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 						
 						((ImageView)eventView.findViewById(R.id.iconFavFavorito)).setImageResource(R.drawable.ic_action_important);
 						
-						manager.eliminar(objectArrayList.get(position).getNombreEvento());
+						manager.eliminar(String.valueOf(objectArrayList.get(position).getIndexOfEvent()));
 						
 						Log.d(null, "Se elimino registro "+objectArrayList.get(position).getNombreEvento());
 						
@@ -390,8 +390,10 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 								String.valueOf(objectArrayList.get(position).getDistancia()), 
 								String.valueOf(objectArrayList.get(position).getLatEvento()), 
 								String.valueOf(objectArrayList.get(position).getLonEvento()),
-								codificarBitmap(objectArrayList.get(position).getImagenEvento()),
-								String.valueOf(position));
+								objectArrayList.get(position).getUrlImagen(),
+								String.valueOf(position),
+								String.valueOf(objectArrayList.get(position).getIndexOfEvent()),
+								String.valueOf(objectArrayList.get(position).getFechaUnix()));
 						Log.d(null, "Registro Insertado en DB");
 					}
 				}

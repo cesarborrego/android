@@ -27,9 +27,9 @@ public class FavoritosObjeto implements Parcelable{
 	double distancia; Bitmap imagenEvento, btnRetweet, btnFav; int imagenCategoria, iContaRet, iContaFav;
 	
 	//Nuevos campos para el nuevo constructor
-	String descripcion, fuente, direccion, telefono, boleto;
+	String descripcion, fuente, direccion, telefono, boleto, urlImagen;
 	
-	int posicion;
+	int posicion, indexOfEvent, fechaUnix;
 	
 	public FavoritosObjeto(String nombreEvento, String categoria, String fecha, String lugar, double distancia){
 		this.nombreEvento = nombreEvento;
@@ -42,7 +42,7 @@ public class FavoritosObjeto implements Parcelable{
 	public FavoritosObjeto(String nombreEvento, String catEvento, String fecha_horaEvento, String descripcionEvento, 
 			String fuenteEvento, String LugarEvento, 
 			String direccionEvento, String telefonoEvento, String dist, String boletoEvento, double lon, double lat,
-			Bitmap imagen_Evento, int posicion){
+			String urlImagen, int posicion, int indexOfEvent, int fechaUnix){
 		/*Titulo
 		Categoria
 		FechayHora
@@ -56,19 +56,6 @@ public class FavoritosObjeto implements Parcelable{
 		Longitud
 		Latitud
 		Imagen*/
-//		this.nombreEvento = nombreEvento;
-//		this.categoriaEvento = catEvento;
-//		this.fechaEvento = fecha_horaEvento;
-//		this.descripcion = descripcionEvento;
-//		this.fuente = fuenteEvento;
-//		this.lugarEvento = LugarEvento;
-//		this.direccion = direccionEvento;
-//		this.telefono = telefonoEvento;
-//		this.DistanciaEvento = dist;
-//		this.boleto = boletoEvento;
-//		this.lonEvento = lon;
-//		this.latEvento = lat;
-//		this.imagenEvento = imagen_Evento;
 		setNombreEvento(nombreEvento);
 		setCategoriaEvento(catEvento);
 		setFechaEvento(fecha_horaEvento);
@@ -81,8 +68,10 @@ public class FavoritosObjeto implements Parcelable{
 		setBoleto(boletoEvento);
 		setLonEvento(lon);
 		setLatEvento(lat);
-		setImagenEvento(imagen_Evento);
 		setPosicion(posicion);
+		setUrlImagen(urlImagen);
+		setIndexOfEvent(indexOfEvent);
+		setFechaUnix(fechaUnix);
 	}
 
 	/** Setter & getters*/
@@ -159,6 +148,34 @@ public class FavoritosObjeto implements Parcelable{
 	public void setPosicion(int posicion) {
 		this.posicion = posicion;
 	}
+	
+	
+
+	public String getUrlImagen() {
+		return urlImagen;
+	}
+
+	public void setUrlImagen(String urlImagen) {
+		this.urlImagen = urlImagen;
+	}
+	
+	
+
+	public int getIndexOfEvent() {
+		return indexOfEvent;
+	}
+
+	public void setIndexOfEvent(int indexOfEvent) {
+		this.indexOfEvent = indexOfEvent;
+	}
+
+	public int getFechaUnix() {
+		return fechaUnix;
+	}
+
+	public void setFechaUnix(int fechaUnix) {
+		this.fechaUnix = fechaUnix;
+	}
 
 	@Override
 	public int describeContents() {
@@ -183,11 +200,11 @@ public class FavoritosObjeto implements Parcelable{
 		dest.writeInt(posicion);
 		
 		
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		imagenEvento.compress(Bitmap.CompressFormat.JPEG, 100, stream);		
-		byte[] byteArray = stream.toByteArray();		
-		dest.writeInt(byteArray.length);
-		dest.writeByteArray(byteArray);
+//		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//		imagenEvento.compress(Bitmap.CompressFormat.JPEG, 100, stream);		
+//		byte[] byteArray = stream.toByteArray();		
+//		dest.writeInt(byteArray.length);
+//		dest.writeByteArray(byteArray);
 		
 //		ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
 //		btnRetweet.compress(Bitmap.CompressFormat.JPEG, 100, stream1);		
@@ -229,9 +246,9 @@ public class FavoritosObjeto implements Parcelable{
 		setPosicion(pc.readInt());
 		
 		//Obtenemos la imagen 
-		byte[] byteArrayImage= new byte[pc.readInt()];
-		pc.readByteArray(byteArrayImage);		
-		setImagenEvento(BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage.length));
+//		byte[] byteArrayImage= new byte[pc.readInt()];
+//		pc.readByteArray(byteArrayImage);		
+//		setImagenEvento(BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage.length));
 		
 //		//Obtenemos la imagen Retweet
 //		byte[] byteArrayBtnRet= new byte[pc.readInt()];
