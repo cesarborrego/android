@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
+import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.DataBaseSQLiteManager;
 import sferea.todo2day.config.SharedPreferencesHelper;
@@ -58,14 +59,16 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 	public static ImageView iconFavoriteInactive = null;
 	private byte[] img=null;
 	int favoritosAdd = 2;
-	DisplayImageOptions _options;
+	ImageLoader imageloader;
+	DisplayImageOptions options;
 	
-	public ArrayAdapterEvents(Context context, int resource, int textViewResourceId, List objects, DisplayImageOptions options){
+	public ArrayAdapterEvents(Context context, int resource, int textViewResourceId, List objects){
 		super(context, resource, textViewResourceId, objects);
 		
 		this.objectArrayList = (List<EventoObjeto>)objects;
 		this.thisContext = context;
-		this._options = options;
+		imageloader = ImageUtil.getImageLoader();
+		options = ImageUtil.getOptionsImageLoader();
 	}
 
 	@Override
@@ -190,7 +193,8 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 		((TextView)eventView.findViewById(R.id.lugarFavorito)).setText(lugarEvento);
 		((TextView)eventView.findViewById(R.id.distanciaFavorito)).setText(distanciaEvento);
 		((TextView)eventView.findViewById(R.id.descripcionFavorito)).setText(descripcionEvento);
-		ImageLoader.getInstance().displayImage(urlImagen, (ImageView)eventView.findViewById(R.id.thumbnailFavorite), _options);
+		
+		imageloader.displayImage(urlImagen, (ImageView)eventView.findViewById(R.id.thumbnailFavorite), options);
 		/*if(imagenEvento!=null){
 			((ImageView)eventView.findViewById(R.id.thumbnailFavorite)).setImageBitmap(imagenEvento);
 		}
