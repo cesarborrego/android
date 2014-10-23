@@ -213,6 +213,7 @@ public class EventoObjeto implements Parcelable{
 		dest.writeInt(posicion);
 		dest.writeInt(indexOfEvent);
 		dest.writeInt(fechaUnix);
+		dest.writeString(urlImgEvento);
 		
 		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -262,6 +263,7 @@ public class EventoObjeto implements Parcelable{
 		setPosicion(pc.readInt());
 		setIndexOfEvent(pc.readInt());
 		setFechaUnix(pc.readInt());
+		setUrlImagen(pc.readString());
 		
 		//Obtenemos la imagen 
 		byte[] byteArrayImage= new byte[pc.readInt()];

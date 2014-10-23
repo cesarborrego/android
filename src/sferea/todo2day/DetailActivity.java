@@ -2,7 +2,6 @@ package sferea.todo2day;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Vector;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -12,8 +11,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.simple.JSONObject;
 
+import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.adapters.ArrayAdapterFavorites;
 import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.adapters.FavoritosObjeto;
@@ -22,13 +21,11 @@ import sferea.todo2day.config.DataBaseSQLiteManager;
 import sferea.todo2day.config.SharedPreferencesHelper;
 import sferea.todo2day.subfragments.Page_Favorites;
 import sferea.todo2day.subfragments.Page_TimeLine;
-import sferea.todo2day.subfragments.SubF_Events;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -36,7 +33,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -54,20 +50,18 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.internal.lg;
 import com.google.android.gms.maps.GoogleMap;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class DetailActivity extends ActionBarActivity {
 	
@@ -81,6 +75,8 @@ public class DetailActivity extends ActionBarActivity {
 	TextView tel;
 	ImageView btnF;
 	ImageView btnR;
+	ImageLoader imageloader;
+	DisplayImageOptions options;
 	
 //	String imageHttpAddress = "http://androideity.com/wp-content/uploads/2011/12/animacionframe.png";
 
@@ -88,7 +84,8 @@ public class DetailActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detail);
-		
+		imageloader = ImageUtil.getImageLoader();
+		options = ImageUtil.getOptionsImageLoader();
 		
 //		LayoutInflater layoutInflater = (LayoutInflater)getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //		View newView = layoutInflater.inflate(R.layout.page_favorites, null);	
@@ -139,7 +136,7 @@ public class DetailActivity extends ActionBarActivity {
 				
 				//Colocamos la info del evento en el activity_detail
 				((TextView)findViewById(R.id.detallesTitulo)).setText(evento.getNombreEvento());
-				((ImageView)findViewById(R.id.imagenHeader)).setImageBitmap(evento.getImagenEvento());
+				imageloader.displayImage(evento.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
 				((ImageView)findViewById(R.id.iconCategoria)).setImageResource(evento.getImagenCategoria());
 				((TextView)findViewById(R.id.detallesCategoria)).setText(evento.getCategoriaEvento());
 				((TextView)findViewById(R.id.detallesFecha)).setText(evento.getFechaEvento());
