@@ -5,13 +5,17 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 
 public class Application extends android.app.Application {
+	
+	private static Application singleton;
+	
+	public static Application getInstance(){
+		return singleton;
+	}
+	
 	@Override
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
-         
-         // Create global configuration and initialize ImageLoader with this configuration
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
-        ImageLoader.getInstance().init(config);
+        singleton = this;
     }
 }

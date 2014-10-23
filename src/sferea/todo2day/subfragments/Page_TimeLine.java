@@ -198,7 +198,6 @@ public class Page_TimeLine extends Fragment {
 	int [] fechaUnixSave;
 	String urlImagenes [];
 	
-	DisplayImageOptions options;
 	
 	JsonHelper jsonHelper;
 	public Page_TimeLine(){}
@@ -207,16 +206,6 @@ public class Page_TimeLine extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		 
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_small_musica)
-				.showImageForEmptyUri(R.drawable.ic_small_cine)
-				.showImageOnFail(R.drawable.ic_small_sociales)
-				.cacheInMemory(true) 
-				.cacheOnDisk(true) 
-				.considerExifParams(true) 
-				.displayer(new RoundedBitmapDisplayer(20)) 
-				.build(); 
 		
 		jsonHelper = new JsonHelper(getActivity().getApplicationContext());
 //		gps();
@@ -577,7 +566,7 @@ public class Page_TimeLine extends Fragment {
 		}
 		
 		//Crea el arrayAdapter de eventos
-		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(), R.layout.row_event_responsive, R.id.listviewEventos, listaEventos, options);
+		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(), R.layout.row_event_responsive, R.id.listviewEventos, listaEventos);
 		//Obtiene la vista del listView 
 		listView_Eventos = ((ListView)view.findViewById(R.id.listviewEventos));
 		
