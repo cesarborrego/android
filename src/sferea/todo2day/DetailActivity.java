@@ -190,7 +190,7 @@ public class DetailActivity extends ActionBarActivity {
 				}
 				
 				((TextView)findViewById(R.id.detallesTitulo)).setText(favoritosObjeto.getNombreEvento());
-				((ImageView)findViewById(R.id.imagenHeader)).setImageBitmap(favoritosObjeto.getImagenEvento());
+				imageloader.displayImage(favoritosObjeto.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
 				((ImageView)findViewById(R.id.iconCategoria)).setImageResource(favoritosObjeto.getImagenCategoria());
 				((TextView)findViewById(R.id.detallesCategoria)).setText(favoritosObjeto.getCategoriaEvento());
 				((TextView)findViewById(R.id.detallesFecha)).setText(favoritosObjeto.getFechaEvento());
