@@ -4,20 +4,18 @@ import java.util.List;
 
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
+import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.config.DataBaseSQLiteManager;
 import sferea.todo2day.subfragments.Page_Favorites;
 import sferea.todo2day.subfragments.Page_TimeLine;
-import sferea.todo2day.subfragments.SubF_Details;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,12 +25,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 public class ArrayAdapterFavorites extends ArrayAdapter {
 	Context contex;
 	Activity activityAdapter;
 	FavoritosObjeto [] favoritesObjeto;
 	List<FavoritosObjeto> listaObjetosFavoritos;	
 	EventoObjeto eventoObjeto;
+	ImageLoader imageloader;
+	DisplayImageOptions options;
 	
 	@SuppressWarnings("unchecked")
 	public ArrayAdapterFavorites(Activity activity, Context context, List<FavoritosObjeto> datos) {
@@ -40,6 +43,8 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 		this.listaObjetosFavoritos = datos;
 		this.activityAdapter = activity;
 		this.contex = context;
+		this.imageloader = ImageUtil.getImageLoader();
+		this.options = ImageUtil.getOptionsImageLoader();
 	}
 
 	@SuppressLint("ViewHolder")
@@ -72,7 +77,8 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 		String lugar = favoritosObjeto.getLugarEvento();
 		String distancia = favoritosObjeto.getDistanciaEvento();
 		String descripcion = favoritosObjeto.getDescripcion();
-		Bitmap imagen = favoritosObjeto.getImagenEvento();
+		
+		String imagen = favoritosObjeto.getUrlImagen();
 				
 		((TextView)newView.findViewById(R.id.nombreFavorito)).setText(nombre);
 		((TextView)newView.findViewById(R.id.categoriaFavorito)).setText(categoria);
@@ -80,11 +86,13 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 		((TextView)newView.findViewById(R.id.lugarFavorito)).setText(lugar);
 		((TextView)newView.findViewById(R.id.distanciaFavorito)).setText(distancia);
 		((TextView)newView.findViewById(R.id.descripcionFavorito)).setText(descripcion);
-		ImageView imgFavorite = null;
-		if(imagen!=null){
-			imgFavorite = (ImageView)newView.findViewById(R.id.thumbnailFavorite);
-			imgFavorite.setImageBitmap(imagen);
-		}
+		
+		imageloader.displayImage(imagen, (ImageView)newView.findViewById(R.id.thumbnailFavorite), options);
+//		ImageView imgFavorite = null;
+//		if(imagen!=null){
+//			imgFavorite = (ImageView)newView.findViewById(R.id.thumbnailFavorite);
+//			imgFavorite.setImageBitmap(imagen);
+//		}
 		
 		((RelativeLayout)newView.findViewById(R.id.botonFavEvent)).setOnClickListener(new OnClickListener() {
 			
