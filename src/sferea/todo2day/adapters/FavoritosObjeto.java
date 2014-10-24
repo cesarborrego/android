@@ -198,6 +198,9 @@ public class FavoritosObjeto implements Parcelable{
 		dest.writeDouble(latEvento);
 		dest.writeDouble(lonEvento);
 		dest.writeInt(posicion);
+		dest.writeString(urlImagen);
+		dest.writeInt(indexOfEvent);
+		dest.writeInt(fechaUnix);
 		
 		
 //		ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -244,6 +247,9 @@ public class FavoritosObjeto implements Parcelable{
 		setLatEvento(pc.readDouble());
 		setLonEvento(pc.readDouble());
 		setPosicion(pc.readInt());
+		setUrlImagen(pc.readString());
+		setIndexOfEvent(pc.readInt());
+		setFechaUnix(pc.readInt());
 		
 		//Obtenemos la imagen 
 //		byte[] byteArrayImage= new byte[pc.readInt()];
