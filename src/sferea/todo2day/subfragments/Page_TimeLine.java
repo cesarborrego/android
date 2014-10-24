@@ -641,7 +641,7 @@ public class Page_TimeLine extends Fragment {
 					case MotionEvent.ACTION_UP:{
 //						Log.d("FirstVisiblePosition", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
 						if(refresh){
-//							refreshTimeLine();
+							refreshTimeLine();
 						}else{
 							((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
 							((ProgressBar)headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
@@ -650,9 +650,9 @@ public class Page_TimeLine extends Fragment {
 						refresh = false;
 					}
 					
-					case MotionEvent.ACTION_DOWN:{
-						Log.d("Movimiento", "Abajo "+y);
-					}
+//					case MotionEvent.ACTION_DOWN:{
+//						Log.d("Movimiento", "Abajo "+y);
+//					}
 				}
 				return false;
 			}
@@ -1012,8 +1012,8 @@ public class Page_TimeLine extends Fragment {
 						}
 
 						if(inputStream!=null){
-							jsonHelper.readStreamPrimerJson(inputStream);
-							json = jsonHelper.leerPrimerJson();
+//							jsonHelper.readStreamPrimerJson(inputStream);
+//							json = jsonHelper.leerPrimerJson();
 						}
 					}
 				}
@@ -1025,13 +1025,13 @@ public class Page_TimeLine extends Fragment {
 				super.onPostExecute(result);
 				//listView_Eventos.removeHeaderView(headerView);
 				//Quitamos todos los elementos ya que después los vamos a recuperar
-				listaEventos.clear();
-				arrayAdapterEvents.notifyDataSetChanged();
+//				listaEventos.clear();
+//				arrayAdapterEvents.notifyDataSetChanged();
 				((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
 				((ProgressBar)headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
 				headerAdded=false;
 				if(getActivity()!=null){
-					funcionesRefresh();
+//					funcionesRefresh();
 				}
 			}
 			
