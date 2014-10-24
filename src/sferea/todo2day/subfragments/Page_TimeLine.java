@@ -30,6 +30,7 @@ import org.json.simple.parser.ParseException;
 
 import sferea.todo2day.R;
 import sferea.todo2day.SplashActivity;
+import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.Helpers.JsonHelper;
 import sferea.todo2day.adapters.ArrayAdapterEvents;
 import sferea.todo2day.adapters.EventoObjeto;
@@ -625,6 +626,7 @@ public class Page_TimeLine extends Fragment {
 							if((y - startY) > REFRESH_THRESHOLD)
 							{ 
 								refresh = true;
+								ImageUtil.getImageLoader().clearDiskCache();
 								if(!headerAdded){
 									//listView_Eventos.addHeaderView(headerView);
 									((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
