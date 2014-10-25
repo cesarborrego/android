@@ -150,7 +150,9 @@ public class Page_TimeLine extends Fragment {
 	
 	LocationHelper locationHelper;
 	
-	
+	float y1;
+	float y2;
+	boolean isScrollActive = true;
 	
 	int iContador = 0;
 	String catt = "";
@@ -330,10 +332,20 @@ public class Page_TimeLine extends Fragment {
 				
 				Boletos[i] = (String) jsonItem.get("TicketType");
 				
-				Longitudes[i] = Double.parseDouble((String) jsonItem
-						.get("Longitude"));
+				if(!jsonItem.get("Longitude").toString().equals("No disponible")){
+					Longitudes[i] = Double.parseDouble((String) jsonItem
+							.get("Longitude"));
+				}
+				else{
+					Longitudes[i] = 0.0;
+				}
 				
-				Latitudes[i] = Double.parseDouble((String) jsonItem.get("Latitude"));
+				if(!jsonItem.get("Latitude").toString().equals("No disponible")){
+					Latitudes[i] = Double.parseDouble((String) jsonItem.get("Latitude"));
+				}
+				else{
+					Latitudes[i] = 0.0;
+				}
 
 				if (jsonItem.get("ImgBanner").toString().equals("No disponible")) {
 					ImagenEvento[i] = "http://fernandacharquero.com.ar/img/sociales04.jpg";
@@ -620,8 +632,14 @@ public class Page_TimeLine extends Fragment {
 							startY=y;
 							downCounterUsed=true;
 						}
+						
+						y1 = event.getY();
+						
 						allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
 						Log.d("FirstVisible", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+						
+						
+						
 						if(allowRefresh){
 							if((y - startY) > REFRESH_THRESHOLD)
 							{ 
@@ -635,11 +653,49 @@ public class Page_TimeLine extends Fragment {
 							}
 							else{ refresh=false; }
 						}
+						
+//						if(startY > y2)
+//						{
+//
+//							if (listView_Eventos.getChildAt(listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos.getHeight()) {
+//						        isScrollActive = false;
+//							}
+//							else{
+//								isScrollActive = true;
+//							}
+//						}
+						//Log.i("MOVE", "Y1 = " + y1 + " Y2 = " + y2);
 						break;
 					}
 					
 					case MotionEvent.ACTION_UP:{
-//						Log.d("FirstVisiblePosition", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+						y2 = event.getY();
+//						
+						if(startY > y1)
+						{
+							View v1 = listView_Eventos.getChildAt(listView_Eventos.getAdapter().getCount() - 1);
+							
+							if(v1 != null){
+								if(v1.getBottom() <= listView_Eventos.getHeight()){
+									Toast.makeText(getActivity(), "No hay más elementos para mostrar", Toast.LENGTH_SHORT).show();
+								}
+							}
+							
+//							if (listView_Eventos.getLastVisiblePosition() == listView_Eventos.getAdapter().getCount() - 1
+//							&& listView_Eventos.getChildAt(listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos.getHeight()) {
+//								//Toast.makeText(getActivity(), "No hay más elementos para mostrar", Toast.LENGTH_SHORT).show();
+//								addMoreEvents(latOrigin, lonOrigin);
+//								y1 = 0.0f;
+//							}
+						}
+						
+						Log.i("UP", "Y1 = " + y1 + " start = " + startY);
+						
+//						if(!isScrollActive){
+//							Toast.makeText(getActivity(), "No hay más elementos para mostrar", Toast.LENGTH_SHORT).show();
+//						}
+						
+						Log.d("FirstVisiblePosition", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
 						if(refresh){
 							refreshTimeLine();
 						}else{
@@ -648,11 +704,14 @@ public class Page_TimeLine extends Fragment {
 						}
 						downCounterUsed=false;
 						refresh = false;
+						break;
 					}
 					
-//					case MotionEvent.ACTION_DOWN:{
-//						Log.d("Movimiento", "Abajo "+y);
-//					}
+					case MotionEvent.ACTION_DOWN:{
+						y1 = event.getY();
+						Log.i("DOWN", "Y1 = " + y1 + " Y2 = " + y2);
+						break;
+					}
 				}
 				return false;
 			}

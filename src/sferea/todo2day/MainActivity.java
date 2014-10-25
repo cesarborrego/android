@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.adapters.ArrayAdapterSettings;
 import sferea.todo2day.adapters.DrawerItemRow;
 import sferea.todo2day.config.Constants_Settings;
@@ -415,16 +416,14 @@ public class MainActivity extends ActionBarActivity {
 					HttpURLConnection con = null;
 					if(!isCancelled()){					
 						try {
+							ImageUtil.getImageLoader().clearDiskCache();
 							url = new URL(params[0]);
 							Log.d(null,params[0]);
+							con = (HttpURLConnection) url.openConnection();
+							inputStream = con.getInputStream();
 						} catch (MalformedURLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}
-		          	  
-		          	  	try {
-		          	  		con = (HttpURLConnection) url.openConnection();
-		          	  		inputStream = con.getInputStream();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
