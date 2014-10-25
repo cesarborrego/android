@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-public class SharedPreferencesHelper {
+public class SharedPreferencesHelperFinal {
 	
 	Context thisContext;
 	
@@ -33,7 +33,7 @@ public class SharedPreferencesHelper {
 	
 	public static String categorias;
 	
-	public SharedPreferencesHelper (Context c){
+	public SharedPreferencesHelperFinal (Context c){
 		this.thisContext = c;
 	}
 	
@@ -57,5 +57,29 @@ public class SharedPreferencesHelper {
 		}		   
 		editorCategoriasBoolean.commit();
 		categorias ="";
+	}
+	
+	public String obtieneCategoriasPreferences(){
+		SharedPreferences prefsCategorias = thisContext.getSharedPreferences("Categorias",Context.MODE_PRIVATE);
+		int coma =0;
+		categorias ="";
+		//SOn 13 categorias
+		for (int x = 0; x < 13; x++) {
+			if (!prefsCategorias.getString("Categories " + x, "Desactivada")
+					.equals("Desactivada")
+					& !prefsCategorias.getString("Categories " + x,
+							"Desactivada").equals("")) {
+				if (coma != 0) {
+					categorias += ","
+							+ prefsCategorias
+							.getString("Categories " + x, null);
+				} else {
+					categorias += prefsCategorias.getString("Categories " + x,
+							null);
+				}
+				coma++;
+			}
+		}
+		return categorias;
 	}
 }

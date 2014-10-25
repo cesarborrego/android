@@ -1,16 +1,8 @@
 package sferea.todo2day.adapters;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
-
-import sferea.todo2day.R;
-
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.os.ParcelableCompat;
-import android.widget.TextView;
 
 /**
  * Clase que representa cada evento mostrado en el timeline o en favoritos
@@ -29,7 +21,8 @@ public class FavoritosObjeto implements Parcelable{
 	//Nuevos campos para el nuevo constructor
 	String descripcion, fuente, direccion, telefono, boleto, urlImagen;
 	
-	int posicion, indexOfEvent, fechaUnix;
+	int posicion, fechaUnix;
+	String indexOfEvent, precio;
 	
 	public FavoritosObjeto(String nombreEvento, String categoria, String fecha, String lugar, double distancia){
 		this.nombreEvento = nombreEvento;
@@ -42,7 +35,7 @@ public class FavoritosObjeto implements Parcelable{
 	public FavoritosObjeto(String nombreEvento, String catEvento, String fecha_horaEvento, String descripcionEvento, 
 			String fuenteEvento, String LugarEvento, 
 			String direccionEvento, String telefonoEvento, String dist, String boletoEvento, double lon, double lat,
-			String urlImagen, int posicion, int indexOfEvent, int fechaUnix){
+			String urlImagen, int posicion, String indexOfEvent, int fechaUnix){
 		/*Titulo
 		Categoria
 		FechayHora
@@ -158,14 +151,12 @@ public class FavoritosObjeto implements Parcelable{
 	public void setUrlImagen(String urlImagen) {
 		this.urlImagen = urlImagen;
 	}
-	
-	
 
-	public int getIndexOfEvent() {
+	public String getIndexOfEvent() {
 		return indexOfEvent;
 	}
 
-	public void setIndexOfEvent(int indexOfEvent) {
+	public void setIndexOfEvent(String indexOfEvent) {
 		this.indexOfEvent = indexOfEvent;
 	}
 
@@ -175,6 +166,14 @@ public class FavoritosObjeto implements Parcelable{
 
 	public void setFechaUnix(int fechaUnix) {
 		this.fechaUnix = fechaUnix;
+	}
+
+	public String getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(String precio) {
+		this.precio = precio;
 	}
 
 	@Override
@@ -199,7 +198,7 @@ public class FavoritosObjeto implements Parcelable{
 		dest.writeDouble(lonEvento);
 		dest.writeInt(posicion);
 		dest.writeString(urlImagen);
-		dest.writeInt(indexOfEvent);
+		dest.writeString(indexOfEvent);
 		dest.writeInt(fechaUnix);
 		
 		
@@ -248,7 +247,7 @@ public class FavoritosObjeto implements Parcelable{
 		setLonEvento(pc.readDouble());
 		setPosicion(pc.readInt());
 		setUrlImagen(pc.readString());
-		setIndexOfEvent(pc.readInt());
+		setIndexOfEvent(pc.readString());
 		setFechaUnix(pc.readInt());
 		
 		//Obtenemos la imagen 
