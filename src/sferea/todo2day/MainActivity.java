@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sferea.todo2day.Helpers.ImageUtil;
+import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterSettings;
 import sferea.todo2day.adapters.DrawerItemRow;
 import sferea.todo2day.config.Constants_Settings;
@@ -79,6 +80,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	double latOrigin= 19.355582;
 	double lonOrigin =-99.186726;
+	SharedPreferencesHelperFinal sharedPreferencesHelperFinal;
 	
 //	double latOrigin;
 //	double lonOrigin;
@@ -384,23 +386,8 @@ public class MainActivity extends ActionBarActivity {
 	        pDialog.setCancelable(true);
 	        pDialog.setMax(100);
 	        
-			SharedPreferences prefsCategorias = getSharedPreferences("Categorias",Context.MODE_PRIVATE);
-			int coma =0;
-			//SOn 13 categorias
-			categorias="";
-			for (int x=0; x<13; x++){
-				
-				if(!prefsCategorias.getString("Categories "+x, "Desactivada").equals("Desactivada")&
-						!prefsCategorias.getString("Categories "+x, "Desactivada").equals("")){	
-					if(coma!=0){
-						categorias += ","+prefsCategorias.getString("Categories "+x, null);	
-					} else {
-						categorias += prefsCategorias.getString("Categories "+x, null);	
-					}
-					coma++;		
-				}
-//				System.out.println(prefsCategorias.getString("Categories "+x, "Desactivada"));
-			}
+	        sharedPreferencesHelperFinal = new SharedPreferencesHelperFinal(getApplicationContext());
+			
 			
 			pDialog.show();
 	    	new AsyncTask<String, Void, InputStream>(){
@@ -465,7 +452,7 @@ public class MainActivity extends ActionBarActivity {
 	    			"latitud="+latOrigin+"" +
 	    			"&longitud="+lonOrigin+"" +
 	    			"&radio="+SplashActivity.distanciaEvento+"" +
-	    			"&categoria="+categorias+"" +
+	    			"&categoria="+sharedPreferencesHelperFinal.obtieneCategoriasPreferences()+"" +
 	    			"&numEventos=0&idEvento=0&fecha=0");
 	    }
 	   

@@ -1,21 +1,16 @@
 package sferea.todo2day;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.http.impl.conn.Wire;
-
 import sferea.todo2day.Helpers.JsonHelper;
-import sferea.todo2day.Helpers.SharedPreferencesHelper;
-
+import sferea.todo2day.Helpers.ReadTableDB;
+import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -58,7 +53,8 @@ public class SplashActivity extends Activity {
 	private long splashDelay = 3000; //3 segundos
 	
 	JsonHelper jsonHelper;
-	SharedPreferencesHelper sharedPreferencesHelper;
+	SharedPreferencesHelperFinal sharedPreferencesHelper;
+	ReadTableDB readTableDB;
 	
 	public static boolean leeJSONCache = false;
 
@@ -67,12 +63,13 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		
-		jsonHelper = new JsonHelper(getApplicationContext());
-		sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+		jsonHelper = new JsonHelper(getApplicationContext(), this);
+		sharedPreferencesHelper = new SharedPreferencesHelperFinal(getApplicationContext());
+		readTableDB = new ReadTableDB(getApplicationContext());
 		
-		if(jsonHelper.leerJsonCache()!=null){
+		if(jsonHelper.leerPrimerJson()!=null){
 			leeJSONCache = true;
-			Toast.makeText(getApplicationContext(), "Pasa a time", Toast.LENGTH_SHORT).show();
+//			Toast.makeText(getApplicationContext(), "Pasa a time", Toast.LENGTH_SHORT).show();
 			TimerTask task = new TimerTask() {
 				@Override
 				public void run() {
@@ -86,7 +83,6 @@ public class SplashActivity extends Activity {
 			timer.schedule(task, splashDelay);//Pasado los X segundos dispara la tarea
 		}else{
 			leeJSONCache = false;
-			Toast.makeText(getApplicationContext(), "No hay archivo cache", Toast.LENGTH_SHORT).show();
 			if(isConnectedToInternet(getApplicationContext())){
 				//		gps();
 
@@ -111,20 +107,7 @@ public class SplashActivity extends Activity {
 							downloadJSON(latOrigin, lonOrigin);
 						} 
 						else {
-
-							int coma =0;
-							//SOn 13 categorias
-							for (int x=0; x<13; x++){
-								if(!prefsCategorias.getString("Categories "+x, "Desactivada").equals("Desactivada")
-										&!prefsCategorias.getString("Categories "+x, "Desactivada").equals("")){	
-									if(coma!=0){
-										categorias += ","+prefsCategorias.getString("Categories "+x, null);	
-									} else {
-										categorias += prefsCategorias.getString("Categories "+x, null);	
-									}
-									coma++;		
-								}
-							}
+							sharedPreferencesHelper.obtieneCategoriasPreferences();
 							downloadJSON(latOrigin, lonOrigin);
 						}
 					}
@@ -147,30 +130,7 @@ public class SplashActivity extends Activity {
 
 			@Override
 			protected Void doInBackground(String... params) {
-				InputStream inputStream = null;
-				URL url = null;
-				HttpURLConnection con = null;
-				if(!isCancelled()){					
-					try {
-						url = new URL(params[0]);
-						Log.d(null,params[0]);
-					} catch (MalformedURLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					try {
-						con = (HttpURLConnection) url.openConnection();
-						inputStream = con.getInputStream();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					if(inputStream!=null){
-						jsonHelper.readStreamPrimerJson(inputStream);
-					}
-				}
+				jsonHelper.connectionMongo_Json(params[0]);
 				return null;
 			}
 

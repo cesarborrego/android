@@ -112,7 +112,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 	
 	private void deleteFavorites(final int position){
 		DataBaseSQLiteManager managerDB = new DataBaseSQLiteManager(activityAdapter.getApplicationContext());
-		managerDB.eliminar(listaObjetosFavoritos.get(position).getNombreEvento());
+		managerDB.eliminar(listaObjetosFavoritos.get(position).getIndexOfEvent());
 		refreshFavoritesFragment(position);
 		Page_TimeLine.prendeEstrellaDetails = false;
 		Page_TimeLine.prendeEstrellaTime_Line[position] = false;

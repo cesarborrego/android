@@ -137,7 +137,7 @@ public class DetailActivity extends ActionBarActivity {
 				//Colocamos la info del evento en el activity_detail
 				((TextView)findViewById(R.id.detallesTitulo)).setText(evento.getNombreEvento());
 				imageloader.displayImage(evento.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
-				((ImageView)findViewById(R.id.iconCategoria)).setImageResource(evento.getImagenCategoria());
+//				((ImageView)findViewById(R.id.iconCategoria)).setImageResource(evento.getImagenCategoria());
 				((TextView)findViewById(R.id.detallesCategoria)).setText(evento.getCategoriaEvento());
 				((TextView)findViewById(R.id.detallesFecha)).setText(evento.getFechaEvento());
 				((TextView)findViewById(R.id.detallesLugar)).setText(evento.getLugarEvento());

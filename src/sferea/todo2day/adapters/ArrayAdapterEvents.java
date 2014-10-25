@@ -146,8 +146,8 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 		lugarEvento = eventoObjeto.getLugarEvento();
 		distanciaEvento = "A "+eventoObjeto.getDistancia();
 		imagenEvento = eventoObjeto.getImagenEvento(); 
-		imagenCategoria = eventoObjeto.getImagenCategoria();
 		urlImagen = eventoObjeto.getUrlImagen();
+		imagenCategoria = eventoObjeto.getImagenCategoria();
 		
 		SubF_Events.iFavoritos = new int [objectArrayList.size()];
 		
@@ -218,6 +218,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 			}
 		} finally{
 			cursor.close();
+//			managerDB.cerrarDB();
 		}
 		iconFavorite = (ImageView)eventView.findViewById(R.id.iconFavFavorito);
 		for(int j =0; j<nombreEventoEncontrados.size(); j++){
