@@ -120,8 +120,7 @@ public class Page_TimeLine extends Fragment {
 	boolean isLoading=false;
 	
 	LocationHelper locationHelper;
-	
-	
+	boolean isScrollActive = true;
 	
 	int iContador = 0;
 	String catt = "";
@@ -258,7 +257,7 @@ public class Page_TimeLine extends Fragment {
 			}
 		});	
 		
-		listView_Eventos.setOnTouchListener(new OnTouchListener() {
+listView_Eventos.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -285,12 +284,25 @@ public class Page_TimeLine extends Fragment {
 								refresh = true;
 								ImageUtil.getImageLoader().clearDiskCache();
 								if(!headerAdded){
+									//listView_Eventos.addHeaderView(headerView);
 									((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
 									headerAdded=true;
 								}
 							}
 							else{ refresh=false; }
 						}
+						
+//						if(startY > y2)
+//						{
+//
+//							if (listView_Eventos.getChildAt(listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos.getHeight()) {
+//						        isScrollActive = false;
+//							}
+//							else{
+//								isScrollActive = true;
+//							}
+//						}
+						//Log.i("MOVE", "Y1 = " + y1 + " Y2 = " + y2);
 						break;
 					}
 					
@@ -303,13 +315,25 @@ public class Page_TimeLine extends Fragment {
 							
 							if(v1 != null){
 								if(v1.getBottom() <= listView_Eventos.getHeight()){
-									Toast.makeText(getActivity(), "No hay más elementos para mostrar", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(), "No hay mÃ¡s elementos para mostrar", Toast.LENGTH_SHORT).show();
 								}
 							}
+							
+//							if (listView_Eventos.getLastVisiblePosition() == listView_Eventos.getAdapter().getCount() - 1
+//							&& listView_Eventos.getChildAt(listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos.getHeight()) {
+//								//Toast.makeText(getActivity(), "No hay mÃ¡s elementos para mostrar", Toast.LENGTH_SHORT).show();
+//								addMoreEvents(latOrigin, lonOrigin);
+//								y1 = 0.0f;
+//							}
 						}
 						
-//						Log.i("UP", "Y1 = " + y1 + " start = " + startY);
-//						Log.d("FirstVisiblePosition", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+						Log.i("UP", "Y1 = " + y1 + " start = " + startY);
+						
+//						if(!isScrollActive){
+//							Toast.makeText(getActivity(), "No hay mÃ¡s elementos para mostrar", Toast.LENGTH_SHORT).show();
+//						}
+						
+						Log.d("FirstVisiblePosition", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
 						if(refresh){
 							refreshTimeLine();
 						}else{
@@ -324,59 +348,13 @@ public class Page_TimeLine extends Fragment {
 					
 					case MotionEvent.ACTION_DOWN:{
 						y1 = event.getY();
-//						Log.i("DOWN", "Y1 = " + y1 + " Y2 = " + y2);
+						Log.i("DOWN", "Y1 = " + y1 + " Y2 = " + y2);
 						break;
 					}
 				}
 				return false;
 			}
 		});
-		
-//		listView_Eventos.setOnTouchListener(new OnTouchListener() {
-//			
-//			@Override
-//			public boolean onTouch(View v, MotionEvent event) {
-//				float y = event.getY();
-//				
-//				switch (event.getAction()) {
-//					
-//					case MotionEvent.ACTION_MOVE:{
-//						if(!downCounterUsed){
-//							startY=y;
-//							downCounterUsed=true;
-//						}
-//						allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
-//						Log.d("FirstVisible", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
-//						if(allowRefresh){
-//							if((y - startY) > REFRESH_THRESHOLD)
-//							{ 
-//								refresh = true;
-//								ImageUtil.getImageLoader().clearDiskCache();
-//								if(!headerAdded){
-//									//listView_Eventos.addHeaderView(headerView);
-//									((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
-//									headerAdded=true;
-//								}
-//							}
-//							else{ refresh=false; }
-//						}
-//						break;
-//					}
-//					
-//					case MotionEvent.ACTION_UP:{
-//						if(refresh){
-//							refreshTimeLine();
-//						}else{
-//							((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
-//							((ProgressBar)headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
-//						}
-//						downCounterUsed=false;
-//						refresh = false;
-//					}
-//				}
-//				return false;
-//			}
-//		});
 		return view;
 	}
 	
