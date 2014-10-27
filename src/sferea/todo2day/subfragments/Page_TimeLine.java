@@ -120,9 +120,6 @@ public class Page_TimeLine extends Fragment {
 	boolean isLoading=false;
 	
 	LocationHelper locationHelper;
-	
-	float y1;
-	float y2;
 	boolean isScrollActive = true;
 	
 	int iContador = 0;
@@ -258,7 +255,7 @@ public class Page_TimeLine extends Fragment {
 			}
 		});	
 		
-		listView_Eventos.setOnTouchListener(new OnTouchListener() {
+listView_Eventos.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -285,6 +282,7 @@ public class Page_TimeLine extends Fragment {
 								refresh = true;
 								ImageUtil.getImageLoader().clearDiskCache();
 								if(!headerAdded){
+									//listView_Eventos.addHeaderView(headerView);
 									((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
 									headerAdded=true;
 								}
@@ -315,13 +313,10 @@ public class Page_TimeLine extends Fragment {
 							
 							if(v1 != null){
 								if(v1.getBottom() <= listView_Eventos.getHeight()){
-									Toast.makeText(getActivity(), "No hay más elementos para mostrar", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(), "No hay mÃ¡s elementos para mostrar", Toast.LENGTH_SHORT).show();
 								}
 							}
-						}
-						
-//						Log.i("UP", "Y1 = " + y1 + " start = " + startY);
-//						Log.d("FirstVisiblePosition", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+
 						if(refresh){
 							refreshTimeLine();
 						}else{
@@ -336,59 +331,12 @@ public class Page_TimeLine extends Fragment {
 					
 					case MotionEvent.ACTION_DOWN:{
 						y1 = event.getY();
-//						Log.i("DOWN", "Y1 = " + y1 + " Y2 = " + y2);
 						break;
 					}
 				}
 				return false;
 			}
 		});
-		
-//		listView_Eventos.setOnTouchListener(new OnTouchListener() {
-//			
-//			@Override
-//			public boolean onTouch(View v, MotionEvent event) {
-//				float y = event.getY();
-//				
-//				switch (event.getAction()) {
-//					
-//					case MotionEvent.ACTION_MOVE:{
-//						if(!downCounterUsed){
-//							startY=y;
-//							downCounterUsed=true;
-//						}
-//						allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
-//						Log.d("FirstVisible", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
-//						if(allowRefresh){
-//							if((y - startY) > REFRESH_THRESHOLD)
-//							{ 
-//								refresh = true;
-//								ImageUtil.getImageLoader().clearDiskCache();
-//								if(!headerAdded){
-//									//listView_Eventos.addHeaderView(headerView);
-//									((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
-//									headerAdded=true;
-//								}
-//							}
-//							else{ refresh=false; }
-//						}
-//						break;
-//					}
-//					
-//					case MotionEvent.ACTION_UP:{
-//						if(refresh){
-//							refreshTimeLine();
-//						}else{
-//							((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
-//							((ProgressBar)headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
-//						}
-//						downCounterUsed=false;
-//						refresh = false;
-//					}
-//				}
-//				return false;
-//			}
-//		});
 		return view;
 	}
 	
