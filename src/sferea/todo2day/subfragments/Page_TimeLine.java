@@ -178,9 +178,7 @@ public class Page_TimeLine extends Fragment {
 	//bandera tomara el valor que retorna @parseFirstJson_AddDB(json) para que dependiendo de su resultado activara
 	//las funciones en el hilo principal UI, ya sea mandar un toast avisando que trono o si todo sale bien, llenar la lista de eventos
 	boolean bandera = false; 
-	
-	float y1;
-	float y2;
+
 	public Page_TimeLine(){}
 	
 	@Override

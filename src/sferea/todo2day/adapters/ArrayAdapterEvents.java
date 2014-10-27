@@ -61,6 +61,8 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 	int favoritosAdd = 2;
 	ImageLoader imageloader;
 	DisplayImageOptions options;
+	String inicioTweet; 
+	String enTweet; 
 	
 	public ArrayAdapterEvents(Context context, int resource, int textViewResourceId, List objects){
 		super(context, resource, textViewResourceId, objects);
@@ -73,11 +75,35 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		final ViewHolder viewHolder;
+		View v = convertView;
+		if(v == null){
+			v = LayoutInflater.from(getContext()).inflate(R.layout.row_event_responsive, null);
+			viewHolder = new ViewHolder();
+			viewHolder.botonFavoritos = (RelativeLayout)v.findViewById(R.id.botonFavEvent);
+			viewHolder.botonRetweetEvent = (RelativeLayout)v.findViewById(R.id.botonRetweetEvent);
+			viewHolder.categoriaEvento = (TextView)v.findViewById(R.id.categoriaFavorito);
+			viewHolder.nombreEvento = (TextView)v.findViewById(R.id.nombreFavorito);
+			viewHolder.fechaEvento = (TextView)v.findViewById(R.id.fechaFavorito);
+			viewHolder.lugarEvento = (TextView)v.findViewById(R.id.lugarFavorito);
+			viewHolder.distanciaEvento = (TextView)v.findViewById(R.id.distanciaFavorito);
+			viewHolder.descripcionEvento = (TextView)v.findViewById(R.id.descripcionFavorito);
+			viewHolder.thumbEvento = (ImageView)v.findViewById(R.id.thumbnailFavorite);
+			viewHolder.iconCategoria = (ImageView)v.findViewById(R.id.iconCategoriaFavorito);
+			viewHolder.iconFavorito = (ImageView)v.findViewById(R.id.iconFavFavorito);
+			viewHolder.iconRetweet = (ImageView)v.findViewById(R.id.iconRetweetFavorito);
+			
+			v.setTag(viewHolder);
+		}
+		else{
+			viewHolder = (ViewHolder)v.getTag();
+		}
 		
-		LayoutInflater layoutInflater = (LayoutInflater)thisContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View newView = layoutInflater.inflate(R.layout.row_event_responsive, null);
+		inicioTweet = v.getResources().getString(R.string.cadenaTweet_inicio);
+		enTweet = v.getResources().getString(R.string.cadenaTweet_en);
+		
 		final int pos = position;
-		newView.setOnClickListener(new OnClickListener() {
+		v.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Constants_Settings constants = new Constants_Settings();
@@ -98,8 +124,8 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 			}
 		});
 		
-		setInfoAndListenersInEvent(newView, pos);
-		return newView;
+		setInfoAndListenersInEvent(viewHolder, pos);
+		return v;
 	}
 	
 	/**
@@ -114,13 +140,13 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 	 * @param eventView
 	 * @param position
 	 */
-	void setInfoAndListenersInEvent(View eventView, final int position){
+	void setInfoAndListenersInEvent(ViewHolder eventView, final int position){
 		
 		DataBaseSQLiteManager managerDB = new DataBaseSQLiteManager(thisContext);
 		
 		String nombreEvento; String categoriaEvento; String fechaEvento; String horarioEvento; String urlImagen;
 		String lugarEvento; String distanciaEvento;
-		String inicioTweet; String enTweet; 
+		
 		Bitmap imagenEvento;
 		int imagenCategoria;
 		
@@ -150,51 +176,26 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 		imagenCategoria = eventoObjeto.getImagenCategoria();
 		
 		SubF_Events.iFavoritos = new int [objectArrayList.size()];
-		
-//		for (int i=0; i<objectArrayList.size(); i++){
-//			if(i==position){
-//				imgFav = objectArrayList.get(position).getBtnFav();
-//				imgRetweet = objectArrayList.get(position).getBtnRetweet();
-//				iFavoritos  [i] = i;
-//				break;
-//			}
-//		}
-		
-		/*
-		<string-array name="categorias">
-	        <item>Antros y Bares</item>
-	        <item>Cine y Teatro</item>
-	        <item>Cultura</item>
-	        <item>Deportes</item>
-	        <item>Negocios</item>
-	        <item>Con ninios</item>
-	        <item>Gastronomia</item>
-	        <item>Musica</item>
-	        <item>Salud</item>
-	        <item>Sociales</item>
-	        <item>Tecnologia</item>
-	        <item>Verde</item>
-	    </string-array>
-	    */
+
 		String[] categorias = thisContext.getResources().getStringArray(R.array.categorias);
 		int[] id_small_icons = {R.drawable.ic_small_antros,R.drawable.ic_small_cine, R.drawable.ic_small_cultura, R.drawable.ic_small_deportes,
 				R.drawable.ic_small_negocios, R.drawable.ic_small_con_ninos, R.drawable.ic_small_gastronomia, R.drawable.ic_small_musica,
 				R.drawable.ic_small_salud, R.drawable.ic_small_sociales, R.drawable.ic_small_tecnologia, R.drawable.ic_small_verde};
 		for(int i=0; i<categorias.length; i++){
 			if(categorias[i].equals(categoriaEvento))
-				((ImageView)eventView.findViewById(R.id.iconCategoriaFavorito)).setImageResource(id_small_icons[i]);
+				eventView.iconCategoria.setImageResource(id_small_icons[i]);
 				id_small_icons[2] = imagenCategoria;
 		}
 		
 		//Asignamos al view las variables intermedias	
-		((TextView)eventView.findViewById(R.id.nombreFavorito)).setText(nombreEvento);
-		((TextView)eventView.findViewById(R.id.categoriaFavorito)).setText(categoriaEvento);
-		((TextView)eventView.findViewById(R.id.fechaFavorito)).setText(fechaEvento);
-		((TextView)eventView.findViewById(R.id.lugarFavorito)).setText(lugarEvento);
-		((TextView)eventView.findViewById(R.id.distanciaFavorito)).setText(distanciaEvento);
-		((TextView)eventView.findViewById(R.id.descripcionFavorito)).setText(descripcionEvento);
+		eventView.nombreEvento.setText(nombreEvento);
+		eventView.categoriaEvento.setText(categoriaEvento);
+		eventView.fechaEvento.setText(fechaEvento);
+		eventView.lugarEvento.setText(lugarEvento);
+		eventView.distanciaEvento.setText(distanciaEvento);
+		eventView.descripcionEvento.setText(descripcionEvento);
 		
-		imageloader.displayImage(urlImagen, (ImageView)eventView.findViewById(R.id.thumbnailFavorite), options);
+		imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
 		/*if(imagenEvento!=null){
 			((ImageView)eventView.findViewById(R.id.thumbnailFavorite)).setImageBitmap(imagenEvento);
 		}
@@ -220,27 +221,22 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 			cursor.close();
 //			managerDB.cerrarDB();
 		}
-		iconFavorite = (ImageView)eventView.findViewById(R.id.iconFavFavorito);
+		
 		for(int j =0; j<nombreEventoEncontrados.size(); j++){
 			if(nombreEventoEncontrados.get(j).toString().equals(eventoObjeto.getNombreEvento())){
 				activaEliminarDB= true;
-				iconFavorite.setImageResource(R.drawable.ic_action_important_active);
+				eventView.iconFavorito.setImageResource(R.drawable.ic_action_important_active);
 				Page_TimeLine.prendeEstrellaDetails = true;
 				Page_TimeLine.prendeEstrellaTime_Line[objectArrayList.get(position).getPosicion()] = true;
 			}
 		}
 		
-		RelativeLayout btnFav = (RelativeLayout)eventView.findViewById(R.id.botonFavEvent);
-		inicioTweet = eventView.getResources().getString(R.string.cadenaTweet_inicio);
-		enTweet = eventView.getResources().getString(R.string.cadenaTweet_en);
-		
-		TextView titulo = ((TextView)eventView.findViewById(R.id.nombreFavorito));
-		titulo.setText(objectArrayList.get(position).getNombreEvento());
+		eventView.nombreEvento.setText(objectArrayList.get(position).getNombreEvento());
 		
 		Typeface tf;
 		try {
 			tf = Typeface.createFromAsset(thisContext.getAssets(), "fonts/myriadpro.otf");
-			titulo.setTypeface(tf);
+			eventView.nombreEvento.setTypeface(tf);
 		} catch (Exception e) {
 			Log.e(null,"FONT NOT AVAILABLE");
 		}
@@ -248,7 +244,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 		//Crea la cadena del tweet
 		String tweetString = inicioTweet+" \""+objectArrayList.get(position).getNombreEvento()+"\" "+enTweet+" "+lugarEvento+" Vía yiepa!";
 		lanzarAlertDialogTweet(tweetString, eventView,position);
-		agregarFavoritos(eventView, btnFav, position, managerDB);
+		agregarFavoritos(eventView, position, managerDB);
 	}
 	
 	/**
@@ -256,9 +252,9 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 	 * @param tweetString
 	 * @param eventView
 	 */
-	private void lanzarAlertDialogTweet(final String tweetString, final View eventView, int position){
+	private void lanzarAlertDialogTweet(final String tweetString, final ViewHolder eventView, int position){
 		//Se coloca el OnClickListener al boton de retweet el cual crea un dialogo
-		((RelativeLayout)eventView.findViewById(R.id.botonRetweetEvent)).setOnClickListener(new OnClickListener() {
+		eventView.botonRetweetEvent.setOnClickListener(new OnClickListener() {
 //		btnRet.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -352,9 +348,10 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 	 * Esta funci�n va a mandar llamar el boton de favoritos agregando los datos de la fila que se seleccione
 	 * @param eventView
 	 */
-	private void agregarFavoritos(final View eventView, final RelativeLayout botonFavorite,
+	private void agregarFavoritos(final ViewHolder eventView,
 			final int position, final DataBaseSQLiteManager manager){
-		botonFavorite.setOnClickListener(new OnClickListener() {
+		
+		eventView.botonFavoritos.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -366,7 +363,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 						Page_TimeLine.prendeEstrellaDetails = false;
 						Page_TimeLine.prendeEstrellaTime_Line[position] = false;
 						
-						((ImageView)eventView.findViewById(R.id.iconFavFavorito)).setImageResource(R.drawable.ic_action_important);
+						eventView.iconFavorito.setImageResource(R.drawable.ic_action_important);
 						
 						manager.eliminar(String.valueOf(objectArrayList.get(position).getIndexOfEvent()));
 						
@@ -377,7 +374,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 						Page_TimeLine.prendeEstrellaDetails = true;
 						Page_TimeLine.prendeEstrellaTime_Line[position] = true;
 						
-						((ImageView)eventView.findViewById(R.id.iconFavFavorito)).setImageResource(R.drawable.ic_action_important_active);
+						eventView.iconFavorito.setImageResource(R.drawable.ic_action_important_active);
 						
 						manager.insertar(objectArrayList.get(position).getNombreEvento(), 
 								objectArrayList.get(position).getCategoriaEvento(),
@@ -409,7 +406,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
         return img=bos.toByteArray();		
 	}	
 	
-	public boolean Send_Tweet(String tweet_text, final View eventView) {
+	public boolean Send_Tweet(String tweet_text, final ViewHolder eventView) {
 
 		Constants_Settings constants = new Constants_Settings();
 		SharedPreferencesHelper shrpref = new SharedPreferencesHelper(constants.SHARED_PREF_NAME, getContext().getApplicationContext());
@@ -461,7 +458,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 //		        	//TODO cambiar de strings
 //		        	iContador++;
 //		        	contadorTweet(eventView, iContador);
-		        	((ImageView)eventView.findViewById(R.id.iconRetweetFavorito)).setImageResource(R.drawable.ic_action_refresh_inactive);
+		        	eventView.iconRetweet.setImageResource(R.drawable.ic_action_refresh_inactive);
 		        	Toast.makeText(getContext().getApplicationContext(),"Tweet posteado exitosamente", Toast.LENGTH_SHORT).show();
 		        }
 		    });
@@ -498,4 +495,20 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
         Toast.makeText(thisContext, "Verificar la conexión a internet", Toast.LENGTH_SHORT).show();
         return false;
      }
+	 
+	 class ViewHolder{
+		 ImageView iconCategoria;
+		 ImageView thumbEvento;
+		 TextView nombreEvento;
+		 TextView categoriaEvento;
+		 TextView fechaEvento;
+		 TextView lugarEvento;
+		 TextView distanciaEvento;
+		 TextView descripcionEvento;
+		 RelativeLayout botonRetweetEvent;
+		 TextView tweetCounter;
+		 RelativeLayout botonFavoritos;
+		 ImageView iconFavorito;
+		 ImageView iconRetweet;
+	 }
 }
