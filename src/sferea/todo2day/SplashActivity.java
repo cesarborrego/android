@@ -95,10 +95,8 @@ public class SplashActivity extends Activity {
 						for (int x=0; x<13; x++){
 							if(prefsCategorias.getString("Categories "+x, null)!=null){
 								creaArchivoShared = false;
-								System.out.println("No");
 								break;
 							}else{
-								System.out.println("Si");
 							}
 						}
 
@@ -152,10 +150,6 @@ public class SplashActivity extends Activity {
 				"&categoria="+categorias+"" +
 				"&numEventos=0&idEvento=0&fecha=0");
 	}
-
-	
-
-	
 
 	public void gps(){
 		LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);

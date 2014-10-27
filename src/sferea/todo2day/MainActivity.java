@@ -389,11 +389,11 @@ public class MainActivity extends ActionBarActivity {
 	        sharedPreferencesHelperFinal = new SharedPreferencesHelperFinal(getApplicationContext());
 			
 			
-			pDialog.show();
+			
 	    	new AsyncTask<String, Void, InputStream>(){
 	    		
 	    		protected void onPreExecute() {
-	    			
+	    			pDialog.show();
 	    		};
 
 				@Override
