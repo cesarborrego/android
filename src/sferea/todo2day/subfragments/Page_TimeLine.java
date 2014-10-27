@@ -176,6 +176,9 @@ public class Page_TimeLine extends Fragment {
 	//bandera tomara el valor que retorna @parseFirstJson_AddDB(json) para que dependiendo de su resultado activara
 	//las funciones en el hilo principal UI, ya sea mandar un toast avisando que trono o si todo sale bien, llenar la lista de eventos
 	boolean bandera = false; 
+	
+	float y1;
+	float y2;
 	public Page_TimeLine(){}
 	
 	@Override
@@ -268,15 +271,20 @@ public class Page_TimeLine extends Fragment {
 							startY=y;
 							downCounterUsed=true;
 						}
+						
+						y1 = event.getY();
+						
 						allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
 						Log.d("FirstVisible", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+						
+						
+						
 						if(allowRefresh){
 							if((y - startY) > REFRESH_THRESHOLD)
 							{ 
 								refresh = true;
 								ImageUtil.getImageLoader().clearDiskCache();
 								if(!headerAdded){
-									//listView_Eventos.addHeaderView(headerView);
 									((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
 									headerAdded=true;
 								}
@@ -287,6 +295,21 @@ public class Page_TimeLine extends Fragment {
 					}
 					
 					case MotionEvent.ACTION_UP:{
+						y2 = event.getY();
+//						
+						if(startY > y1)
+						{
+							View v1 = listView_Eventos.getChildAt(listView_Eventos.getAdapter().getCount() - 1);
+							
+							if(v1 != null){
+								if(v1.getBottom() <= listView_Eventos.getHeight()){
+									Toast.makeText(getActivity(), "No hay más elementos para mostrar", Toast.LENGTH_SHORT).show();
+								}
+							}
+						}
+						
+//						Log.i("UP", "Y1 = " + y1 + " start = " + startY);
+//						Log.d("FirstVisiblePosition", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
 						if(refresh){
 							refreshTimeLine();
 						}else{
@@ -295,12 +318,65 @@ public class Page_TimeLine extends Fragment {
 						}
 						downCounterUsed=false;
 						refresh = false;
+						break;
+					}
+			
+					
+					case MotionEvent.ACTION_DOWN:{
+						y1 = event.getY();
+//						Log.i("DOWN", "Y1 = " + y1 + " Y2 = " + y2);
+						break;
 					}
 				}
 				return false;
 			}
 		});
 		
+//		listView_Eventos.setOnTouchListener(new OnTouchListener() {
+//			
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				float y = event.getY();
+//				
+//				switch (event.getAction()) {
+//					
+//					case MotionEvent.ACTION_MOVE:{
+//						if(!downCounterUsed){
+//							startY=y;
+//							downCounterUsed=true;
+//						}
+//						allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
+//						Log.d("FirstVisible", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+//						if(allowRefresh){
+//							if((y - startY) > REFRESH_THRESHOLD)
+//							{ 
+//								refresh = true;
+//								ImageUtil.getImageLoader().clearDiskCache();
+//								if(!headerAdded){
+//									//listView_Eventos.addHeaderView(headerView);
+//									((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
+//									headerAdded=true;
+//								}
+//							}
+//							else{ refresh=false; }
+//						}
+//						break;
+//					}
+//					
+//					case MotionEvent.ACTION_UP:{
+//						if(refresh){
+//							refreshTimeLine();
+//						}else{
+//							((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
+//							((ProgressBar)headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
+//						}
+//						downCounterUsed=false;
+//						refresh = false;
+//					}
+//				}
+//				return false;
+//			}
+//		});
 		return view;
 	}
 	
@@ -309,12 +385,18 @@ public class Page_TimeLine extends Fragment {
 			ParseJson_AddDB parseJson_AddDB;
 			
 			protected void onPreExecute() {
-				parseJson_AddDB = new ParseJson_AddDB(getActivity().getApplicationContext(), getActivity());
+				if(getActivity()!=null){
+					if(!isCancelled()){
+						parseJson_AddDB = new ParseJson_AddDB(getActivity().getApplicationContext(), getActivity());
+					}
+				}
 			};
 			
 			@Override
-			protected Void doInBackground(Void... arg0) {				
-				bandera = parseJson_AddDB.parseFirstJson_AddDB(json);
+			protected Void doInBackground(Void... arg0) {	
+				if(!isCancelled()){
+					bandera = parseJson_AddDB.parseFirstJson_AddDB(json);
+				}
 				return null;
 			}
 			
@@ -334,7 +416,9 @@ public class Page_TimeLine extends Fragment {
 		new AsyncTask<Void, Void, Void>(){
 			ReadTableDB readTableDB;
 			protected void onPreExecute() {
-				readTableDB = new ReadTableDB(getActivity().getApplicationContext());
+				if(!isCancelled()){
+					readTableDB = new ReadTableDB(getActivity().getApplicationContext());
+				}
 			};
 
 			@Override
@@ -343,7 +427,9 @@ public class Page_TimeLine extends Fragment {
 			}
 			
 			protected void onPostExecute(Void result) {
-				readTableDB.readTable_FillList();
+				if(!isCancelled()){
+					readTableDB.readTable_FillList();
+				}
 			};
 			
 		}.execute();
@@ -360,7 +446,10 @@ public class Page_TimeLine extends Fragment {
 
 			@Override
 			protected Void doInBackground(String... params) {
-				jsonHelper.connectionMongo_Json(params[0]);				
+				if(!isCancelled()){
+					jsonHelper.connectionMongo_Json(params[0]);
+				}
+									
 				return null;				
 			}
 
@@ -368,10 +457,11 @@ public class Page_TimeLine extends Fragment {
 			protected void onPostExecute(Void result) {
 				this.cancel(true);
 				//Quita el footer
-				
-				json = jsonHelper.leerPrimerJson();
-				guardaPrimerJsonDB();
-				((ProgressBar)footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.GONE);
+//				if(!isCancelled()){
+					json = jsonHelper.leerPrimerJson();
+					guardaPrimerJsonDB();
+					((ProgressBar)footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.GONE);
+//				}
 //				readTableEvents_fillListEvent();
 
 			};
