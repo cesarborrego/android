@@ -2,14 +2,12 @@ package sferea.todo2day.adapters;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
-import java.util.Vector;
 
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.DataBaseSQLiteManager;
-import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
 import sferea.todo2day.config.SharedPreferencesHelper;
 import sferea.todo2day.subfragments.Page_TimeLine;
 import sferea.todo2day.subfragments.SubF_Events;
