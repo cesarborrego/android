@@ -1,13 +1,9 @@
 package sferea.todo2day;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import sferea.todo2day.Helpers.CheckInternetConnection;
 import sferea.todo2day.Helpers.JsonHelper;
 import sferea.todo2day.Helpers.ReadTableDB;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
@@ -55,6 +51,7 @@ public class SplashActivity extends Activity {
 	JsonHelper jsonHelper;
 	SharedPreferencesHelperFinal sharedPreferencesHelper;
 	ReadTableDB readTableDB;
+	CheckInternetConnection checkInternetConnection;
 	
 	public static boolean leeJSONCache = false;
 
@@ -66,6 +63,7 @@ public class SplashActivity extends Activity {
 		jsonHelper = new JsonHelper(getApplicationContext(), this);
 		sharedPreferencesHelper = new SharedPreferencesHelperFinal(getApplicationContext());
 		readTableDB = new ReadTableDB(getApplicationContext());
+		checkInternetConnection = new CheckInternetConnection(getApplicationContext(), this);
 		
 		if(jsonHelper.leerPrimerJson()!=null){
 			leeJSONCache = true;
@@ -83,7 +81,7 @@ public class SplashActivity extends Activity {
 			timer.schedule(task, splashDelay);//Pasado los X segundos dispara la tarea
 		}else{
 			leeJSONCache = false;
-			if(isConnectedToInternet(getApplicationContext())){
+			if(checkInternetConnection.isConnectedToInternetSplash()){
 				//		gps();
 
 				TimerTask task = new TimerTask() {
@@ -223,24 +221,7 @@ public class SplashActivity extends Activity {
 		if(isWirelessActive){
 			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 5, locationListener);
 		}
-	}
-
-	public boolean isConnectedToInternet(Context _context) {
-		ConnectivityManager connectivity = (ConnectivityManager) _context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		if (connectivity != null) {
-			NetworkInfo[] info = connectivity.getAllNetworkInfo();
-			if (info != null)
-				for (int i = 0; i < info.length; i++)
-					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-						return true;
-					}
-		}
-		Toast.makeText(getApplicationContext(),
-				"Verificar la conexión a internet", Toast.LENGTH_SHORT).show();
-		this.finish();
-		return false;
-	}
+	}	
 
 	static{
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();  
