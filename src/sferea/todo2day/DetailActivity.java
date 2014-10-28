@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import sferea.todo2day.Helpers.CheckInternetConnection;
 import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.adapters.ArrayAdapterFavorites;
 import sferea.todo2day.adapters.EventoObjeto;
@@ -78,6 +79,8 @@ public class DetailActivity extends ActionBarActivity {
 	ImageLoader imageloader;
 	DisplayImageOptions options;
 	
+	CheckInternetConnection checkInternetConnection;
+	
 //	String imageHttpAddress = "http://androideity.com/wp-content/uploads/2011/12/animacionframe.png";
 
 	@Override
@@ -86,6 +89,7 @@ public class DetailActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_detail);
 		imageloader = ImageUtil.getImageLoader();
 		options = ImageUtil.getOptionsImageLoader();
+		checkInternetConnection = new CheckInternetConnection(getApplicationContext(), this);
 		
 //		LayoutInflater layoutInflater = (LayoutInflater)getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //		View newView = layoutInflater.inflate(R.layout.page_favorites, null);	
@@ -154,18 +158,19 @@ public class DetailActivity extends ActionBarActivity {
 				String enTweet = getResources().getString(R.string.cadenaTweet_en);
 				final String tweetString = inicioTweet+" \""+evento.getNombreEvento()+"\" "+enTweet+" "+evento.getLugarEvento()+" Vía yiepa!";
 				
-				String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
-						"center="+evento.getLatEvento()+","+evento.getLonEvento()+"" +
-						"&zoom=15" +
-						"&size=600x300" +
-						"&scale=2" +
-						"&maptype=roadmap" +
-						"&markers=color:blue%7C"+evento.getLatEvento()+","+evento.getLonEvento()+"" +
-						"&sensor=true_or_false";
-				
-				Log.d(null, imageHttpAddress);
-				
-				downloadPicture(imageHttpAddress);
+				if(checkInternetConnection.isConnectedToInternet()){
+					String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
+							"center="+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
+							"&zoom=15" +
+							"&size=600x300" +
+							"&scale=2" +
+							"&maptype=roadmap" +
+							"&markers=color:blue%7C"+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
+							"&sensor=true_or_false";
+					Log.d(null, imageHttpAddress);
+					
+					downloadPicture(imageHttpAddress);
+				}
 				
 			} else {
 				Log.d(null, "Entra por favoritos");
@@ -208,18 +213,19 @@ public class DetailActivity extends ActionBarActivity {
 				String enTweet = getResources().getString(R.string.cadenaTweet_en);
 				final String tweetString = inicioTweet+" \""+favoritosObjeto.getNombreEvento()+"\" "+enTweet+" "+favoritosObjeto.getLugarEvento()+" Vía yiepa!";
 				
-				String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
-						"center="+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
-						"&zoom=15" +
-						"&size=600x300" +
-						"&scale=2" +
-						"&maptype=roadmap" +
-						"&markers=color:blue%7C"+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
-						"&sensor=true_or_false";
-				
-				Log.d(null, imageHttpAddress);
-				
-				downloadPicture(imageHttpAddress);
+				if(checkInternetConnection.isConnectedToInternet()){
+					String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
+							"center="+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
+							"&zoom=15" +
+							"&size=600x300" +
+							"&scale=2" +
+							"&maptype=roadmap" +
+							"&markers=color:blue%7C"+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
+							"&sensor=true_or_false";
+					Log.d(null, imageHttpAddress);
+					
+					downloadPicture(imageHttpAddress);
+				}
 			}
 			
 			tel.setOnClickListener(new OnClickListener() {
@@ -244,16 +250,20 @@ public class DetailActivity extends ActionBarActivity {
 			((RelativeLayout)findViewById(R.id.capaMapa)).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Page_TimeLine.activaRuta= "si";
-					Bundle bundle = new Bundle();
-					if(Page_TimeLine.eventoActivo){
-						bundle.putDoubleArray("LatLon", new double[]{evento.getLonEvento(), evento.getLatEvento()});
-					} else if(Page_TimeLine.favoritoActivo){
-						bundle.putDoubleArray("LatLon", new double[]{favoritosObjeto.getLonEvento(), favoritosObjeto.getLatEvento()});
+					if(checkInternetConnection.isConnectedToInternet()){
+						Page_TimeLine.activaRuta= "si";
+						Bundle bundle = new Bundle();
+						if(Page_TimeLine.eventoActivo){
+							bundle.putDoubleArray("LatLon", new double[]{evento.getLonEvento(), evento.getLatEvento()});
+						} else if(Page_TimeLine.favoritoActivo){
+							bundle.putDoubleArray("LatLon", new double[]{favoritosObjeto.getLonEvento(), favoritosObjeto.getLatEvento()});
+						}
+						Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+						intent.putExtras(bundle);
+						startActivity(intent);
+					}else{
+						Toast.makeText(getApplicationContext(), "Verificar la conexión a Internet", Toast.LENGTH_SHORT).show();
 					}
-					Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-					intent.putExtras(bundle);
-					startActivity(intent);
 				}
 			});		
 		}
