@@ -225,7 +225,9 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 		eventView.distanciaEvento.setText(distanciaEvento);
 		eventView.descripcionEvento.setText(descripcionEvento);
 
-		imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
+		if(!urlImagen.equals("No disponible")){
+			imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
+		}
 
 		// dependiendo de los resultados prendemos o apagamos las estrellas de
 		// favoritos
