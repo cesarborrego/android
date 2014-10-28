@@ -153,6 +153,10 @@ public class DataBaseSQLiteManager {
 		return db.rawQuery("SELECT * FROM FAVORITES", null);
 	}
 	
+	public Cursor queryEventByName(String eventName){
+		return db.rawQuery("SELECT TITULO_EVENTO FROM FAVORITES WHERE TITULO_EVENTO = ?", new String[]{eventName});
+	}
+	
 	public void cerrarDB(){
 		db.close();
 	}

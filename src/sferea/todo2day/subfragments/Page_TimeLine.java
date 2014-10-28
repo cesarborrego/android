@@ -169,6 +169,7 @@ public class Page_TimeLine extends Fragment {
 	int [] fechaUnixSave;
 	String urlImagenes [];
 	
+	float y1;
 	
 	JsonHelper jsonHelper;
 	
@@ -290,22 +291,10 @@ listView_Eventos.setOnTouchListener(new OnTouchListener() {
 							else{ refresh=false; }
 						}
 						
-//						if(startY > y2)
-//						{
-//
-//							if (listView_Eventos.getChildAt(listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos.getHeight()) {
-//						        isScrollActive = false;
-//							}
-//							else{
-//								isScrollActive = true;
-//							}
-//						}
-						//Log.i("MOVE", "Y1 = " + y1 + " Y2 = " + y2);
 						break;
 					}
 					
 					case MotionEvent.ACTION_UP:{
-						y2 = event.getY();
 //						
 						if(startY > y1)
 						{
@@ -317,15 +306,16 @@ listView_Eventos.setOnTouchListener(new OnTouchListener() {
 								}
 							}
 
-						if(refresh){
-							refreshTimeLine();
-						}else{
-							((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
-							((ProgressBar)headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
+							if(refresh){
+								refreshTimeLine();
+							}else{
+								((TextView)headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
+								((ProgressBar)headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
+							}
+							downCounterUsed=false;
+							refresh = false;
+							break;
 						}
-						downCounterUsed=false;
-						refresh = false;
-						break;
 					}
 			
 					
