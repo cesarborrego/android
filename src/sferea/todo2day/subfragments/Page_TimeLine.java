@@ -518,7 +518,6 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 			ReadTableDB readTableDB = new ReadTableDB(getActivity()
 					.getApplicationContext());
 			readTableDB.readTable_FillList();
-			arrayAdapterEvents.notifyDataSetChanged();
 		} else {
 			Toast.makeText(
 					getActivity().getApplicationContext(),

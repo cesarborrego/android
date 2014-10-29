@@ -39,7 +39,7 @@ public class ReadTableDB {
 	}
 
 	public void readTable_FillList() {
-		Page_TimeLine.listaEventos.clear();
+		//Page_TimeLine.listaEventos.clear();
 		Cursor cursor = dataBaseSQLiteManagerEvents.cargarTablas();
 		try {
 			if (cursor.moveToFirst()) {
