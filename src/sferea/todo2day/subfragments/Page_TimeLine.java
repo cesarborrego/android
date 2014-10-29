@@ -15,6 +15,8 @@ import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterEvents;
 import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.config.LocationHelper;
+import sferea.todo2day.tasks.AddMoreEventsTask;
+import sferea.todo2day.tasks.TaskListener;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -33,7 +35,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Page_TimeLine extends Fragment {
+public class Page_TimeLine extends Fragment implements TaskListener{
 
 	public static final float REFRESH_THRESHOLD = 50;
 	public static List<EventoObjeto> listaEventos;
@@ -183,6 +185,8 @@ public class Page_TimeLine extends Fragment {
 
 	CheckInternetConnection checkInternetConnection;
 
+	ProgressBar progressFooter;
+
 	public Page_TimeLine() {
 	}
 
@@ -223,6 +227,9 @@ public class Page_TimeLine extends Fragment {
 		listaEventos = new ArrayList<EventoObjeto>();
 		// Obtiene la vista del listView
 		listView_Eventos = ((ListView) view.findViewById(R.id.listviewEventos));
+
+		progressFooter = ((ProgressBar) footerView
+				.findViewById(R.id.progressBarFooter));
 
 		readTableEvents_fillListEvent();
 		if (SplashActivity.leeJSONCache) {
@@ -275,7 +282,7 @@ public class Page_TimeLine extends Fragment {
 								if (checkInternetConnection
 										.isConnectedToInternet()) {
 									addMoreEvents(latOrigin, lonOrigin);
-									readTableEvents_fillListEvent();
+									//readTableEvents_fillListEvent();
 								} else {
 									Toast.makeText(
 											getActivity()
@@ -443,46 +450,18 @@ public class Page_TimeLine extends Fragment {
 	}
 
 	public void addMoreEvents(final double lat, final double lon) {
+
+		progressFooter.setVisibility(View.VISIBLE);
+
 		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 				getActivity().getApplicationContext());
 
-		new AsyncTask<String, Void, Void>() {
-			protected void onPreExecute() {
-				((ProgressBar) footerView.findViewById(R.id.progressBarFooter))
-						.setVisibility(View.VISIBLE);
-			};
+		AddMoreEventsTask task = new AddMoreEventsTask(this.getActivity(), this);
 
-			@Override
-			protected Void doInBackground(String... params) {
-
-				if (!isCancelled()) {
-					jsonHelper.connectionMongo_Json(params[0]);
-				}
-
-				return null;
-			}
-
-			@Override
-			protected void onPostExecute(Void result) {
-				this.cancel(true);
-				// Quita el footer
-				// if(!isCancelled()){
-				json = jsonHelper.leerPrimerJson();
-				guardaPrimerJsonDB();
-				// readTableEvents_fillListEvent();
-				((ProgressBar) footerView.findViewById(R.id.progressBarFooter))
-						.setVisibility(View.GONE);
-			};
-		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + "&longitud="
-				+ lonOrigin
-				+ ""
-				+
-				// "&radio="+SplashActivity.distanciaEvento+"" +
-				"&radio=10" + "&categoria="
+		task.execute("http://yapi.sferea.com/?latitud=" + latOrigin
+				+ "&longitud=" + lonOrigin + "" + "&radio=10" + "&categoria="
 				+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
-				+
-				// "&numEventos="+numeroEventos+"" +
-				"&numEventos=0" + "&idEvento=" + indexEvent + "" + "&fecha="
+				+ "&numEventos=0" + "&idEvento=" + indexEvent + "" + "&fecha="
 				+ fechaUnix + "");
 	}
 
@@ -534,5 +513,22 @@ public class Page_TimeLine extends Fragment {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		System.gc();
+	}
+	
+	public void onTaskCompleted(Object result){
+		progressFooter.setVisibility(View.GONE);
+		if ((Boolean)result) {
+			ReadTableDB readTableDB = new ReadTableDB(getActivity()
+					.getApplicationContext());
+			readTableDB.readTable_FillList();
+			arrayAdapterEvents.notifyDataSetChanged();
+		} else {
+			Toast.makeText(
+					getActivity().getApplicationContext(),
+					"No hay Eventos Disponibles\n"
+							+ "Prueba con otras categorías!\n"
+							+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
+					Toast.LENGTH_LONG).show();
+		}
 	}
 }
