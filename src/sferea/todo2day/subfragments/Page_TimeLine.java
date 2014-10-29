@@ -285,8 +285,8 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 									Toast.makeText(
 											getActivity()
 													.getApplicationContext(),
-											"No se pueden cargar más eventos\n"
-													+ "Verificar la conexión a Internet",
+											"No se pueden cargar mÃ¡s eventos\n"
+													+ "Verificar la conexiÃ³n a Internet",
 											Toast.LENGTH_SHORT).show();
 								}
 							}
@@ -345,7 +345,7 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 										.findViewById(R.id.progressBarFooter))
 										.setVisibility(View.VISIBLE);
 								Toast.makeText(getActivity(),
-										"No hay más elementos para mostrar",
+										"No hay mÃ¡s elementos para mostrar",
 										Toast.LENGTH_LONG).show();
 								((ProgressBar) footerView
 										.findViewById(R.id.progressBarFooter))
@@ -413,8 +413,8 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 					Toast.makeText(
 							getActivity().getApplicationContext(),
 							"No hay Eventos Disponibles\n"
-									+ "Prueba con otras categorías!\n"
-									+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
+									+ "Prueba con otras categorÃ­as!\n"
+									+ "Y/o Aumenta el Radio de bÃºsqueda en los ajustes",
 							Toast.LENGTH_LONG).show();
 				}
 			};
@@ -452,7 +452,9 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 
 		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 				getActivity().getApplicationContext());
+		AddMoreEventsTask task = new AddMoreEventsTask(getActivity(), this);
 
+		
 		AddMoreEventsTask task = new AddMoreEventsTask(this.getActivity(), this);
 
 		task.execute("http://yapi.sferea.com/?latitud=" + latOrigin
