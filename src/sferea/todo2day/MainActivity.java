@@ -12,10 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sferea.todo2day.Helpers.ImageUtil;
+import sferea.todo2day.Helpers.JsonHelper;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterSettings;
 import sferea.todo2day.adapters.DrawerItemRow;
 import sferea.todo2day.config.Constants_Settings;
+import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
 import sferea.todo2day.config.SharedPreferencesHelper;
 import sferea.todo2day.subfragments.Page_Favorites;
 import sferea.todo2day.subfragments.Page_TimeLine;
@@ -81,7 +83,8 @@ public class MainActivity extends ActionBarActivity {
 	double latOrigin= 19.355582;
 	double lonOrigin =-99.186726;
 	SharedPreferencesHelperFinal sharedPreferencesHelperFinal;
-	
+	JsonHelper jsonHelper;
+	DataBaseSQLiteManagerEvents dataBaseSQLiteManagerEvents;	
 //	double latOrigin;
 //	double lonOrigin;
 	
@@ -387,57 +390,27 @@ public class MainActivity extends ActionBarActivity {
 	        pDialog.setMax(100);
 	        
 	        sharedPreferencesHelperFinal = new SharedPreferencesHelperFinal(getApplicationContext());
-			
-			
-			
-	    	new AsyncTask<String, Void, InputStream>(){
+	        jsonHelper = new JsonHelper(getApplicationContext(), this);
+	        dataBaseSQLiteManagerEvents = new DataBaseSQLiteManagerEvents(getApplicationContext());
+		
+	    	new AsyncTask<String, Void, Void>(){
 	    		
 	    		protected void onPreExecute() {
+	    			dataBaseSQLiteManagerEvents.eliminarAllItems();
 	    			pDialog.show();
 	    		};
 
 				@Override
-				protected InputStream doInBackground(String... params) {
-					InputStream inputStream = null;
-					URL url = null;
-					HttpURLConnection con = null;
-					if(!isCancelled()){					
-						try {
-							ImageUtil.getImageLoader().clearDiskCache();
-							url = new URL(params[0]);
-							Log.d(null,params[0]);
-							con = (HttpURLConnection) url.openConnection();
-							inputStream = con.getInputStream();
-						} catch (MalformedURLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-		          	  	
-		          	  if(inputStream!=null){
-							readStream(inputStream);
-//							leerJson();
-						}
-					}
-					
-					
-			        
-					return inputStream;
+				protected Void doInBackground(String... params) {
+					Log.d("Mongo", params[0]);
+					jsonHelper.connectionMongo_Json(params[0]);
+					return null;
 				}
 				
 				@Override
-				protected void onPostExecute(InputStream result) {
-//					if(result!=null){
-//						readStream(result);
-////						leerJson();
-//					}
-//	    			refreshFavoritesFragment();
+				protected void onPostExecute(Void result) {
 	    			SplashActivity.leeJSONCache = false;
-	    			Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 	    			pDialog.dismiss();
-//	    			ShowFragment(EVENTS);
 	    			atHome=true;
 	    			refreshPage_TimelLineFragment();
 	    			
@@ -454,32 +427,6 @@ public class MainActivity extends ActionBarActivity {
 	    			"&radio="+SplashActivity.distanciaEvento+"" +
 	    			"&categoria="+sharedPreferencesHelperFinal.obtieneCategoriasPreferences()+"" +
 	    			"&numEventos=0&idEvento=0&fecha=0");
-	    }
-	   
-	   private void readStream(InputStream in) {
-	    	BufferedReader reader = null;
-	    	OutputStreamWriter outputStreamWriter = null;
-	    	try {
-	    		reader = new BufferedReader(new InputStreamReader(in));
-	    		String line = "";
-	    		while ((line = reader.readLine()) != null) {
-	    			outputStreamWriter = new OutputStreamWriter(openFileOutput("Json.txt", Context.MODE_PRIVATE));
-	    			outputStreamWriter.write(line);	    					
-	    			outputStreamWriter.flush();
-	    			outputStreamWriter.close();
-	    		}
-	    		Log.d(null, "Json Creado!");
-	    	} catch (IOException e) {
-	    		e.printStackTrace();
-	    	} finally {
-	    		if (reader != null) {
-	    			try {
-	    				reader.close();
-	    			} catch (IOException e) {
-	    				e.printStackTrace();
-	    			}
-	    		}	    		
-	    	}
 	    }
 	   
 	   public void gps(){
