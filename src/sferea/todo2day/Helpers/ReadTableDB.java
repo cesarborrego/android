@@ -88,6 +88,7 @@ public class ReadTableDB {
 			cursor.close();
 			Log.d("Lista Eventos", "Lista cargada desde DB!");
 			dataBaseSQLiteManagerEvents.cerrarDB();
+			Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 		}
 	}
 	

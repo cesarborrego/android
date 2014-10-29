@@ -198,10 +198,6 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 		jsonHelper = new JsonHelper(getActivity().getApplicationContext(),
 				getActivity());
 		if (SplashActivity.leeJSONCache) {
-			// if(jsonHelper.leerJsonCache()!=null){
-			// jsonCache = jsonHelper.leerJsonCache();
-			//
-			// }
 		} else {
 			if (jsonHelper.leerPrimerJson() != null) {
 				json = jsonHelper.leerPrimerJson();
@@ -227,7 +223,7 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 		listaEventos = new ArrayList<EventoObjeto>();
 		// Obtiene la vista del listView
 		listView_Eventos = ((ListView) view.findViewById(R.id.listviewEventos));
-
+		
 		progressFooter = ((ProgressBar) footerView
 				.findViewById(R.id.progressBarFooter));
 
@@ -240,7 +236,9 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(),
 				R.layout.row_event_responsive, R.id.listviewEventos,
 				listaEventos);
-
+		
+		
+		
 		// Agrega el header
 		listView_Eventos.addHeaderView(headerView);
 
@@ -429,8 +427,7 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 
 			protected void onPreExecute() {
 				if (!isCancelled()) {
-					readTableDB = new ReadTableDB(getActivity()
-							.getApplicationContext());
+					readTableDB = new ReadTableDB(getActivity().getApplicationContext());
 				}
 			};
 

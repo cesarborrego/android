@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class DataBaseSQLiteManagerEvents {
 	
@@ -104,6 +105,7 @@ public class DataBaseSQLiteManagerEvents {
 	}
 	
 	public void eliminarAllItems(){
+		Log.d("DB EVENTS", "Delete from events;");
 		db.execSQL("Delete from events;");
 	}
 	
