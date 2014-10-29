@@ -253,12 +253,6 @@ public class Page_TimeLine extends Fragment {
 					public void onScroll(AbsListView view,
 							int firstVisibleItem, int visibleItemCount,
 							int totalItemCount) {
-						Log.d(null, "firsVisibleItem=" + firstVisibleItem
-								+ "\n+visibleItemCount=" + visibleItemCount
-								+ "\ntotalItemCount" + totalItemCount
-								+ "\nloadedItems"
-								+ (firstVisibleItem + visibleItemCount));
-						Page_TimeLine.this.totalItemCount = totalItemCount;
 						if (((firstVisibleItem + visibleItemCount) == totalItemCount)
 								& listView_Eventos.getFirstVisiblePosition() > 0) {
 							if (listView_Eventos.getLastVisiblePosition() == listView_Eventos
@@ -272,7 +266,7 @@ public class Page_TimeLine extends Fragment {
 								Log.d(null, "Final");
 								if (checkInternetConnection
 										.isConnectedToInternet()) {
-									addMoreEvents(latOrigin, lonOrigin);
+									addMoreEvents(latOrigin, lonOrigin);	
 									readTableEvents_fillListEvent();
 								} else {
 									Toast.makeText(
@@ -304,8 +298,6 @@ public class Page_TimeLine extends Fragment {
 					y1 = event.getY();
 
 					allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
-					Log.d("FirstVisible", String.valueOf(listView_Eventos
-							.getFirstVisiblePosition()));
 
 					if (allowRefresh) {
 						if ((y - startY) > REFRESH_THRESHOLD) {
@@ -313,9 +305,7 @@ public class Page_TimeLine extends Fragment {
 							ImageUtil.getImageLoader().clearDiskCache();
 							if (!headerAdded) {
 								// listView_Eventos.addHeaderView(headerView);
-								((TextView) headerView
-										.findViewById(R.id.textoHeaderListview))
-										.setVisibility(View.VISIBLE);
+								((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
 								headerAdded = true;
 							}
 						} else {
@@ -329,36 +319,22 @@ public class Page_TimeLine extends Fragment {
 					y2 = event.getY();
 					//
 					if (startY > y1) {
-						View v1 = listView_Eventos.getChildAt(listView_Eventos
-								.getAdapter().getCount() - 1);
+						View v1 = listView_Eventos.getChildAt(listView_Eventos.getAdapter().getCount() - 1);
 
 						if (v1 != null) {
 							if (v1.getBottom() <= listView_Eventos.getHeight()) {
 								((ProgressBar) footerView
-										.findViewById(R.id.progressBarFooter))
-										.setVisibility(View.VISIBLE);
-								Toast.makeText(getActivity(),
-										"No hay más elementos para mostrar",
-										Toast.LENGTH_LONG).show();
-								((ProgressBar) footerView
-										.findViewById(R.id.progressBarFooter))
-										.setVisibility(View.GONE);
+										.findViewById(R.id.progressBarFooter)).setVisibility(View.VISIBLE);
+								Toast.makeText(getActivity(),"No hay más elementos para mostrar",Toast.LENGTH_LONG).show();
+								((ProgressBar) footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.GONE);
 							}
 						}
 					}
-
-					Log.d("FirstVisiblePosition",
-							String.valueOf(listView_Eventos
-									.getFirstVisiblePosition()));
 					if (refresh) {
 						refreshTimeLine();
 					} else {
-						((TextView) headerView
-								.findViewById(R.id.textoHeaderListview))
-								.setVisibility(View.GONE);
-						((ProgressBar) headerView
-								.findViewById(R.id.progressBarHeader))
-								.setVisibility(View.GONE);
+						((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
+						((ProgressBar) headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
 					}
 					downCounterUsed = false;
 					refresh = false;
@@ -384,8 +360,7 @@ public class Page_TimeLine extends Fragment {
 			protected void onPreExecute() {
 				if (getActivity() != null) {
 					if (!isCancelled()) {
-						parseJson_AddDB = new ParseJson_AddDB(getActivity()
-								.getApplicationContext(), getActivity());
+						parseJson_AddDB = new ParseJson_AddDB(getActivity().getApplicationContext(), getActivity());
 					}
 				}
 			};
@@ -403,12 +378,9 @@ public class Page_TimeLine extends Fragment {
 					// Toast.makeText(getActivity().getApplicationContext(),"Listo verifica la DB Events!",
 					// Toast.LENGTH_LONG).show();
 				} else {
-					Toast.makeText(
-							getActivity().getApplicationContext(),
-							"No hay Eventos Disponibles\n"
+					Toast.makeText(getActivity().getApplicationContext(),"No hay Eventos Disponibles\n"
 									+ "Prueba con otras categorías!\n"
-									+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
-							Toast.LENGTH_LONG).show();
+									+ "Y/o Aumenta el Radio de búsqueda en los ajustes",Toast.LENGTH_LONG).show();
 				}
 			};
 		}.execute();
@@ -445,8 +417,7 @@ public class Page_TimeLine extends Fragment {
 
 		new AsyncTask<String, Void, Void>() {
 			protected void onPreExecute() {
-				((ProgressBar) footerView.findViewById(R.id.progressBarFooter))
-						.setVisibility(View.VISIBLE);
+				((ProgressBar) footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.VISIBLE);
 			};
 
 			@Override
@@ -454,6 +425,7 @@ public class Page_TimeLine extends Fragment {
 
 				if (!isCancelled()) {
 					jsonHelper.connectionMongo_Json(params[0]);
+					json = jsonHelper.leerPrimerJson();
 				}
 
 				return null;
@@ -463,12 +435,8 @@ public class Page_TimeLine extends Fragment {
 			protected void onPostExecute(Void result) {
 				this.cancel(true);
 				// Quita el footer
-				// if(!isCancelled()){
-				json = jsonHelper.leerPrimerJson();
-				guardaPrimerJsonDB();
-				// readTableEvents_fillListEvent();
-				((ProgressBar) footerView.findViewById(R.id.progressBarFooter))
-						.setVisibility(View.GONE);
+				// if(!isCancelled()){				
+				guardaPrimerJsonDB();				
 			};
 		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + "&longitud="
 				+ lonOrigin
@@ -492,10 +460,8 @@ public class Page_TimeLine extends Fragment {
 			protected void onPreExecute() {
 				// TODO El dialog de cargar
 				super.onPreExecute();
-				((TextView) headerView.findViewById(R.id.textoHeaderListview))
-						.setVisibility(View.GONE);
-				((ProgressBar) headerView.findViewById(R.id.progressBarHeader))
-						.setVisibility(View.VISIBLE);
+				((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
+				((ProgressBar) headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.VISIBLE);
 			}
 
 			protected Void doInBackground(String... params) {
@@ -506,10 +472,8 @@ public class Page_TimeLine extends Fragment {
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
-				((TextView) headerView.findViewById(R.id.textoHeaderListview))
-						.setVisibility(View.GONE);
-				((ProgressBar) headerView.findViewById(R.id.progressBarHeader))
-						.setVisibility(View.GONE);
+				((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
+				((ProgressBar) headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
 				headerAdded = false;
 			}
 
@@ -521,8 +485,7 @@ public class Page_TimeLine extends Fragment {
 	}
 
 	static {
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-				.permitAll().build();
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 	}
 
