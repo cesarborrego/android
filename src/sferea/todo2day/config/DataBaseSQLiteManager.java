@@ -153,8 +153,8 @@ public class DataBaseSQLiteManager {
 		return db.rawQuery("SELECT * FROM FAVORITES", null);
 	}
 	
-	public Cursor queryEventByName(String eventName){
-		return db.rawQuery("SELECT TITULO_EVENTO FROM FAVORITES WHERE TITULO_EVENTO = ?", new String[]{eventName});
+	public Cursor queryEventByIndex(String index){
+		return db.rawQuery("SELECT * FROM FAVORITES WHERE INDEX_OF_EVENT = ?", new String[]{index});
 	}
 	
 	public void cerrarDB(){

@@ -34,6 +34,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -90,13 +91,6 @@ public class DetailActivity extends ActionBarActivity {
 		imageloader = ImageUtil.getImageLoader();
 		options = ImageUtil.getOptionsImageLoader();
 		checkInternetConnection = new CheckInternetConnection(getApplicationContext(), this);
-		
-//		LayoutInflater layoutInflater = (LayoutInflater)getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//		View newView = layoutInflater.inflate(R.layout.page_favorites, null);	
-//		setContentView(newView);
-//		FrameLayout contentFavorites = (FrameLayout)newView.findViewById(R.id.content_Favorites);
-		
-//		View tweetView = getActivity().getLayoutInflater().inflate(R.layout.dialog_tweet, null);
 				
 		ActionBar actionBar = getSupportActionBar();	//Obtiene el ActionBar para < Android 4.0
 		actionBar.setDisplayHomeAsUpEnabled(true);		//Habilitar el boton superior
@@ -114,6 +108,10 @@ public class DetailActivity extends ActionBarActivity {
 		
 		btnR = (ImageView)findViewById(R.id.iconRetweetFavorito);	
 		btnF = (ImageView)findViewById(R.id.iconFavFavorito);
+		DataBaseSQLiteManager managerDBFavorites = new DataBaseSQLiteManager(
+				getApplicationContext());
+		
+		Cursor cursor = null;
 		
 		if(this!=null){
 			if(Page_TimeLine.eventoActivo){			
@@ -128,14 +126,12 @@ public class DetailActivity extends ActionBarActivity {
 					editor.commit(); 
 				}
 				
-				if(Page_TimeLine.prendeEstrellaTime_Line[evento.getPosicion()]){
+				cursor = managerDBFavorites.queryEventByIndex(evento.getIndexOfEvent());
+				
+				if (cursor.getCount() > 0) {
 					btnF.setImageResource(R.drawable.ic_action_important_active);
 				} else {
-					BitmapFactory.Options options = new BitmapFactory.Options();
-					options.inSampleSize = 4;
-					Bitmap bm = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-							R.drawable.ic_action_important,options);
-					btnF.setImageBitmap(bm);
+					btnF.setImageResource(R.drawable.ic_action_important);
 				}
 				
 				//Colocamos la info del evento en el activity_detail
@@ -184,14 +180,12 @@ public class DetailActivity extends ActionBarActivity {
 					editor.commit(); 
 				}
 				
-				if(Page_TimeLine.prendeEstrellaTime_Line[favoritosObjeto.getPosicion()]){
+				cursor = managerDBFavorites.queryEventByIndex(favoritosObjeto.getIndexOfEvent());
+				
+				if (cursor.getCount() > 0) {
 					btnF.setImageResource(R.drawable.ic_action_important_active);
 				} else {
-					BitmapFactory.Options options = new BitmapFactory.Options();
-					options.inSampleSize = 4;
-					Bitmap bm = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-							R.drawable.ic_action_important,options);
-					btnF.setImageBitmap(bm);
+					btnF.setImageResource(R.drawable.ic_action_important);
 				}
 				
 				((TextView)findViewById(R.id.detallesTitulo)).setText(favoritosObjeto.getNombreEvento());
@@ -500,21 +494,19 @@ public class DetailActivity extends ActionBarActivity {
 	 * @param eventView
 	 */
 	private void agregarFavoritos(){
+		Cursor cursor;
 		//Validamos si entro por time_line
-		if(Page_TimeLine.eventoActivo){
+		if(Page_TimeLine.eventoActivo){			
+			cursor = manager.queryEventByIndex(evento.getIndexOfEvent());
 			//Entro en time_line y ahora obtenemos el estado de la estrella 
-			if(Page_TimeLine.prendeEstrellaTime_Line[evento.getPosicion()]){
+			if(cursor.getCount() > 0){
 				//Si esta prendida solo apaga y elimina el registro
 				manager.eliminar(String.valueOf(evento.getIndexOfEvent()));
 				
 				Log.d(null, "Se elimino Registro en DB "+evento.getNombreEvento());
-				//Apagamos estrella en timeline
-				Page_TimeLine.prendeEstrellaTime_Line[evento.getPosicion()] = false;
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
-				
-				Page_TimeLine.prendeEstrellaDetails = false;
 				
 				btnF.setImageResource(R.drawable.ic_action_important);
 			}else{
@@ -535,31 +527,25 @@ public class DetailActivity extends ActionBarActivity {
 						String.valueOf(evento.getPosicion()),
 						String.valueOf(evento.getIndexOfEvent()),
 						String.valueOf(evento.getFechaUnix()));
-				Log.d(null, "Registro Insertado en DB");					
-				//Prendemos estrella en timeline
-				Page_TimeLine.prendeEstrellaTime_Line[evento.getPosicion()] = true;		
+				Log.d(null, "Registro Insertado en DB");						
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
-				
-				Page_TimeLine.prendeEstrellaDetails = true;
 				
 				btnF.setImageResource(R.drawable.ic_action_important_active);
 			}
 		} else {
 			//Entro por favoritos y ahora obtenemos el estado de la estrella 
-			if(Page_TimeLine.prendeEstrellaTime_Line[favoritosObjeto.getPosicion()]){
+			cursor = manager.queryEventByIndex(favoritosObjeto.getIndexOfEvent());
+			
+			if(cursor.getCount() > 0){
 				//Si esta prendida solo apaga y elimina el registro
 				manager.eliminar(String.valueOf(favoritosObjeto.getIndexOfEvent()));
 				
 				Log.d(null, "Se elimino Registro en DB "+favoritosObjeto.getNombreEvento());
-				//Apagamos estrella en timeline
-				Page_TimeLine.prendeEstrellaTime_Line[favoritosObjeto.getPosicion()] = false;
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
-				
-				Page_TimeLine.prendeEstrellaDetails = false;
 				
 				btnF.setImageResource(R.drawable.ic_action_important);
 			}else{
@@ -580,14 +566,10 @@ public class DetailActivity extends ActionBarActivity {
 						String.valueOf(favoritosObjeto.getPosicion()),
 						String.valueOf(favoritosObjeto.getIndexOfEvent()),
 						String.valueOf(favoritosObjeto.getFechaUnix()));
-				Log.d(null, "Registro Insertado en DB");					
-				//Prendemos estrella en timeline
-				Page_TimeLine.prendeEstrellaTime_Line[favoritosObjeto.getPosicion()] = true;		
+				Log.d(null, "Registro Insertado en DB");						
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
-				
-				Page_TimeLine.prendeEstrellaDetails = true;
 				
 				btnF.setImageResource(R.drawable.ic_action_important_active);
 			}

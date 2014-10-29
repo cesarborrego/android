@@ -211,6 +211,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 				R.drawable.ic_small_musica, R.drawable.ic_small_salud,
 				R.drawable.ic_small_sociales, R.drawable.ic_small_tecnologia,
 				R.drawable.ic_small_verde };
+		
 		for (int i = 0; i < categorias.length; i++) {
 			if (categorias[i].equals(categoriaEvento))
 				eventView.iconCategoria.setImageResource(id_small_icons[i]);
@@ -231,15 +232,12 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 
 		// dependiendo de los resultados prendemos o apagamos las estrellas de
 		// favoritos
-		Cursor cursor = managerDBFavorites.queryEventByName(nombreEvento);
+		Cursor cursor = managerDBFavorites.queryEventByIndex(objectArrayList.get(position).getIndexOfEvent());
 		boolean activaEliminarDB = false;
 		if (cursor.getCount() > 0) {
 			activaEliminarDB = true;
 			eventView.iconFavorito
 					.setImageResource(R.drawable.ic_action_important_active);
-			Page_TimeLine.prendeEstrellaDetails = true;
-			Page_TimeLine.prendeEstrellaTime_Line[objectArrayList.get(position)
-					.getPosicion()] = true;
 		} else {
 			eventView.iconFavorito
 					.setImageResource(R.drawable.ic_action_important);
@@ -420,9 +418,10 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 				if (v.getContext() instanceof FragmentActivity) {
 					Log.d(null,
 							"Posicion en el array " + String.valueOf(position));
-					if (Page_TimeLine.prendeEstrellaTime_Line[position]) {
-						Page_TimeLine.prendeEstrellaDetails = false;
-						Page_TimeLine.prendeEstrellaTime_Line[position] = false;
+					
+					Cursor cursor = managerDBFavorites.queryEventByIndex(objectArrayList.get(position).getIndexOfEvent());
+					
+					if (cursor.getCount() > 0) {
 						eventView.iconFavorito
 								.setImageResource(R.drawable.ic_action_important);
 
@@ -435,8 +434,6 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 										.getNombreEvento());
 
 					} else {
-						Page_TimeLine.prendeEstrellaDetails = true;
-						Page_TimeLine.prendeEstrellaTime_Line[position] = true;
 						eventView.iconFavorito
 								.setImageResource(R.drawable.ic_action_important_active);
 

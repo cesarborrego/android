@@ -86,9 +86,6 @@ public class ReadTableDB {
 			}
 		} finally {
 			cursor.close();
-			Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
-			Page_TimeLine.prendeEstrellaTime_Line = new boolean[Page_TimeLine.listaEventos
-					.size()];
 			Log.d("Lista Eventos", "Lista cargada desde DB!");
 			dataBaseSQLiteManagerEvents.cerrarDB();
 		}
