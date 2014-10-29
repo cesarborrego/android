@@ -23,7 +23,6 @@ public class AddMoreEventsTask extends AsyncTask<String, Void, Boolean> {
 		ParseJson_AddDB parseJson_AddDB = new ParseJson_AddDB(activity
 				.getApplicationContext(), activity);
 		result = parseJson_AddDB.parseFirstJson_AddDB(helper.leerPrimerJson());
-		
 		return result;
 	}
 	

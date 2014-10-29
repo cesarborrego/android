@@ -452,7 +452,6 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 
 		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 				getActivity().getApplicationContext());
-
 		AddMoreEventsTask task = new AddMoreEventsTask(getActivity(), this);
 
 		task.execute("http://yapi.sferea.com/?latitud=" + latOrigin
@@ -522,8 +521,8 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 			Toast.makeText(
 					getActivity().getApplicationContext(),
 					"No hay Eventos Disponibles\n"
-							+ "Prueba con otras categorÃ­as!\n"
-							+ "Y/o Aumenta el Radio de bÃºsqueda en los ajustes",
+							+ "Prueba con otras categorías!\n"
+							+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
 					Toast.LENGTH_LONG).show();
 		}
 	}
