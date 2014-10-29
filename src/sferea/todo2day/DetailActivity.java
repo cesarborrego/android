@@ -160,12 +160,12 @@ public class DetailActivity extends ActionBarActivity {
 				
 				if(checkInternetConnection.isConnectedToInternet()){
 					String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
-							"center="+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
+							"center="+evento.getLatEvento()+","+evento.getLonEvento()+"" +
 							"&zoom=15" +
 							"&size=600x300" +
 							"&scale=2" +
 							"&maptype=roadmap" +
-							"&markers=color:blue%7C"+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
+							"&markers=color:blue%7C"+evento.getLatEvento()+","+evento.getLonEvento()+"" +
 							"&sensor=true_or_false";
 					Log.d(null, imageHttpAddress);
 					

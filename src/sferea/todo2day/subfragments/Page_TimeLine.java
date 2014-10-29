@@ -310,8 +310,7 @@ public class Page_TimeLine extends Fragment {
 					y1 = event.getY();
 
 					allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
-					Log.d("FirstVisible", String.valueOf(listView_Eventos
-							.getFirstVisiblePosition()));
+					Log.d("FirstVisible", String.valueOf(listView_Eventos.getFirstVisiblePosition()));
 
 					if (allowRefresh) {
 						if ((y - startY) > REFRESH_THRESHOLD) {
@@ -319,9 +318,7 @@ public class Page_TimeLine extends Fragment {
 							ImageUtil.getImageLoader().clearDiskCache();
 							if (!headerAdded) {
 								// listView_Eventos.addHeaderView(headerView);
-								((TextView) headerView
-										.findViewById(R.id.textoHeaderListview))
-										.setVisibility(View.VISIBLE);
+								((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
 								headerAdded = true;
 							}
 						} else {
@@ -335,20 +332,14 @@ public class Page_TimeLine extends Fragment {
 					y2 = event.getY();
 					//
 					if (startY > y1) {
-						View v1 = listView_Eventos.getChildAt(listView_Eventos
-								.getAdapter().getCount() - 1);
+						View v1 = listView_Eventos.getChildAt(listView_Eventos.getAdapter().getCount() - 1);
 
 						if (v1 != null) {
 							if (v1.getBottom() <= listView_Eventos.getHeight()) {
-								((ProgressBar) footerView
-										.findViewById(R.id.progressBarFooter))
+								((ProgressBar) footerView.findViewById(R.id.progressBarFooter))
 										.setVisibility(View.VISIBLE);
-								Toast.makeText(getActivity(),
-										"No hay más elementos para mostrar",
-										Toast.LENGTH_LONG).show();
-								((ProgressBar) footerView
-										.findViewById(R.id.progressBarFooter))
-										.setVisibility(View.GONE);
+								Toast.makeText(getActivity(),"No hay más elementos para mostrar",Toast.LENGTH_LONG).show();
+								((ProgressBar) footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.GONE);
 							}
 						}
 					}
@@ -359,12 +350,8 @@ public class Page_TimeLine extends Fragment {
 					if (refresh) {
 						refreshTimeLine();
 					} else {
-						((TextView) headerView
-								.findViewById(R.id.textoHeaderListview))
-								.setVisibility(View.GONE);
-						((ProgressBar) headerView
-								.findViewById(R.id.progressBarHeader))
-								.setVisibility(View.GONE);
+						((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
+						((ProgressBar) headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
 					}
 					downCounterUsed = false;
 					refresh = false;
@@ -390,8 +377,7 @@ public class Page_TimeLine extends Fragment {
 			protected void onPreExecute() {
 				if (getActivity() != null) {
 					if (!isCancelled()) {
-						parseJson_AddDB = new ParseJson_AddDB(getActivity()
-								.getApplicationContext(), getActivity());
+						parseJson_AddDB = new ParseJson_AddDB(getActivity().getApplicationContext(), getActivity());
 					}
 				}
 			};
@@ -426,8 +412,7 @@ public class Page_TimeLine extends Fragment {
 
 			protected void onPreExecute() {
 				if (!isCancelled()) {
-					readTableDB = new ReadTableDB(getActivity()
-							.getApplicationContext());
+					readTableDB = new ReadTableDB(getActivity().getApplicationContext());
 				}
 			};
 
@@ -447,13 +432,11 @@ public class Page_TimeLine extends Fragment {
 	}
 
 	public void addMoreEvents(final double lat, final double lon) {
-		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
-				getActivity().getApplicationContext());
+		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(getActivity().getApplicationContext());
 
 		new AsyncTask<String, Void, Void>() {
 			protected void onPreExecute() {
-				((ProgressBar) footerView.findViewById(R.id.progressBarFooter))
-						.setVisibility(View.VISIBLE);
+				((ProgressBar) footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.VISIBLE);
 			};
 
 			@Override
@@ -473,12 +456,8 @@ public class Page_TimeLine extends Fragment {
 				// if(!isCancelled()){
 				json = jsonHelper.leerPrimerJson();
 				guardaPrimerJsonDB();
-				((ProgressBar) footerView.findViewById(R.id.progressBarFooter))
-						.setVisibility(View.GONE);
-
-				// }
-				// readTableEvents_fillListEvent();
-
+//				readTableEvents_fillListEvent();
+				((ProgressBar) footerView.findViewById(R.id.progressBarFooter)).setVisibility(View.GONE);
 			};
 		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + "&longitud="
 				+ lonOrigin
@@ -502,10 +481,8 @@ public class Page_TimeLine extends Fragment {
 			protected void onPreExecute() {
 				// TODO El dialog de cargar
 				super.onPreExecute();
-				((TextView) headerView.findViewById(R.id.textoHeaderListview))
-						.setVisibility(View.GONE);
-				((ProgressBar) headerView.findViewById(R.id.progressBarHeader))
-						.setVisibility(View.VISIBLE);
+				((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
+				((ProgressBar) headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.VISIBLE);
 			}
 
 			protected Void doInBackground(String... params) {
@@ -516,10 +493,8 @@ public class Page_TimeLine extends Fragment {
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
-				((TextView) headerView.findViewById(R.id.textoHeaderListview))
-						.setVisibility(View.GONE);
-				((ProgressBar) headerView.findViewById(R.id.progressBarHeader))
-						.setVisibility(View.GONE);
+				((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
+				((ProgressBar) headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
 				headerAdded = false;
 			}
 

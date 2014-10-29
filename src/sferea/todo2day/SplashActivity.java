@@ -14,13 +14,10 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
-import android.widget.Toast;
 
 /** 
  * Actividad que controla el tiempo de espera en el splashScreen y la accion a realizar al termino de este tiempo
