@@ -43,6 +43,8 @@ public class Page_TimeLine extends Fragment {
 	boolean allowRefresh = false;
 	boolean refresh = false;
 	boolean downCounterUsed = false;
+	
+	
 	boolean headerAdded = false;
 	float startY;
 	String imagenesEventos[] = null;
@@ -226,7 +228,7 @@ public class Page_TimeLine extends Fragment {
 		// Obtiene la vista del listView
 		listView_Eventos = ((ListView) view.findViewById(R.id.listviewEventos));
 
-		readTableEvents_fillListEvent();
+ 		readTableEvents_fillListEvent();
 		if (SplashActivity.leeJSONCache) {
 			refreshTimeLine();
 		}
@@ -326,20 +328,6 @@ public class Page_TimeLine extends Fragment {
 							refresh = false;
 						}
 					}
-
-					// if(startY > y2)
-					// {
-					//
-					// if
-					// (listView_Eventos.getChildAt(listView_Eventos.getChildCount()
-					// - 1).getBottom() <= listView_Eventos.getHeight()) {
-					// isScrollActive = false;
-					// }
-					// else{
-					// isScrollActive = true;
-					// }
-					// }
-					// Log.i("MOVE", "Y1 = " + y1 + " Y2 = " + y2);
 					break;
 				}
 
@@ -363,18 +351,6 @@ public class Page_TimeLine extends Fragment {
 										.setVisibility(View.GONE);
 							}
 						}
-
-						// if (listView_Eventos.getLastVisiblePosition() ==
-						// listView_Eventos.getAdapter().getCount() - 1
-						// &&
-						// listView_Eventos.getChildAt(listView_Eventos.getChildCount()
-						// - 1).getBottom() <= listView_Eventos.getHeight()) {
-						// //Toast.makeText(getActivity(),
-						// "No hay mÃ¡s elementos para mostrar",
-						// Toast.LENGTH_SHORT).show();
-						// addMoreEvents(latOrigin, lonOrigin);
-						// y1 = 0.0f;
-						// }
 					}
 
 					Log.d("FirstVisiblePosition",

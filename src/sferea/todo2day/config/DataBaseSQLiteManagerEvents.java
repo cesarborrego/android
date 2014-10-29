@@ -87,6 +87,32 @@ public class DataBaseSQLiteManagerEvents {
 		
 	}
 	
+	public ContentValues generarContentValues (String tituloEvento, String categoriEvento, String fechaEvento, 
+			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
+			String telefonoEvento, String boletoEvento, String precioEvento, String distanciaEvento, String latitudEvento, 
+			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
+		ContentValues valoresDB = new ContentValues();
+		valoresDB.put(TITULO_EVENTO, tituloEvento);
+		valoresDB.put(CATEGORIA, categoriEvento);
+		valoresDB.put(FECHA, fechaEvento);
+		valoresDB.put(DESCRIPCION, descripcionEvento);
+		valoresDB.put(FUENTE, fuenteEvento);
+		valoresDB.put(LUGAR, lugarEvento);
+		valoresDB.put(DIRECCION, direccionEvento);
+		valoresDB.put(TELEFONO, telefonoEvento);
+		valoresDB.put(BOLETO, boletoEvento);
+		valoresDB.put(PRECIO, precioEvento);
+		valoresDB.put(DISTANCIA, distanciaEvento);
+		valoresDB.put(LATITUD, latitudEvento);
+		valoresDB.put(LONGITUD, longitudEvento);
+		valoresDB.put(URL_IMAGEN_EVENTO, urlImagen);
+		valoresDB.put(POSICION, posicion);
+		valoresDB.put(INDEX_OF_EVENT, indexOfEvent);
+		valoresDB.put(FECHA_UNIX, fechaUnix);
+		return valoresDB;
+		
+	}
+	
 	public void insertar(String tituloEvento, String categoriEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String boletoEvento, String precioEvento, String distanciaEvento, String latitudEvento, 
@@ -132,6 +158,7 @@ public class DataBaseSQLiteManagerEvents {
 				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, precioEvento, distanciaEvento, 
 				latitudEvento, longitudEvento, urlImagen, posicion, indexOfEvent, fechaUnix), INDEX_OF_EVENT+"=?", new String[]{indexOfEvent});
 	}
+
 		
 	public Cursor cargarTablas(){
 		String [] columnas = new String[]{ID,TITULO_EVENTO,CATEGORIA,FECHA,DESCRIPCION,FUENTE,
@@ -139,6 +166,10 @@ public class DataBaseSQLiteManagerEvents {
 		//db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
 //		return db.query(DB_NAME, columnas, null, null, null, null, TITULO_EVENTO);
 		return db.rawQuery("SELECT * FROM EVENTS", null);
+	}
+
+	public Cursor queryEventByIndex(String eventIndex){
+		return db.rawQuery("SELECT * FROM EVENTS WHERE INDEX_OF_EVENT = ?", new String[]{eventIndex});
 	}
 	
 	public void cerrarDB(){

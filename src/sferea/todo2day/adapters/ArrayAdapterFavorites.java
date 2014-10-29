@@ -50,10 +50,28 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = activityAdapter.getLayoutInflater();
-		View newView = inflater.inflate(R.layout.row_favorites_responsive_tablet, null);
+		ViewHolder viewHolder;
+		View v = convertView;
 		
-		newView.setOnClickListener(new OnClickListener() {
+		if(v == null){
+			v = LayoutInflater.from(getContext()).inflate(R.layout.row_favorites_responsive_tablet, null);
+			viewHolder = new ViewHolder();
+			viewHolder.botonFavorito = (RelativeLayout) v.findViewById(R.id.botonFavEvent);
+			viewHolder.categoriaFavorito = (TextView) v.findViewById(R.id.categoriaFavorito);
+			viewHolder.descripcionFavorito = (TextView) v.findViewById(R.id.descripcionFavorito);
+			viewHolder.distanciaFavorito = (TextView) v.findViewById(R.id.distanciaFavorito);
+			viewHolder.fechaFavorito = (TextView) v.findViewById(R.id.fechaFavorito);
+			viewHolder.lugarFavorito = (TextView) v.findViewById(R.id.lugarFavorito);
+			viewHolder.nombreFavorito = (TextView) v.findViewById(R.id.nombreFavorito);
+			viewHolder.thumbnailFavorito = (ImageView) v.findViewById(R.id.thumbnailFavorite);
+			
+			v.setTag(viewHolder);
+		}
+		else{
+			viewHolder = (ViewHolder) v.getTag();
+		}
+		
+		v.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
@@ -80,21 +98,16 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 		
 		String imagen = favoritosObjeto.getUrlImagen();
 				
-		((TextView)newView.findViewById(R.id.nombreFavorito)).setText(nombre);
-		((TextView)newView.findViewById(R.id.categoriaFavorito)).setText(categoria);
-		((TextView)newView.findViewById(R.id.fechaFavorito)).setText(fecha);
-		((TextView)newView.findViewById(R.id.lugarFavorito)).setText(lugar);
-		((TextView)newView.findViewById(R.id.distanciaFavorito)).setText(distancia);
-		((TextView)newView.findViewById(R.id.descripcionFavorito)).setText(descripcion);
+		viewHolder.nombreFavorito.setText(nombre);
+		viewHolder.categoriaFavorito.setText(categoria);
+		viewHolder.fechaFavorito.setText(fecha);
+		viewHolder.lugarFavorito.setText(lugar);
+		viewHolder.distanciaFavorito.setText(distancia);
+		viewHolder.descripcionFavorito.setText(descripcion);
 		
-		imageloader.displayImage(imagen, (ImageView)newView.findViewById(R.id.thumbnailFavorite), options);
-//		ImageView imgFavorite = null;
-//		if(imagen!=null){
-//			imgFavorite = (ImageView)newView.findViewById(R.id.thumbnailFavorite);
-//			imgFavorite.setImageBitmap(imagen);
-//		}
+		imageloader.displayImage(imagen, viewHolder.thumbnailFavorito, options);
 		
-		((RelativeLayout)newView.findViewById(R.id.botonFavEvent)).setOnClickListener(new OnClickListener() {
+		viewHolder.botonFavorito.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -105,7 +118,8 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 		if(	DetailActivity.activaRefreshFavorites_Details){
 			refreshFavoritesFragment(position);
 		}
-		return newView;
+		
+		return v;
 	}
 	
 	
@@ -131,4 +145,16 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 			 fragmentManager.beginTransaction().replace(R.id.content_Favorites, fragment).commit();
 		 }		 
 	 }
+	
+	class ViewHolder{
+		
+		public TextView nombreFavorito;
+		public TextView categoriaFavorito;
+		public TextView fechaFavorito;
+		public TextView lugarFavorito;
+		public TextView distanciaFavorito;
+		public TextView descripcionFavorito;
+		public ImageView thumbnailFavorito;
+		public RelativeLayout botonFavorito;
+	}
 }
