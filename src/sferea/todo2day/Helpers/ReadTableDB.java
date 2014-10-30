@@ -39,7 +39,6 @@ public class ReadTableDB {
 	}
 
 	public void readTable_FillList() {
-		//Page_TimeLine.listaEventos.clear();
 		Cursor cursor = dataBaseSQLiteManagerEvents.cargarTablas();
 		String descripcion;
 		try {
@@ -50,7 +49,7 @@ public class ReadTableDB {
 					}else{
 						descripcion = cursor.getString(cursor.getColumnIndex("DESCRIPCION"));
 					}
-					Page_TimeLine.listaEventos
+					Page_TimeLine.arrayAdapterEvents
 							.add(new EventoObjeto(
 									cursor.getString(cursor
 											.getColumnIndex("TITULO_EVENTO")),
@@ -86,6 +85,8 @@ public class ReadTableDB {
 									cursor.getString(cursor
 											.getColumnIndex("URL_IMAGEN_EVENTO")),
 									R.drawable.ic_small_antros));
+					Log.d(null, "lEYENDO");
+				
 				} while (cursor.moveToNext());
 			}
 		} finally {
@@ -93,6 +94,6 @@ public class ReadTableDB {
 			Log.d("Lista Eventos", "Lista cargada desde DB!");
 			dataBaseSQLiteManagerEvents.cerrarDB();
 		}
-		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
+//		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 	}
 }

@@ -2,6 +2,7 @@ package sferea.todo2day.tasks;
 
 import sferea.todo2day.Helpers.JsonHelper;
 import sferea.todo2day.Helpers.ParseJson_AddDB;
+import sferea.todo2day.Helpers.ReadTableDB;
 import android.app.Activity;
 import android.os.AsyncTask;
 
@@ -28,6 +29,8 @@ public class AddMoreEventsTask extends AsyncTask<String, Void, Boolean> {
 	
 	@Override
 	protected void onPostExecute(Boolean params){
+//		ReadTableDB readTableDB = new ReadTableDB(activity.getApplicationContext());
+//		readTableDB.readTable_FillList();
 		listener.onTaskCompleted(params);
 	}
 
