@@ -25,7 +25,7 @@ public class Page_Favorites extends Fragment {
 	ListView listaFavoritos;
 	DataBaseSQLiteManager manager;
 	Cursor cursor;
-	List<FavoritosObjeto> listaObjectFavoritos;
+	ArrayList<FavoritosObjeto> listaObjectFavoritos;
 	int iContador = 0;
 	
 	String imagenesEventos [] = null;

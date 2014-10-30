@@ -1,6 +1,6 @@
 package sferea.todo2day.adapters;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
@@ -28,19 +28,17 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class ArrayAdapterFavorites extends ArrayAdapter {
+public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 	Context contex;
 	Activity activityAdapter;
-	FavoritosObjeto [] favoritesObjeto;
-	List<FavoritosObjeto> listaObjetosFavoritos;	
+	FavoritosObjeto [] favoritesObjeto;	
 	EventoObjeto eventoObjeto;
 	ImageLoader imageloader;
 	DisplayImageOptions options;
 	
 	@SuppressWarnings("unchecked")
-	public ArrayAdapterFavorites(Activity activity, Context context, List<FavoritosObjeto> datos) {
+	public ArrayAdapterFavorites(Activity activity, Context context, ArrayList<FavoritosObjeto> datos) {
 		super(activity,  R.layout.row_favorites_responsive_tablet, datos);
-		this.listaObjetosFavoritos = datos;
 		this.activityAdapter = activity;
 		this.contex = context;
 		this.imageloader = ImageUtil.getImageLoader();
@@ -79,7 +77,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 				Page_TimeLine.eventoActivo = false;
 				
 				Bundle bundle = new Bundle();
-				bundle.putParcelable("Favorito", listaObjetosFavoritos.get(position));
+				bundle.putParcelable("Favorito", getItem(position));
 				Intent intent = new Intent(contex, DetailActivity.class);
 				intent.putExtras(bundle);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -87,7 +85,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 			}
 		});
 				
-		FavoritosObjeto favoritosObjeto = listaObjetosFavoritos.get(position);
+		FavoritosObjeto favoritosObjeto = getItem(position);
 		
 		String nombre = favoritosObjeto.getNombreEvento();
 		String categoria = favoritosObjeto.getCategoriaEvento();
@@ -126,7 +124,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 	
 	private void deleteFavorites(final int position){
 		DataBaseSQLiteManager managerDB = new DataBaseSQLiteManager(activityAdapter.getApplicationContext());
-		managerDB.eliminar(listaObjetosFavoritos.get(position).getIndexOfEvent());
+		managerDB.eliminar(getItem(position).getIndexOfEvent());
 		refreshFavoritesFragment(position);
 		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 	}
