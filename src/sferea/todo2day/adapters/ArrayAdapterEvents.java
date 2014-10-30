@@ -1,6 +1,7 @@
 package sferea.todo2day.adapters;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import sferea.todo2day.DetailActivity;
@@ -49,10 +50,9 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
+public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 	Context thisContext;
-	List<EventoObjeto> objectArrayList;
 	public static int positionFav;
 	public static ImageView iconFavorite = null;
 	public static ImageView iconFavoriteInactive = null;
@@ -64,17 +64,15 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 	String enTweet;
 
 	public ArrayAdapterEvents(Context context, int resource,
-			int textViewResourceId, List objects) {
+			int textViewResourceId, ArrayList<EventoObjeto> objects) {
 		super(context, resource, textViewResourceId, objects);
-
-		this.objectArrayList = (List<EventoObjeto>) objects;
 		this.thisContext = context;
 		imageloader = ImageUtil.getImageLoader();
 		options = ImageUtil.getOptionsImageLoader();
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		final ViewHolder viewHolder;
 		View v = convertView;
 		if (v == null) {
@@ -128,7 +126,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 					// ShowFragment();
 				} else {
 					Bundle bundle = new Bundle();
-					bundle.putParcelable("Event", objectArrayList.get(pos));
+					bundle.putParcelable("Event", getItem(pos));
 					Intent intent = new Intent(thisContext,
 							DetailActivity.class);
 					intent.putExtras(bundle);
@@ -180,7 +178,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 		double lon;
 
 		// Obtenemos el objeto
-		EventoObjeto eventoObjeto = objectArrayList.get(position);
+		EventoObjeto eventoObjeto = getItem(position);
 
 		nombreEvento = eventoObjeto.getNombreEvento();
 		categoriaEvento = eventoObjeto.getCategoriaEvento();
@@ -200,7 +198,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 		urlImagen = eventoObjeto.getUrlImagen();
 		imagenCategoria = eventoObjeto.getImagenCategoria();
 
-		SubF_Events.iFavoritos = new int[objectArrayList.size()];
+		SubF_Events.iFavoritos = new int[this.getCount()];
 
 		String[] categorias = thisContext.getResources().getStringArray(
 				R.array.categorias);
@@ -232,7 +230,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 
 		// dependiendo de los resultados prendemos o apagamos las estrellas de
 		// favoritos
-		Cursor cursor = managerDBFavorites.queryEventByIndex(objectArrayList.get(position).getIndexOfEvent());
+		Cursor cursor = managerDBFavorites.queryEventByIndex(getItem(position).getIndexOfEvent());
 		boolean activaEliminarDB = false;
 		if (cursor.getCount() > 0) {
 			activaEliminarDB = true;
@@ -243,7 +241,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 					.setImageResource(R.drawable.ic_action_important);
 		}
 
-		eventView.nombreEvento.setText(objectArrayList.get(position)
+		eventView.nombreEvento.setText(getItem(position)
 				.getNombreEvento());
 
 		Typeface tf;
@@ -257,7 +255,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 
 		// Crea la cadena del tweet
 		String tweetString = inicioTweet + " \""
-				+ objectArrayList.get(position).getNombreEvento() + "\" "
+				+ getItem(position).getNombreEvento() + "\" "
 				+ enTweet + " " + lugarEvento + " Vía yiepa!";
 		lanzarAlertDialogTweet(tweetString, eventView, position);
 		agregarFavoritos(eventView, position, managerDBFavorites);
@@ -419,18 +417,18 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 					Log.d(null,
 							"Posicion en el array " + String.valueOf(position));
 					
-					Cursor cursor = managerDBFavorites.queryEventByIndex(objectArrayList.get(position).getIndexOfEvent());
+					Cursor cursor = managerDBFavorites.queryEventByIndex(getItem(position).getIndexOfEvent());
 					
 					if (cursor.getCount() > 0) {
 						eventView.iconFavorito
 								.setImageResource(R.drawable.ic_action_important);
 
 						managerDBFavorites.eliminar(String
-								.valueOf(objectArrayList.get(position)
+								.valueOf(getItem(position)
 										.getIndexOfEvent()));
 
 						Log.d(null, "Se elimino registro "
-								+ objectArrayList.get(position)
+								+ getItem(position)
 										.getNombreEvento());
 
 					} else {
@@ -438,35 +436,33 @@ public class ArrayAdapterEvents extends ArrayAdapter<List<EventoObjeto>> {
 								.setImageResource(R.drawable.ic_action_important_active);
 
 						managerDBFavorites
-								.insertar(objectArrayList.get(position)
-										.getNombreEvento(), objectArrayList
-										.get(position).getCategoriaEvento(),
-										objectArrayList.get(position)
+								.insertar(getItem(position)
+										.getNombreEvento(), getItem(position).getCategoriaEvento(),
+										getItem(position)
 												.getFechaEvento(),
-										objectArrayList.get(position)
+										getItem(position)
 												.getDescripcion(),
-										objectArrayList.get(position)
+										getItem(position)
 												.getFuente(),
-										objectArrayList.get(position)
+										getItem(position)
 												.getLugarEvento(),
-										objectArrayList.get(position)
+										getItem(position)
 												.getDireccion(),
-										objectArrayList.get(position)
-												.getTelefono(), objectArrayList
-												.get(position).getBoleto(),
-										String.valueOf(objectArrayList.get(
+										getItem(position)
+												.getTelefono(), getItem(position).getBoleto(),
+										String.valueOf(getItem(
 												position).getDistancia()),
-										String.valueOf(objectArrayList.get(
+										String.valueOf(getItem(
 												position).getLatEvento()),
-										String.valueOf(objectArrayList.get(
+										String.valueOf(getItem(
 												position).getLonEvento()),
-										objectArrayList.get(position)
+										getItem(position)
 												.getUrlImagen(), String
 												.valueOf(position), String
-												.valueOf(objectArrayList.get(
+												.valueOf(getItem(
 														position)
 														.getIndexOfEvent()),
-										String.valueOf(objectArrayList.get(
+										String.valueOf(getItem(
 												position).getFechaUnix()));
 						Log.d(null, "Registro Insertado en DB");
 					}
