@@ -166,6 +166,8 @@ public class DetailActivity extends ActionBarActivity {
 					Log.d(null, imageHttpAddress);
 					
 					downloadPicture(imageHttpAddress);
+				}else{
+					((ImageView) findViewById(R.id.imgMapa)).setImageResource(R.drawable.nowifi);
 				}
 				
 			} else {
@@ -219,6 +221,8 @@ public class DetailActivity extends ActionBarActivity {
 					Log.d(null, imageHttpAddress);
 					
 					downloadPicture(imageHttpAddress);
+				}else{
+					((ImageView) findViewById(R.id.imgMapa)).setImageResource(R.drawable.nowifi);
 				}
 			}
 			

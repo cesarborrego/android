@@ -420,50 +420,30 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 					Cursor cursor = managerDBFavorites.queryEventByIndex(getItem(position).getIndexOfEvent());
 					
 					if (cursor.getCount() > 0) {
-						eventView.iconFavorito
-								.setImageResource(R.drawable.ic_action_important);
+						eventView.iconFavorito.setImageResource(R.drawable.ic_action_important);
 
-						managerDBFavorites.eliminar(String
-								.valueOf(getItem(position)
-										.getIndexOfEvent()));
+						managerDBFavorites.eliminar(String.valueOf(getItem(position).getIndexOfEvent()));
 
-						Log.d(null, "Se elimino registro "
-								+ getItem(position)
-										.getNombreEvento());
+						Log.d(null, "Se elimino registro "+ getItem(position).getNombreEvento());
 
 					} else {
-						eventView.iconFavorito
-								.setImageResource(R.drawable.ic_action_important_active);
+						eventView.iconFavorito.setImageResource(R.drawable.ic_action_important_active);
 
-						managerDBFavorites
-								.insertar(getItem(position)
-										.getNombreEvento(), getItem(position).getCategoriaEvento(),
-										getItem(position)
-												.getFechaEvento(),
-										getItem(position)
-												.getDescripcion(),
-										getItem(position)
-												.getFuente(),
-										getItem(position)
-												.getLugarEvento(),
-										getItem(position)
-												.getDireccion(),
-										getItem(position)
-												.getTelefono(), getItem(position).getBoleto(),
-										String.valueOf(getItem(
-												position).getDistancia()),
-										String.valueOf(getItem(
-												position).getLatEvento()),
-										String.valueOf(getItem(
-												position).getLonEvento()),
-										getItem(position)
-												.getUrlImagen(), String
-												.valueOf(position), String
-												.valueOf(getItem(
-														position)
-														.getIndexOfEvent()),
-										String.valueOf(getItem(
-												position).getFechaUnix()));
+						managerDBFavorites.insertar(getItem(position).getNombreEvento(),
+								getItem(position).getCategoriaEvento(),
+								getItem(position).getFechaEvento(),
+								getItem(position).getDescripcion(),
+								getItem(position).getFuente(),
+								getItem(position).getLugarEvento(),
+								getItem(position).getDireccion(),
+								getItem(position).getTelefono(), 
+								getItem(position).getBoleto(),
+								String.valueOf(getItem(position).getDistancia()),
+								String.valueOf(getItem(position).getLatEvento()),
+								String.valueOf(getItem(position).getLonEvento()),
+								getItem(position).getUrlImagen(), String.valueOf(position), 
+								String.valueOf(getItem(position).getIndexOfEvent()),
+								String.valueOf(getItem(position).getFechaUnix()));
 						Log.d(null, "Registro Insertado en DB");
 					}
 				}
