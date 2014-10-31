@@ -84,9 +84,7 @@ public class ReadTableDB {
 											.getColumnIndex("FECHA_UNIX"))),
 									cursor.getString(cursor
 											.getColumnIndex("URL_IMAGEN_EVENTO")),
-									R.drawable.ic_small_antros));
-					Log.d(null, "lEYENDO");
-				
+									R.drawable.ic_small_antros));				
 				} while (cursor.moveToNext());
 			}
 		} finally {
@@ -95,5 +93,10 @@ public class ReadTableDB {
 			dataBaseSQLiteManagerEvents.cerrarDB();
 		}
 //		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
+	}
+	
+	public int readTable() {
+		Cursor cursor = dataBaseSQLiteManagerEvents.cargarTablas();
+		return cursor.getCount();
 	}
 }
