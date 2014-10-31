@@ -29,8 +29,6 @@ public class AddMoreEventsTask extends AsyncTask<String, Void, Boolean> {
 	
 	@Override
 	protected void onPostExecute(Boolean params){
-//		ReadTableDB readTableDB = new ReadTableDB(activity.getApplicationContext());
-//		readTableDB.readTable_FillList();
 		listener.onTaskCompleted(params);
 	}
 

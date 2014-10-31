@@ -175,6 +175,7 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 	String urlImagenes[];
 
 	JsonHelper jsonHelper;
+	AddMoreEventsTask task;
 
 	// bandera tomara el valor que retorna @parseFirstJson_AddDB(json) para que
 	// dependiendo de su resultado activara
@@ -266,20 +267,15 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 								+ "\nloadedItems"
 								+ (firstVisibleItem + visibleItemCount));
 						Page_TimeLine.this.totalItemCount = totalItemCount;
-						if (((firstVisibleItem + visibleItemCount) == totalItemCount)
-								& listView_Eventos.getFirstVisiblePosition() > 0) {
-							if (listView_Eventos.getLastVisiblePosition() == listView_Eventos
-									.getAdapter().getCount() - 1
+						if (((firstVisibleItem + visibleItemCount) == totalItemCount) && listView_Eventos.getFirstVisiblePosition() > 0) {
+							if (listView_Eventos.getLastVisiblePosition() == listView_Eventos.getAdapter().getCount() - 1
 									&& listView_Eventos.getChildAt(
-													listView_Eventos
-															.getChildCount() - 1)
+													listView_Eventos.getChildCount() - 1)
 											.getBottom() <= listView_Eventos
 											.getHeight()) {
 								Log.d(null, "Final");
-								if (checkInternetConnection
-										.isConnectedToInternet()) {
-									addMoreEvents(latOrigin, lonOrigin);
-//									readTableEvents_fillListEvent();
+								if (checkInternetConnection.isConnectedToInternet()) {
+											addMoreEvents(latOrigin, lonOrigin);
 								} else {
 									Toast.makeText(
 											getActivity()
@@ -440,18 +436,19 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 	}
 
 	public void addMoreEvents(final double lat, final double lon) {
-
-		progressFooter.setVisibility(View.VISIBLE);
-
-		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
-				getActivity().getApplicationContext());
-		
-		AddMoreEventsTask task = new AddMoreEventsTask(getActivity(), this);
-		task.execute("http://yapi.sferea.com/?latitud=" + latOrigin
-				+ "&longitud=" + lonOrigin + "" + "&radio=10" + "&categoria="
-				+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
-				+ "&numEventos=0" + "&idEvento=" + indexEvent + "" + "&fecha="
-				+ fechaUnix + "");
+		if(task == null){
+			progressFooter.setVisibility(View.VISIBLE);
+	
+			SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
+					getActivity().getApplicationContext());
+			
+			task = new AddMoreEventsTask(getActivity(), this);
+			task.execute("http://yapi.sferea.com/?latitud=" + latOrigin
+					+ "&longitud=" + lonOrigin + "" + "&radio=10" + "&categoria="
+					+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
+					+ "&numEventos=0" + "&idEvento=" + indexEvent + "" + "&fecha="
+					+ fechaUnix + "");
+		}
 	}
 
 	public void refreshTimeLine() {
@@ -502,10 +499,10 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		System.gc();
+		task.cancel(true);
 	}
 	
 	public void onTaskCompleted(Object result){
-		progressFooter.setVisibility(View.GONE);
 		if(getActivity()!=null){
 			if ((Boolean)result) {
 				arrayAdapterEvents.clear();
@@ -520,6 +517,9 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 								+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
 						Toast.LENGTH_LONG).show();
 			}
+			
+			progressFooter.setVisibility(View.GONE);
+			task = null;
 		}
 	}
 }

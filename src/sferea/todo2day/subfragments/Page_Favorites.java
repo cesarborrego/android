@@ -69,7 +69,8 @@ public class Page_Favorites extends Fragment {
 					
 					listaObjectFavoritos.add(new FavoritosObjeto(
 							cursor.getString(cursor.getColumnIndex("TITULO_EVENTO")),
-							cursor.getString(cursor.getColumnIndex("CATEGORIA")), 
+							cursor.getString(cursor.getColumnIndex("CATEGORIA")),
+							cursor.getString(cursor.getColumnIndex("CATEGORIA_ID")),
 							cursor.getString(cursor.getColumnIndex("FECHA")), 
 							cursor.getString(cursor.getColumnIndex("DESCRIPCION")), 
 							cursor.getString(cursor.getColumnIndex("FUENTE")), 

@@ -98,8 +98,6 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_responsive);
 		
-//		gps();
-		
 		listViewDrawer = (ListView)findViewById(R.id.listViewDrawer);
 		drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 		
@@ -243,36 +241,25 @@ public class MainActivity extends ActionBarActivity {
 		case EVENTS:{
 			if(!atHome){
 				downloadJSON(19.355582, -99.186726);
-//				atHome=true;
 			}else{
 				atHome=true;
 				fragment = new SubF_Events();
 			}
 			
-//			fragment = new SubF_Events();
-			break;
-		}
-		
-		case CATEGORIES:{
-			fragment = new SubF_Categories();
-			atHome=false;
-			break;
-		}
-		
-		case SETTINGS:{
-			fragment = new SubF_Settings();
-			atHome=false;
-			break;
-		}
-
-		//Si es una opcion diferente nos manda al TimeLine
-		/*
-		default:
-			Toast.makeText(getApplicationContext(), "Non existent: "+position, Toast.LENGTH_SHORT).show();
-			fragment = new SubF_Events();
-			position=EVENTS;
-			break;
-			*/
+				break;
+			}
+			
+			case CATEGORIES:{
+				fragment = new SubF_Categories();
+				atHome=false;
+				break;
+			}
+			
+			case SETTINGS:{
+				fragment = new SubF_Settings();
+				atHome=false;
+				break;
+			}
 		}
 		
 		if(fragment!=null){
@@ -311,7 +298,7 @@ public class MainActivity extends ActionBarActivity {
 	 protected void onPostCreate(Bundle savedInstanceState) {
 	     super.onPostCreate(savedInstanceState);
 	     // Sync the toggle state after onRestoreInstanceState has occurred.
-	     //mDrawerToggle.syncState();
+	     mDrawerToggle.syncState();
 	 }
 
 	 /**
@@ -491,13 +478,7 @@ public class MainActivity extends ActionBarActivity {
 					lonOrigin = location.getLongitude();
 				}
 			};
-//			if(isGpsActive){
-//				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);			
-//			}else{
-//				if(isWirelessActive){
-//					locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 5, locationListener);
-//				}
-//			}
+
 			if(isWirelessActive){
 				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 5, locationListener);
 			}

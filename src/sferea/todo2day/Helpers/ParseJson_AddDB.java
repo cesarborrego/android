@@ -63,7 +63,8 @@ public class ParseJson_AddDB {
 							//Lee la tabla events. Si encuentra el indice solo actualiza, en caso contrario inserta
 							if(!readTableDB.isIndexOfEventsExist((String) jsonItem.get("EventID"))){
 								dataBaseSQLiteManagerEvents.insertar((String)jsonItem.get("EventName"), 
-										(String)jsonItem.get("Category"), 
+										(String)jsonItem.get("Category"),
+										(String)jsonItem.get("CategoryID"),
 										dateUtil.dateTransform((String)jsonItem.get("Date")), 
 										(String) jsonItem.get("Description"), 
 										(String) jsonItem.get("Source"), 
@@ -83,7 +84,8 @@ public class ParseJson_AddDB {
 										"y Nombre de evento "+(String)jsonItem.get("EventName"));
 							}else{
 								dataBaseSQLiteManagerEvents.actualizar((String)jsonItem.get("EventName"), 
-										(String)jsonItem.get("Category"), 
+										(String)jsonItem.get("Category"),
+										(String)jsonItem.get("CategoryID"),
 										dateUtil.dateTransform((String)jsonItem.get("Date")), 
 										(String) jsonItem.get("Description"), 
 										(String) jsonItem.get("Source"), 
@@ -119,9 +121,7 @@ public class ParseJson_AddDB {
 				//Si hay error en el parse retorna false
 				respuesta = false;
 				e.printStackTrace();
-			}
-			
-//				Page_TimeLine.prendeEstrellaTime_Line = new boolean[listaEventos.size()];		
+			}	
 		
 		}
 		return respuesta;
