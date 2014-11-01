@@ -15,6 +15,17 @@
         android:layout_centerInParent="true"
         android:visibility="gone"/>
     
+     <TextView 
+        android:id="@+id/textoHeaderNoInternet"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Verifica tu conexión a Internet"
+        android:textColor="#808080"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+    
     <ProgressBar
         android:id="@+id/progressBarHeader"
         style="?android:attr/progressBarStyle"

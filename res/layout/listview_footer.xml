@@ -15,10 +15,21 @@
         android:visibility="gone"/>
     
      <TextView 
-        android:id="@+id/textoFooterNOInternet"
+        android:id="@+id/textoFooterNOInternetClic"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:text="Verifica tu conexión a Internet\nPresiona aquí para intentarlo de nuevo"
+        android:textColor="#808080"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+     
+     <TextView 
+        android:id="@+id/textoFooterNOInternet"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Verifica tu conexión a Internet"
         android:textColor="#808080"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceSmall"
