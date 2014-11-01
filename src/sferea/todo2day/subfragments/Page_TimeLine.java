@@ -195,7 +195,7 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 	CheckInternetConnection checkInternetConnection;
 
 	ProgressBar progressFooter;
-	TextView footerNoInternet;
+	TextView footerNoInternet, footerNoInternetClic;
 	
 	AddMoreEventsTask task;
 
@@ -242,6 +242,8 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 		progressFooter = ((ProgressBar) footerView.findViewById(R.id.progressBarFooter));
 		
 		footerNoInternet = (TextView) footerView.findViewById(R.id.textoFooterNOInternet);
+		
+		footerNoInternetClic = (TextView) footerView.findViewById(R.id.textoFooterNOInternetClic);
 
 		readTableEvents_fillListEvent();
 		if (SplashActivity.leeJSONCache) {
@@ -285,16 +287,52 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 						Log.d(null, "Final");
 						if (checkInternetConnection.isConnectedToInternet()) {
 							addMoreEvents(latOrigin, lonOrigin);
+							footerNoInternet.setVisibility(View.GONE);
+							footerNoInternetClic.setVisibility(View.GONE);
+							((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
 						} else {
-							footerNoInternet.setVisibility(View.VISIBLE);
-							footerNoInternet.setOnClickListener(new OnClickListener() {
+							footerNoInternet.setVisibility(View.GONE);
+							footerNoInternetClic.setVisibility(View.VISIBLE);
+							((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
+							footerNoInternetClic.setOnClickListener(new OnClickListener() {
 								
 								@Override
 								public void onClick(View v) {
 									if(checkInternetConnection.isConnectedToInternet()){
-										footerNoInternet.setVisibility(View.GONE);
+										footerNoInternetClic.setVisibility(View.GONE);
 										addMoreEvents(latOrigin, lonOrigin);
 									}
+//									else{								
+//										
+//										footerNoInternet.setOnTouchListener(new OnTouchListener() {
+//
+//											@Override
+//											public boolean onTouch(View v, MotionEvent event) {
+//												float y = event.getY();
+//
+//												switch (event.getAction()) {
+//
+//													case MotionEvent.ACTION_MOVE: {}
+//	
+//													case MotionEvent.ACTION_UP: {
+//														progressFooter.setVisibility(View.GONE);
+//													}
+//	
+//													case MotionEvent.ACTION_DOWN: {
+//														footerNoInternet.setVisibility(View.GONE);
+//														progressFooter.setVisibility(View.VISIBLE);
+//													}
+//												}
+//												return false;
+//											}
+//										});
+//										
+//										
+//										
+//										
+//										
+//										
+//									}
 								}
 							});
 						}
@@ -328,14 +366,37 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 							refresh = true;
 							ImageUtil.getImageLoader().clearDiskCache();
 							if (!headerAdded) {
-								// listView_Eventos.addHeaderView(headerView);
-								((TextView) headerView
-										.findViewById(R.id.textoHeaderListview))
-										.setVisibility(View.VISIBLE);
-								headerAdded = true;
+								if(checkInternetConnection.isConnectedToInternet()){
+									((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
+									headerAdded = true;
+									((TextView) headerView.findViewById(R.id.textoHeaderNoInternet)).setVisibility(View.GONE);
+								}else{
+									((TextView) headerView.findViewById(R.id.textoHeaderNoInternet)).setVisibility(View.VISIBLE);
+								}
+								
 							}
 						} else {
 							refresh = false;
+						}
+					}
+					
+					if(y<startY){
+						if (checkInternetConnection.isConnectedToInternet()){
+							if(listView_Eventos.getFirstVisiblePosition() == 0){
+								((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
+							}
+							
+						} else {
+							if(listView_Eventos.getFirstVisiblePosition() == 0){
+								footerNoInternet.setVisibility(View.VISIBLE);
+								footerNoInternetClic.setVisibility(View.GONE);
+								((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
+							}else{
+								footerNoInternet.setVisibility(View.GONE);
+								footerNoInternetClic.setVisibility(View.VISIBLE);
+								((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
+							}
+							
 						}
 					}
 					break;
@@ -359,14 +420,18 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 						}
 					}
 
-					Log.d("FirstVisiblePosition",
-							String.valueOf(listView_Eventos
-									.getFirstVisiblePosition()));
-					if (refresh) {
-						refreshTimeLine();
-					} else {
-						((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
-						((ProgressBar) headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
+					Log.d("FirstVisiblePosition",String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+					
+					
+					if(checkInternetConnection.isConnectedToInternet()){
+						if (refresh) {
+							refreshTimeLine();						
+						} else {
+							((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
+							((ProgressBar) headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
+						}
+					}else{
+						((TextView) headerView.findViewById(R.id.textoHeaderNoInternet)).setVisibility(View.GONE);
 					}
 					downCounterUsed = false;
 					refresh = false;
@@ -376,13 +441,7 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 				case MotionEvent.ACTION_DOWN: {
 					y1 = event.getY();
 					Log.i("DOWN", "Y1 = " + y1 + " Y2 = " + y2);
-					if(checkInternetConnection.isConnectedToInternet()){
-						if(listView_Eventos.getFirstVisiblePosition() == 0){
-							((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
-						}
-					}else{
-						((TextView) footerView.findViewById(R.id.textoFooterNOInternet)).setVisibility(View.VISIBLE);
-					}
+					
 					break;
 				}
 				}
@@ -459,6 +518,9 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 
 			progressFooter.setVisibility(View.VISIBLE);
 			
+			footerNoInternet.setVisibility(View.GONE);
+			footerNoInternetClic.setVisibility(View.GONE);
+			
 			SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 					getActivity().getApplicationContext());
 
@@ -480,10 +542,13 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 			protected void onPreExecute() {
 				// TODO El dialog de cargar
 				super.onPreExecute();
+				
+				
 				((TextView) headerView.findViewById(R.id.textoHeaderListview))
 				.setVisibility(View.GONE);
 				((ProgressBar) headerView.findViewById(R.id.progressBarHeader))
 				.setVisibility(View.VISIBLE);
+				
 			}
 
 			protected Void doInBackground(String... params) {
@@ -528,7 +593,7 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 			if ((Boolean)result) {
 				
 				if(readTableDB.readTable()==arrayAdapterEvents.getCount()){
-					((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
+//					((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
 					progressFooter.setVisibility(View.GONE);
 				}
 				
