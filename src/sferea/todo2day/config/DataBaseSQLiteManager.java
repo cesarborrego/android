@@ -12,6 +12,7 @@ public class DataBaseSQLiteManager {
 	//DATOS
 	public static final String TITULO_EVENTO = "TITULO_EVENTO";
 	public static final String CATEGORIA = "CATEGORIA";
+	public static final String CATEGORIA_ID = "CATEGORIA_ID";
 	public static final String FECHA = "FECHA";
 	public static final String DESCRIPCION = "DESCRIPCION";
 	public static final String FUENTE = "FUENTE";
@@ -48,6 +49,7 @@ public class DataBaseSQLiteManager {
 			"( "+ID+" integer primary key autoincrement," +
 			" "+TITULO_EVENTO+" text not null," +
 			" "+CATEGORIA+" text not null, " +
+			" "+CATEGORIA_ID+" text not null, " +
 			" "+FECHA+" text not null, " +
 			" "+DESCRIPCION+" text not null, " +
 			" "+FUENTE+" text, " +
@@ -75,13 +77,14 @@ public class DataBaseSQLiteManager {
 //			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 //			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
 //			String longitudEvento){
-	public ContentValues generarContentValues (String tituloEvento, String categoriEvento, String fechaEvento, 
+	public ContentValues generarContentValues (String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
 			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
 		ContentValues valoresDB = new ContentValues();
 		valoresDB.put(TITULO_EVENTO, tituloEvento);
 		valoresDB.put(CATEGORIA, categoriEvento);
+		valoresDB.put(CATEGORIA_ID, categoriIDEvento);
 		valoresDB.put(FECHA, fechaEvento);
 		valoresDB.put(DESCRIPCION, descripcionEvento);
 		valoresDB.put(FUENTE, fuenteEvento);
@@ -100,12 +103,12 @@ public class DataBaseSQLiteManager {
 		
 	}
 	
-	public void insertar(String tituloEvento, String categoriEvento, String fechaEvento, 
+	public void insertar(String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
 			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
 		//db.insert(table, nullColumnHack, values)		
-		db.insert(DB_NAME, null, generarContentValues(tituloEvento, categoriEvento, fechaEvento, descripcionEvento, 
+		db.insert(DB_NAME, null, generarContentValues(tituloEvento, categoriEvento, categoriIDEvento, fechaEvento, descripcionEvento, 
 				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, distanciaEvento, latitudEvento, longitudEvento,
 				urlImagen, posicion, indexOfEvent, fechaUnix));		
 	}
@@ -125,7 +128,7 @@ public class DataBaseSQLiteManager {
 	
 	public void crearTabla(){
 		db.execSQL("CREATE TABLE FAVORITES (ID_EVENTO INTEGER PRIMARY KEY AUTOINCREMENT," +
-				" TITULO_EVENTO TEXT NOT NULL, CATEGORIA TEXT NOT NULL, FECHA TEXT NOT NULL," +
+				" TITULO_EVENTO TEXT NOT NULL, CATEGORIA TEXT NOT NULL, CATEGORIA_ID TEXT NOT NULL, FECHA TEXT NOT NULL," +
 				" DESCRIPCION TEXT NOT NULL, FUENTE TEXT, LUGAR TEXT NOT NULL, DIRECCION TEXT," +
 				" TELEFONO TEXT, BOLETO TEXT, DISTANCIA TEXT, LATITUD TEXT NOT NULL, LONGITUD TEXT NOT NULL," +
 				" URL_IMAGEN_EVENTO TEXT, POSICION INTEGER, INDEX_OF_EVENT TEXT NOT NULL, FECHA_UNIX TEXT NOT NULL);");
@@ -136,12 +139,12 @@ public class DataBaseSQLiteManager {
 		db.delete(DB_NAME, TITULO_EVENTO+" IN (?,?)", new String[]{tituloEvento, tituloEvento2});
 	}
 	
-	public void modificarValoresDB(String tituloEvento, String categoriEvento, String fechaEvento, 
+	public void modificarValoresDB(String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
 			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
 		//db.update(table, values, whereClause, whereArgs)
-		db.update(DB_NAME, generarContentValues(tituloEvento, categoriEvento, fechaEvento, descripcionEvento,
+		db.update(DB_NAME, generarContentValues(tituloEvento, categoriEvento, categoriIDEvento, fechaEvento, descripcionEvento,
 				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, distanciaEvento, 
 				latitudEvento, longitudEvento, urlImagen, posicion, indexOfEvent, fechaUnix), INDEX_OF_EVENT+"=?", new String[]{indexOfEvent});
 	}

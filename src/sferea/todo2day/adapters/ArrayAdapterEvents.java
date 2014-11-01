@@ -7,6 +7,7 @@ import java.util.List;
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.Helpers.ImageUtil;
+import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.DataBaseSQLiteManager;
 import sferea.todo2day.config.SharedPreferencesHelper;
@@ -111,7 +112,8 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 		inicioTweet = v.getResources().getString(R.string.cadenaTweet_inicio);
 		enTweet = v.getResources().getString(R.string.cadenaTweet_en);
-
+		setIconCategoria(position, viewHolder);
+		
 		final int pos = position;
 		v.setOnClickListener(new OnClickListener() {
 			@Override
@@ -159,6 +161,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 		String nombreEvento;
 		String categoriaEvento;
+		String categoriaIDEvento;
 		String fechaEvento;
 		String horarioEvento;
 		String urlImagen;
@@ -182,6 +185,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 		nombreEvento = eventoObjeto.getNombreEvento();
 		categoriaEvento = eventoObjeto.getCategoriaEvento();
+		categoriaIDEvento = eventoObjeto.getCategoriaIDEvento();
 		fechaEvento = eventoObjeto.getFechaEvento();
 		horarioEvento = eventoObjeto.getHoraEvento();
 		/** Nuevos elementos para llenar el Evento **/
@@ -200,22 +204,23 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 		SubF_Events.iFavoritos = new int[this.getCount()];
 
-		String[] categorias = thisContext.getResources().getStringArray(
-				R.array.categorias);
-		int[] id_small_icons = { R.drawable.ic_small_antros,
-				R.drawable.ic_small_cine, R.drawable.ic_small_cultura,
-				R.drawable.ic_small_deportes, R.drawable.ic_small_negocios,
-				R.drawable.ic_small_con_ninos, R.drawable.ic_small_gastronomia,
-				R.drawable.ic_small_musica, R.drawable.ic_small_salud,
-				R.drawable.ic_small_sociales, R.drawable.ic_small_tecnologia,
-				R.drawable.ic_small_verde };
+//		String[] categorias = thisContext.getResources().getStringArray(
+//				R.array.categorias);
+//		int[] id_small_icons = { R.drawable.ic_small_antros,
+//				R.drawable.ic_small_cine, R.drawable.ic_small_cultura,
+//				R.drawable.ic_small_deportes, R.drawable.ic_small_negocios,
+//				R.drawable.ic_small_con_ninos, R.drawable.ic_small_gastronomia,
+//				R.drawable.ic_small_musica, R.drawable.ic_small_salud,
+//				R.drawable.ic_small_sociales, R.drawable.ic_small_tecnologia,
+//				R.drawable.ic_small_verde };
 		
-		for (int i = 0; i < categorias.length; i++) {
-			if (categorias[i].equals(categoriaEvento))
-				eventView.iconCategoria.setImageResource(id_small_icons[i]);
-			id_small_icons[2] = imagenCategoria;
-		}
-
+//		for (int i = 0; i < categorias.length; i++) {
+//			if (categorias[i].equals(categoriaEvento))
+//				eventView.iconCategoria.setImageResource(id_small_icons[i]);
+//			id_small_icons[2] = imagenCategoria;
+//		}
+		
+		
 		// Asignamos al view las variables intermedias
 		eventView.nombreEvento.setText(nombreEvento);
 		eventView.categoriaEvento.setText(categoriaEvento);
@@ -420,30 +425,51 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 					Cursor cursor = managerDBFavorites.queryEventByIndex(getItem(position).getIndexOfEvent());
 					
 					if (cursor.getCount() > 0) {
-						eventView.iconFavorito.setImageResource(R.drawable.ic_action_important);
+						eventView.iconFavorito
+								.setImageResource(R.drawable.ic_action_important);
 
-						managerDBFavorites.eliminar(String.valueOf(getItem(position).getIndexOfEvent()));
+						managerDBFavorites.eliminar(String
+								.valueOf(getItem(position)
+										.getIndexOfEvent()));
 
-						Log.d(null, "Se elimino registro "+ getItem(position).getNombreEvento());
+						Log.d(null, "Se elimino registro "
+								+ getItem(position)
+										.getNombreEvento());
 
 					} else {
-						eventView.iconFavorito.setImageResource(R.drawable.ic_action_important_active);
+						eventView.iconFavorito
+								.setImageResource(R.drawable.ic_action_important_active);
 
-						managerDBFavorites.insertar(getItem(position).getNombreEvento(),
-								getItem(position).getCategoriaEvento(),
-								getItem(position).getFechaEvento(),
-								getItem(position).getDescripcion(),
-								getItem(position).getFuente(),
-								getItem(position).getLugarEvento(),
-								getItem(position).getDireccion(),
-								getItem(position).getTelefono(), 
-								getItem(position).getBoleto(),
-								String.valueOf(getItem(position).getDistancia()),
-								String.valueOf(getItem(position).getLatEvento()),
-								String.valueOf(getItem(position).getLonEvento()),
-								getItem(position).getUrlImagen(), String.valueOf(position), 
-								String.valueOf(getItem(position).getIndexOfEvent()),
-								String.valueOf(getItem(position).getFechaUnix()));
+						managerDBFavorites
+								.insertar(getItem(position)
+										.getNombreEvento(), getItem(position).getCategoriaEvento(),
+										getItem(position).getCategoriaIDEvento(),
+										getItem(position)
+												.getFechaEvento(),
+										getItem(position)
+												.getDescripcion(),
+										getItem(position)
+												.getFuente(),
+										getItem(position)
+												.getLugarEvento(),
+										getItem(position)
+												.getDireccion(),
+										getItem(position)
+												.getTelefono(), getItem(position).getBoleto(),
+										String.valueOf(getItem(
+												position).getDistancia()),
+										String.valueOf(getItem(
+												position).getLatEvento()),
+										String.valueOf(getItem(
+												position).getLonEvento()),
+										getItem(position)
+												.getUrlImagen(), String
+												.valueOf(position), String
+												.valueOf(getItem(
+														position)
+														.getIndexOfEvent()),
+										String.valueOf(getItem(
+												position).getFechaUnix()));
 						Log.d(null, "Registro Insertado en DB");
 					}
 				}
@@ -560,6 +586,65 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		Toast.makeText(thisContext, "Verificar la conexión a internet",
 				Toast.LENGTH_SHORT).show();
 		return false;
+	}
+	
+	private void setIconCategoria(int position, ViewHolder eventView){
+		CategoriasConfig categoriaId = CategoriasConfig.valueOf(getItem(position).getCategoriaIDEvento().toUpperCase());
+		
+		switch(categoriaId){
+		case A :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_antros);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_antros);
+			break;
+		case B :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_cultura);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_cultura);
+			break;
+		case C :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_cine);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_cine);
+			break;
+		case D :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_deportes);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_deportes);
+			break;
+		case E :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_negocios);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_negocios);
+			break;
+		case F :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_con_ninos);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_con_ninos);
+			break;
+		case G :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_gastronomia);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_gastronomia);
+			break;
+		case H :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_musica);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_musica);
+			break;
+		case I :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_salud);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_salud);
+			break;
+		case J :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_sociales);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_sociales);
+			break;
+		case K :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_tecnologia);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_tecnologia);
+			break;
+		case L :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_verde);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_verde);
+			break;
+		default:
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_sociales);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_sociales);
+		}
+
 	}
 
 	class ViewHolder {

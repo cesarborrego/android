@@ -19,8 +19,6 @@ public class ReadTableDB {
 		this.thisContext = c;
 		dataBaseSQLiteManagerEvents = new DataBaseSQLiteManagerEvents(
 				thisContext);
-		
-		Page_TimeLine.listaEventos = new ArrayList<EventoObjeto>();
 	}
 
 	public boolean isIndexOfEventsExist(String indexOfEvent) {
@@ -55,6 +53,8 @@ public class ReadTableDB {
 											.getColumnIndex("TITULO_EVENTO")),
 									cursor.getString(cursor
 											.getColumnIndex("CATEGORIA")),
+									cursor.getString(cursor
+													.getColumnIndex("CATEGORIA_ID")),
 									cursor.getString(cursor
 											.getColumnIndex("FECHA")),
 									descripcion,

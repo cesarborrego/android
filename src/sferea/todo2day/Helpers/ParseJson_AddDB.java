@@ -38,7 +38,6 @@ public class ParseJson_AddDB {
 	 */
 	public boolean parseFirstJson_AddDB (String line){
 		boolean respuesta = false;
-		String descripcion;
 		if(line!=null){
 			JSONParser parser = new JSONParser();
 			Object object = null;
@@ -61,19 +60,13 @@ public class ParseJson_AddDB {
 
 							JSONObject jsonItem = (JSONObject) jsonInicio.get("Item" + i);
 							
-							if((String) jsonItem.get("Description")==null){
-								descripcion = "No disponible";
-							}else{
-								descripcion = (String) jsonItem.get("Description");
-							}
-							
 							//Lee la tabla events. Si encuentra el indice solo actualiza, en caso contrario inserta
 							if(!readTableDB.isIndexOfEventsExist((String) jsonItem.get("EventID"))){
 								dataBaseSQLiteManagerEvents.insertar((String)jsonItem.get("EventName"), 
-										(String)jsonItem.get("Category"), 
+										(String)jsonItem.get("Category"),
+										(String)jsonItem.get("CategoryID"),
 										dateUtil.dateTransform((String)jsonItem.get("Date")), 
-//										(String) jsonItem.get("Description"), 
-										descripcion,
+										(String) jsonItem.get("Description"), 
 										(String) jsonItem.get("Source"), 
 										(String) jsonItem.get("Address"), 
 										"Abundio Martinez", 
@@ -91,10 +84,10 @@ public class ParseJson_AddDB {
 										"y Nombre de evento "+(String)jsonItem.get("EventName"));
 							}else{
 								dataBaseSQLiteManagerEvents.actualizar((String)jsonItem.get("EventName"), 
-										(String)jsonItem.get("Category"), 
+										(String)jsonItem.get("Category"),
+										(String)jsonItem.get("CategoryID"),
 										dateUtil.dateTransform((String)jsonItem.get("Date")), 
-//										(String) jsonItem.get("Description"), 
-										descripcion,
+										(String) jsonItem.get("Description"), 
 										(String) jsonItem.get("Source"), 
 										(String) jsonItem.get("Address"), 
 										"Abundio Martinez", 
@@ -128,9 +121,7 @@ public class ParseJson_AddDB {
 				//Si hay error en el parse retorna false
 				respuesta = false;
 				e.printStackTrace();
-			}
-			
-//				Page_TimeLine.prendeEstrellaTime_Line = new boolean[listaEventos.size()];		
+			}	
 		
 		}
 		return respuesta;

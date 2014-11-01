@@ -16,6 +16,7 @@ public class EventoObjeto implements Parcelable{
 	
 	String nombreEvento; String categoriaEvento; String fechaEvento; String horaEvento;
 	String urlImgEvento;
+	String categoriaIDEvento;
 	String lugarEvento; double latEvento; double lonEvento;
 	String distancia; Bitmap imagenEvento; int imagenCategoria;
 	
@@ -30,18 +31,20 @@ public class EventoObjeto implements Parcelable{
 		this.categoriaEvento = categoria;
 	}
 	
-	public EventoObjeto(String nomEvento, String catEvento, String fechEvento, String horEvento, String lugEvento, 
+	public EventoObjeto(String nomEvento, String catEvento, String catIDEvento, String fechEvento, String horEvento, String lugEvento, 
 			double latEv, double lonEv, String dist, Bitmap imgEvento){
 		setNombreEvento(nomEvento); setCategoriaEvento(catEvento); setFechaEvento(fechEvento); setHoraEvento(horEvento);
 		setLugarEvento(lugEvento); setLatLonEvento(latEv, lonEv); setDistancia(dist); setImagenEvento(imgEvento);
+		setCategoriaIDEvento(catIDEvento);
 //		setImagenCategoria(imgCategoria);
 	}
 	
-	public EventoObjeto(String nombreEvento, String catEvento, String fechaEvento, String descripcionEvento, String fuenteEvento, String LugarEvento, 
+	public EventoObjeto(String nombreEvento, String catEvento, String catIDEvento, String fechaEvento, String descripcionEvento, String fuenteEvento, String LugarEvento, 
 			String direccionEvento, String telefonoEvento, double lat, double lon, String dist, String boletoEvento, String precio, int posicion, 
 			String indexOfEvent, int fechaUnix, String urlImgEvento, int imagenCategoria){
 		setNombreEvento(nombreEvento);
 		setCategoriaEvento(catEvento);
+		setCategoriaIDEvento(catIDEvento);
 		setFechaEvento(fechaEvento);
 		setDescripcion(descripcionEvento);
 		setFuente(fuenteEvento);
@@ -108,6 +111,9 @@ public class EventoObjeto implements Parcelable{
 	
 	public String getCategoriaEvento() {return categoriaEvento;}
 	public void setCategoriaEvento(String categoriaEvento) {this.categoriaEvento = categoriaEvento;}
+	
+	public String getCategoriaIDEvento() {return categoriaIDEvento;}
+	public void setCategoriaIDEvento(String categoriaIDEvento) {this.categoriaIDEvento = categoriaIDEvento;}
 
 	public String getHoraEvento() { return horaEvento; }
 	public void setHoraEvento(String horaEvento) { this.horaEvento = horaEvento; }		
@@ -196,6 +202,7 @@ public class EventoObjeto implements Parcelable{
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(getNombreEvento());
 		dest.writeString(categoriaEvento);
+		dest.writeString(categoriaIDEvento);
 		dest.writeString(fechaEvento);
 		dest.writeString(lugarEvento);
 		dest.writeString(distancia);
@@ -211,6 +218,7 @@ public class EventoObjeto implements Parcelable{
 		dest.writeInt(fechaUnix);
 		dest.writeString(urlImgEvento);
 		dest.writeString(precio);
+		dest.writeInt(imagenCategoria);
 		
 		
 //		ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -247,6 +255,7 @@ public class EventoObjeto implements Parcelable{
 		
 		setNombreEvento(pc.readString());
 		setCategoriaEvento(pc.readString());
+		setCategoriaIDEvento(pc.readString());
 		setFechaEvento(pc.readString());
 		setLugarEvento(pc.readString());
 		setDistancia(pc.readString());
@@ -262,6 +271,7 @@ public class EventoObjeto implements Parcelable{
 		setFechaUnix(pc.readInt());
 		setUrlImagen(pc.readString());
 		setPrecio(pc.readString());
+		setImagenCategoria(pc.readInt());
 		
 		//Obtenemos la imagen 
 //		byte[] byteArrayImage= new byte[pc.readInt()];

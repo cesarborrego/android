@@ -1,10 +1,12 @@
 package sferea.todo2day.adapters;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.Helpers.ImageUtil;
+import sferea.todo2day.adapters.ArrayAdapterEvents.ViewHolder;
+import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.DataBaseSQLiteManager;
 import sferea.todo2day.subfragments.Page_Favorites;
 import sferea.todo2day.subfragments.Page_TimeLine;
@@ -28,19 +30,17 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class ArrayAdapterFavorites extends ArrayAdapter {
+public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 	Context contex;
 	Activity activityAdapter;
-	FavoritosObjeto [] favoritesObjeto;
-	List<FavoritosObjeto> listaObjetosFavoritos;	
+	FavoritosObjeto [] favoritesObjeto;	
 	EventoObjeto eventoObjeto;
 	ImageLoader imageloader;
 	DisplayImageOptions options;
 	
 	@SuppressWarnings("unchecked")
-	public ArrayAdapterFavorites(Activity activity, Context context, List<FavoritosObjeto> datos) {
+	public ArrayAdapterFavorites(Activity activity, Context context, ArrayList<FavoritosObjeto> datos) {
 		super(activity,  R.layout.row_favorites_responsive_tablet, datos);
-		this.listaObjetosFavoritos = datos;
 		this.activityAdapter = activity;
 		this.contex = context;
 		this.imageloader = ImageUtil.getImageLoader();
@@ -64,12 +64,15 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 			viewHolder.lugarFavorito = (TextView) v.findViewById(R.id.lugarFavorito);
 			viewHolder.nombreFavorito = (TextView) v.findViewById(R.id.nombreFavorito);
 			viewHolder.thumbnailFavorito = (ImageView) v.findViewById(R.id.thumbnailFavorite);
+			viewHolder.iconCategoria = (ImageView) v.findViewById(R.id.iconCategoriaFavorito);
 			
 			v.setTag(viewHolder);
 		}
 		else{
 			viewHolder = (ViewHolder) v.getTag();
 		}
+		
+		setIconCategoria(position, viewHolder);
 		
 		v.setOnClickListener(new OnClickListener() {
 			
@@ -79,7 +82,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 				Page_TimeLine.eventoActivo = false;
 				
 				Bundle bundle = new Bundle();
-				bundle.putParcelable("Favorito", listaObjetosFavoritos.get(position));
+				bundle.putParcelable("Favorito", getItem(position));
 				Intent intent = new Intent(contex, DetailActivity.class);
 				intent.putExtras(bundle);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -87,7 +90,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 			}
 		});
 				
-		FavoritosObjeto favoritosObjeto = listaObjetosFavoritos.get(position);
+		FavoritosObjeto favoritosObjeto = getItem(position);
 		
 		String nombre = favoritosObjeto.getNombreEvento();
 		String categoria = favoritosObjeto.getCategoriaEvento();
@@ -126,7 +129,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 	
 	private void deleteFavorites(final int position){
 		DataBaseSQLiteManager managerDB = new DataBaseSQLiteManager(activityAdapter.getApplicationContext());
-		managerDB.eliminar(listaObjetosFavoritos.get(position).getIndexOfEvent());
+		managerDB.eliminar(getItem(position).getIndexOfEvent());
 		refreshFavoritesFragment(position);
 		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 	}
@@ -144,6 +147,65 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 		 }		 
 	 }
 	
+	private void setIconCategoria(int position, ViewHolder eventView){
+		CategoriasConfig categoriaId = CategoriasConfig.valueOf(getItem(position).getCategoriaIDEvento().toUpperCase());
+		
+		switch(categoriaId){
+		case A :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_antros);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_antros);
+			break;
+		case B :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_cultura);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_cultura);
+			break;
+		case C :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_cine);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_cine);
+			break;
+		case D :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_deportes);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_deportes);
+			break;
+		case E :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_negocios);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_negocios);
+			break;
+		case F :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_con_ninos);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_con_ninos);
+			break;
+		case G :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_gastronomia);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_gastronomia);
+			break;
+		case H :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_musica);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_musica);
+			break;
+		case I :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_salud);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_salud);
+			break;
+		case J :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_sociales);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_sociales);
+			break;
+		case K :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_tecnologia);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_tecnologia);
+			break;
+		case L :
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_verde);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_verde);
+			break;
+		default:
+			eventView.iconCategoria.setImageResource(R.drawable.ic_small_sociales);
+			getItem(position).setImagenCategoria(R.drawable.ic_small_sociales);
+		}
+
+	}
+	
 	class ViewHolder{
 		
 		public TextView nombreFavorito;
@@ -153,6 +215,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter {
 		public TextView distanciaFavorito;
 		public TextView descripcionFavorito;
 		public ImageView thumbnailFavorito;
+		public ImageView iconCategoria;
 		public RelativeLayout botonFavorito;
 	}
 }
