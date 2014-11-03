@@ -204,21 +204,6 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 		SubF_Events.iFavoritos = new int[this.getCount()];
 
-//		String[] categorias = thisContext.getResources().getStringArray(
-//				R.array.categorias);
-//		int[] id_small_icons = { R.drawable.ic_small_antros,
-//				R.drawable.ic_small_cine, R.drawable.ic_small_cultura,
-//				R.drawable.ic_small_deportes, R.drawable.ic_small_negocios,
-//				R.drawable.ic_small_con_ninos, R.drawable.ic_small_gastronomia,
-//				R.drawable.ic_small_musica, R.drawable.ic_small_salud,
-//				R.drawable.ic_small_sociales, R.drawable.ic_small_tecnologia,
-//				R.drawable.ic_small_verde };
-		
-//		for (int i = 0; i < categorias.length; i++) {
-//			if (categorias[i].equals(categoriaEvento))
-//				eventView.iconCategoria.setImageResource(id_small_icons[i]);
-//			id_small_icons[2] = imagenCategoria;
-//		}
 		
 		
 		// Asignamos al view las variables intermedias
@@ -229,9 +214,9 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		eventView.distanciaEvento.setText(distanciaEvento);
 		eventView.descripcionEvento.setText(descripcionEvento);
 
-		if(!urlImagen.equals("No disponible")){
-			imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
-		}
+//		if(!urlImagen.equals("No disponible")){
+//			imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
+//		}
 
 		// dependiendo de los resultados prendemos o apagamos las estrellas de
 		// favoritos
