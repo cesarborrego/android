@@ -480,8 +480,8 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 					Toast.makeText(
 							getActivity().getApplicationContext(),
 							"No hay Eventos Disponibles\n"
-									+ "Prueba con otras categorÃ­as!\n"
-									+ "Y/o Aumenta el Radio de bÃºsqueda en los ajustes",
+									+ "Prueba con otras categorías!\n"
+									+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
 									Toast.LENGTH_LONG).show();
 				}
 			};
@@ -604,8 +604,8 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 				Toast.makeText(
 						getActivity().getApplicationContext(),
 						"No hay Eventos Disponibles\n"
-								+ "Prueba con otras categorÃ­as!\n"
-								+ "Y/o Aumenta el Radio de bÃºsqueda en los ajustes",
+								+ "Prueba con otras categorías!\n"
+								+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
 								Toast.LENGTH_LONG).show();
 			}
 			progressFooter.setVisibility(View.GONE);
