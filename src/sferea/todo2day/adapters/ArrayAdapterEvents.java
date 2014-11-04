@@ -80,22 +80,22 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 			v = LayoutInflater.from(getContext()).inflate(
 					R.layout.row_event_responsive, null);
 			viewHolder = new ViewHolder();
-			viewHolder.botonFavoritos = (RelativeLayout) v
-					.findViewById(R.id.botonFavEvent);
-			viewHolder.botonRetweetEvent = (RelativeLayout) v
-					.findViewById(R.id.botonRetweetEvent);
+//			viewHolder.botonFavoritos = (RelativeLayout) v
+//					.findViewById(R.id.botonFavEvent);
+//			viewHolder.botonRetweetEvent = (RelativeLayout) v
+//					.findViewById(R.id.botonRetweetEvent);
 			viewHolder.categoriaEvento = (TextView) v
 					.findViewById(R.id.categoriaFavorito);
 			viewHolder.nombreEvento = (TextView) v
 					.findViewById(R.id.nombreFavorito);
 			viewHolder.fechaEvento = (TextView) v
 					.findViewById(R.id.fechaFavorito);
-			viewHolder.lugarEvento = (TextView) v
-					.findViewById(R.id.lugarFavorito);
+//			viewHolder.lugarEvento = (TextView) v
+//					.findViewById(R.id.lugarFavorito);
 			viewHolder.distanciaEvento = (TextView) v
 					.findViewById(R.id.distanciaFavorito);
-			viewHolder.descripcionEvento = (TextView) v
-					.findViewById(R.id.descripcionFavorito);
+//			viewHolder.descripcionEvento = (TextView) v
+//					.findViewById(R.id.descripcionFavorito);
 			viewHolder.thumbEvento = (ImageView) v
 					.findViewById(R.id.thumbnailFavorite);
 			viewHolder.iconCategoria = (ImageView) v
@@ -207,12 +207,12 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		
 		
 		// Asignamos al view las variables intermedias
-		eventView.nombreEvento.setText(nombreEvento);
+//		eventView.nombreEvento.setText(nombreEvento);
 		eventView.categoriaEvento.setText(categoriaEvento);
 		eventView.fechaEvento.setText(fechaEvento);
-		eventView.lugarEvento.setText(lugarEvento);
+//		eventView.lugarEvento.setText(lugarEvento);
 		eventView.distanciaEvento.setText(distanciaEvento);
-		eventView.descripcionEvento.setText(descripcionEvento);
+		//eventView.descripcionEvento.setText(descripcionEvento);
 
 //		if(!urlImagen.equals("No disponible")){
 //			imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
@@ -261,7 +261,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 			final ViewHolder eventView, int position) {
 		// Se coloca el OnClickListener al boton de retweet el cual crea un
 		// dialogo
-		eventView.botonRetweetEvent.setOnClickListener(new OnClickListener() {
+		eventView.iconRetweet.setOnClickListener(new OnClickListener() {
 			// btnRet.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -398,7 +398,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 	private void agregarFavoritos(final ViewHolder eventView,
 			final int position, final DataBaseSQLiteManager managerDBFavorites) {
 
-		eventView.botonFavoritos.setOnClickListener(new OnClickListener() {
+		eventView.iconFavorito.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -638,12 +638,12 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		TextView nombreEvento;
 		TextView categoriaEvento;
 		TextView fechaEvento;
-		TextView lugarEvento;
+//		TextView lugarEvento;
 		TextView distanciaEvento;
-		TextView descripcionEvento;
-		RelativeLayout botonRetweetEvent;
-		TextView tweetCounter;
-		RelativeLayout botonFavoritos;
+		//TextView descripcionEvento;
+		//RelativeLayout botonRetweetEvent;
+		//TextView tweetCounter;
+		//RelativeLayout botonFavoritos;
 		ImageView iconFavorito;
 		ImageView iconRetweet;
 	}
