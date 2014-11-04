@@ -477,12 +477,12 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 					// Toast.makeText(getActivity().getApplicationContext(),"Listo verifica la DB Events!",
 					// Toast.LENGTH_LONG).show();
 				} else {
-					Toast.makeText(
-							getActivity().getApplicationContext(),
-							"No hay Eventos Disponibles\n"
-									+ "Prueba con otras categorías!\n"
-									+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
-									Toast.LENGTH_LONG).show();
+//					Toast.makeText(
+//							getActivity().getApplicationContext(),
+//							"No hay Eventos Disponibles\n"
+//									+ "Prueba con otras categorías!\n"
+//									+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
+//									Toast.LENGTH_LONG).show();
 				}
 			};
 		}.execute();
@@ -601,12 +601,12 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 				readTableDB.readTable_FillList();
 				arrayAdapterEvents.notifyDataSetChanged();
 			} else {
-				Toast.makeText(
-						getActivity().getApplicationContext(),
-						"No hay Eventos Disponibles\n"
-								+ "Prueba con otras categorías!\n"
-								+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
-								Toast.LENGTH_LONG).show();
+//				Toast.makeText(
+//						getActivity().getApplicationContext(),
+//						"No hay Eventos Disponibles\n"
+//								+ "Prueba con otras categorías!\n"
+//								+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
+//								Toast.LENGTH_LONG).show();
 			}
 			progressFooter.setVisibility(View.GONE);
 			task = null;

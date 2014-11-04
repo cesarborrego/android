@@ -56,12 +56,13 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 		if(v == null){
 			v = LayoutInflater.from(getContext()).inflate(R.layout.row_favorites_responsive_tablet, null);
 			viewHolder = new ViewHolder();
-			viewHolder.botonFavorito = (RelativeLayout) v.findViewById(R.id.botonFavEvent);
+//			viewHolder.botonFavorito = (RelativeLayout) v.findViewById(R.id.botonFavEvent);
 			viewHolder.categoriaFavorito = (TextView) v.findViewById(R.id.categoriaFavorito);
-			viewHolder.descripcionFavorito = (TextView) v.findViewById(R.id.descripcionFavorito);
+//			viewHolder.descripcionFavorito = (TextView) v.findViewById(R.id.descripcionFavorito);
 			viewHolder.distanciaFavorito = (TextView) v.findViewById(R.id.distanciaFavorito);
 			viewHolder.fechaFavorito = (TextView) v.findViewById(R.id.fechaFavorito);
-			viewHolder.lugarFavorito = (TextView) v.findViewById(R.id.lugarFavorito);
+//			viewHolder.lugarFavorito = (TextView) v.findViewById(R.id.lugarFavorito);
+			viewHolder.iconFavFavorito = (ImageView) v.findViewById(R.id.iconFavFavorito);
 			viewHolder.nombreFavorito = (TextView) v.findViewById(R.id.nombreFavorito);
 			viewHolder.thumbnailFavorito = (ImageView) v.findViewById(R.id.thumbnailFavorite);
 			viewHolder.iconCategoria = (ImageView) v.findViewById(R.id.iconCategoriaFavorito);
@@ -104,13 +105,13 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 		viewHolder.nombreFavorito.setText(nombre);
 		viewHolder.categoriaFavorito.setText(categoria);
 		viewHolder.fechaFavorito.setText(fecha);
-		viewHolder.lugarFavorito.setText(lugar);
+//		viewHolder.lugarFavorito.setText(lugar);
 		viewHolder.distanciaFavorito.setText(distancia);
-		viewHolder.descripcionFavorito.setText(descripcion);
+//		viewHolder.descripcionFavorito.setText(descripcion);
 		
-		imageloader.displayImage(imagen, viewHolder.thumbnailFavorito, options);
+//		imageloader.displayImage(imagen, viewHolder.thumbnailFavorito, options);
 		
-		viewHolder.botonFavorito.setOnClickListener(new OnClickListener() {
+		viewHolder.iconFavFavorito.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -211,11 +212,11 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 		public TextView nombreFavorito;
 		public TextView categoriaFavorito;
 		public TextView fechaFavorito;
-		public TextView lugarFavorito;
+//		public TextView lugarFavorito;
 		public TextView distanciaFavorito;
-		public TextView descripcionFavorito;
+//		public TextView descripcionFavorito;
 		public ImageView thumbnailFavorito;
 		public ImageView iconCategoria;
-		public RelativeLayout botonFavorito;
+		public ImageView iconFavFavorito;
 	}
 }
