@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:background="#fff" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:background="#fff" >
 
         <RelativeLayout
             android:id="@+id/details_header_layout"
@@ -97,7 +99,7 @@
                     android:padding="10dp"
                     android:text="@string/defaultEventTitle"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#fff"
+                    android:textColor="#A8A2A2"
                     android:textStyle="bold" />
 
                 <TextView
@@ -108,7 +110,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="@string/defaultCategoria"
-                    android:textColor="#fff"
+                    android:textColor="#A8A2A2"
                     android:textStyle="bold" />
             </RelativeLayout>
         </RelativeLayout>
@@ -124,26 +126,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/barra" />
-            
-            <LinearLayout 
+
+            <LinearLayout
                 android:id="@+id/contenedorOrg"
-                android:layout_width="wrap_content"                
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="5dp"
                 android:layout_centerVertical="true"
-                android:paddingLeft="10dp">
-                
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical"
+                android:paddingLeft="10dp" >
+
                 <TextView
-                    android:layout_marginTop="20dp"
                     android:id="@+id/organizadorTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:text="@string/defaultOrganizador"
                     android:textColor="#A8A2A2"
                     android:textSize="11sp"
                     android:textStyle="bold" />
-                
+
                 <TextView
                     android:id="@+id/nombreOrgTxt"
                     android:layout_width="wrap_content"
@@ -152,7 +154,6 @@
                     android:textColor="#A8A2A2"
                     android:textSize="11sp"
                     android:textStyle="normal" />
-                
             </LinearLayout>
 
             <LinearLayout
@@ -161,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp">               
+                android:layout_marginRight="10dp" >
 
                 <ImageView
                     android:id="@+id/iconoFecha"
@@ -181,8 +182,15 @@
                     android:text="@string/defaultFecha"
                     android:textColor="#A8A2A2"
                     android:textSize="10sp" />
+                
+                <TextView 
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/defaultHrs"
+                    android:textSize="10sp"
+                    android:textColor="#A8A2A2"
+                    android:paddingLeft="3dp"/>
             </LinearLayout>
-
         </RelativeLayout>
 
         <ImageView
@@ -271,12 +279,19 @@
             android:padding="10dp"
             android:text="@string/defaultDescripcionEvento"
             android:textColor="#575757" />
+        
+        <ImageView
+            android:id="@+id/separador4"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_below="@id/detallesDescripcion"
+            android:src="@drawable/separador" />
 
         <RelativeLayout
             android:id="@+id/contenedorTelefonoFuente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/detallesDescripcion" >
+            android:layout_below="@id/separador4" >
 
             <ImageView
                 android:id="@+id/iconoTelefono"
@@ -295,7 +310,6 @@
                 android:layout_alignParentLeft="true"
                 android:lines="1"
                 android:paddingLeft="34dp"
-                android:paddingTop="3dp"
                 android:text="@string/defaultTelefono"
                 android:textColor="#A8A2A2"
                 android:textStyle="bold" />
@@ -320,14 +334,14 @@
                 android:paddingRight="15dp"
                 android:src="@drawable/ic_fuente" />
         </RelativeLayout>
-        
+
         <ImageView
             android:id="@+id/separador2"
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:layout_below="@id/contenedorTelefonoFuente"
             android:src="@drawable/separador" />
-        
+
         <ImageView
             android:id="@+id/iconoBoleto"
             android:layout_width="wrap_content"
@@ -338,35 +352,78 @@
             android:maxWidth="34dp"
             android:paddingLeft="8dp"
             android:src="@drawable/ic_boletos" />
-        
-        <TextView
-            android:id="@+id/etiquetaBoletos"
+
+        <LinearLayout
+            android:id="@+id/contenedorBoleto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/separador2"
-            android:paddingBottom="5dp"
-            android:paddingLeft="35dp"
-            android:paddingTop="3dp"
-            android:text="@string/defaultBoleto"
-            android:textColor="#A8A2A2"
-            android:textStyle="bold" />
-        
-         <ImageView
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/etiquetaBoletos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="35dp"
+                android:text="@string/defaultBoleto"
+                android:textColor="#A8A2A2"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/descBoletos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tipoBoleto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="35dp"
+                    android:paddingTop="2dp"
+                    android:text="@string/defaultTipoBoleto"
+                    android:textColor="#A8A2A2" />
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/signoPesos"
+                    android:textColor="#A8A2A2" />
+
+                <TextView
+                    android:id="@+id/precioBoleto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="1dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/defaultPrecio"
+                    android:textColor="#A8A2A2" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
             android:id="@+id/separador3"
             android:layout_width="match_parent"
             android:layout_height="15dp"
-            android:layout_below="@id/etiquetaBoletos"
+            android:layout_below="@id/contenedorBoleto"
             android:src="@drawable/separador" />
 
         <TextView
             android:id="@+id/detallesLugar"
-            android:layout_width="wrap_content"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/separador3"
             android:paddingLeft="10dp"
+             android:lines="2"
             android:text="@string/defaultLugar"
-            android:textColor="#A8A2A2"/>
+            android:textColor="#A8A2A2" />
 
         <TextView
             android:id="@+id/detallesDireccion"
@@ -374,38 +431,42 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/detallesLugar"
-            android:lines="2"
+            android:lines="3"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:text="@string/defaultDireccion"
             android:textColor="#575757"
             android:textSize="12sp" />
-        
-        <ImageView
-            android:id="@+id/iconoUbicacion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/detallesLugar"
-            android:layout_marginTop="43dp"
-            android:adjustViewBounds="true"
-            android:maxWidth="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="65dp"
-            android:src="@drawable/ic_ubicacion" />
 
-        <TextView
-            android:id="@+id/detallesDistancia"
+        <LinearLayout
+            android:id="@+id/contenedorUbicacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/detallesLugar"
-            android:layout_marginTop="45dp"
-            android:paddingRight="10dp"
-            android:text="@string/defaultDistancia"
-            android:textColor="#A8A2A2"
-            android:textStyle="bold" />
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:paddingRight="10dp" >
 
-        
+            <ImageView
+                android:id="@+id/iconoUbicacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxWidth="20dp"
+                android:src="@drawable/ic_ubicacion" />
+
+            <TextView
+                android:id="@+id/detallesDistancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="@string/defaultDistancia"
+                android:textColor="#A8A2A2"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <!--
      <fragment
@@ -422,13 +483,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:layout_below="@id/etiquetaBoletos" />
+            android:layout_below="@id/contenedorBoleto" />
 
         <RelativeLayout
             android:id="@+id/capaMapa"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_below="@id/detallesDistancia"
+            android:layout_below="@id/contenedorUbicacion"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp" >
 

@@ -70,6 +70,7 @@
             android:name="sferea.todo2day.DetailActivity"
             android:launchMode="singleTop"
             android:parentActivityName="sferea.todo2day.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light"
             android:screenOrientation="portrait" >
             <intent-filter>  
                 <action android:name="com.application.activity.DetailActivity" />    

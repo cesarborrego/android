@@ -67,12 +67,15 @@
     <string name="defaultFuente">www.google.com.mx</string>
     <string name="defaultCategoria">Categoría</string>
     <string name="defaultFecha"> Dia XX de AlgunMes | 23:59</string>
+    <string name="defaultHrs">hrs</string>
     <string name="defaultLugar">Teatro Cultural Poliforum</string>
     <string name="defaultCounter">0</string>
     <string name="defaultDistancia">A 3.5 km</string>
     <string name="defaultTelefono">55-55-55-55</string>
-    <string name="defaultBoleto">Boleto(s):</string>
-    <string name="defaultPrecio">Gral $100</string>
+    <string name="defaultBoleto">Boletos:</string>
+    <string name="defaultPrecio">100</string>
+    <string name="signoPesos">$</string>
+    <string name="defaultTipoBoleto">Entrada General</string>
     <string name="defaultOrganizador">Organizado por:</string>
     <string name="nombreOrganizador">Sferea Studios</string>
     <string name="defaultDireccion">Paseo de la Reforma 325, Lomas Virreyes, Miguel Hidalgo, D.F.</string>
