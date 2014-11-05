@@ -2,11 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-<<<<<<< HEAD
-    android:background="#fff" >
-=======
     android:background="@android:color/white" >
->>>>>>> 42c40dfe11c81aebe274f55100a47e2cfcc1a04f
 
     <RelativeLayout
         android:layout_width="match_parent"
