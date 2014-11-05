@@ -18,7 +18,7 @@ public class DateUtil {
 				
 				Date primeraFecha = (Date) formatoDelTexto.parse(date);
 				java.text.DateFormat writeFormat = new SimpleDateFormat(
-						"EEE, dd MMM yyyy HH:mm");
+						"EEE, dd MMM yyyy , HH:mm");
 				
 				formatoJson = writeFormat.format(primeraFecha);
 

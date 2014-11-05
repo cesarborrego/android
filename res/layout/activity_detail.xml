@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:background="@android:color/white" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,54 +20,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/header_catergories" />
 
-            <!--
-         <RelativeLayout 
-             android:id="@+id/layoutBannerEditado"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_alignParentTop="true"
-             android:layout_alignParentRight="true"
-             android:layout_marginRight="10dp"
-             android:layout_marginTop="10dp"
-             android:visibility="gone">
-             <View 
-                 android:id="@+id/viewEspacio"
-                 android:layout_width="10dp"
-                 android:layout_height="10dp"
-                 android:layout_alignParentLeft="true"
-                 android:layout_centerVertical="true"/>
-             <TextView 
-	             android:id="@+id/textBannerEditado"
-	             android:layout_width="wrap_content"
-	             android:layout_height="wrap_content"
-	             android:paddingTop="5dp"
-	             android:paddingRight="5dp"
-	             android:paddingLeft="30dp"
-	             android:paddingBottom="5dp"
-	             android:textAppearance="?android:attr/textAppearanceLarge" 
-	             android:layout_marginLeft="10dp"
-	             android:text="Editado"
-	             android:layout_centerVertical="true"
-	             android:layout_toRightOf="@id/viewEspacio"
-	             android:textColor="#FFF"
-	             android:background="@drawable/banner_texto_azul"/>
-	         
-	         <ImageView
-		        android:id="@+id/iconoBannerEditado"
-		        android:layout_width="46dp"
-		        android:layout_height="46dp"
-		        android:padding="3dp"
-		        android:layout_marginTop="5dp"
-		        android:background="@drawable/circle_blue_white"
-		        android:layout_alignParentLeft="true"
-		        android:layout_centerVertical="true"
-		        android:src="@drawable/ic_action_edit" 
-		        android:visibility="visible"/>
-         </RelativeLayout>
-            -->
 
-
-            <!-- Por lo que se le vaya a agregar, como el banner de descuento -->
 
             <ImageView
                 android:id="@+id/iconCategoria"

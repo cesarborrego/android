@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="140dp" >
+    android:layout_height="200dp" >
 
     <ImageView
         android:id="@+id/thumbnailFavorite"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
@@ -15,7 +15,7 @@
     <ImageView
         android:id="@+id/backgroundGradient"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
@@ -31,7 +31,7 @@
         <RelativeLayout
             android:id="@+id/layoutEventInfo"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="73dp"
             android:layout_alignParentLeft="true" >
 
             <ImageView
@@ -47,7 +47,7 @@
             <View
                 android:id="@+id/divider1"
                 android:layout_width="1dp"
-                android:layout_height="45dp"
+                android:layout_height="65dp"
                 android:layout_margin="5dp"
                 android:layout_toRightOf="@+id/iconCategoriaFavorito"
                 android:background="@android:color/darker_gray" />
@@ -68,6 +68,7 @@
                     android:layout_marginRight="5dp"
                     android:singleLine="True"
                     android:text="@string/defaultCategoria"
+                    android:textSize="20sp"
                     android:textColor="@android:color/white" />
 
                 <TextView
@@ -78,7 +79,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="Tumblr PBR skateboard Truffaut, craft beer church-key messenger bag ennui bicycle rights lo-fi jean shorts plaid."
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:textColor="@android:color/white" />
             </LinearLayout>
         </RelativeLayout>
@@ -86,7 +87,7 @@
         <LinearLayout
             android:id="@+id/layOutDistanciaEvento"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="30dp"
             android:layout_below="@+id/layoutEventInfo"
             android:background="@android:color/black"
             android:gravity="center"
@@ -101,7 +102,7 @@
                 android:gravity="left"
                 android:text="@string/defaultFecha"
                 android:textColor="@android:color/white"
-                android:textSize="12sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/distanciaFavorito"
@@ -112,7 +113,7 @@
                 android:gravity="right"
                 android:text="@string/defaultDistancia"
                 android:textColor="@android:color/white"
-                android:textSize="12sp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </RelativeLayout>
 

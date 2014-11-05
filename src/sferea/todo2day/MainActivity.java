@@ -96,7 +96,7 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main_responsive);
+		setContentView(R.layout.activity_main);
 		
 		listViewDrawer = (ListView)findViewById(R.id.listViewDrawer);
 		drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -164,13 +164,6 @@ public class MainActivity extends ActionBarActivity {
 		
 		Constants_Settings constants = new Constants_Settings();
 		SharedPreferencesHelper shrpref = new SharedPreferencesHelper(constants.SHARED_PREF_NAME, this);
-		
-		if(getResources().getBoolean(R.bool.doublePane)){
-			shrpref.Write_String(constants.DUAL_PANE, "true");
-		}
-		else{
-			shrpref.Write_String(constants.DUAL_PANE, "false");
-		}
 		
 	}
 	

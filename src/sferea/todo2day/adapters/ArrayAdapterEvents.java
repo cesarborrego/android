@@ -2,7 +2,6 @@ package sferea.todo2day.adapters;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
@@ -41,10 +40,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,24 +77,24 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		View v = convertView;
 		if (v == null) {
 			v = LayoutInflater.from(getContext()).inflate(
-					R.layout.row_event_responsive, null);
+					R.layout.row_event_smartphone, null);
 			viewHolder = new ViewHolder();
-//			viewHolder.botonFavoritos = (RelativeLayout) v
-//					.findViewById(R.id.botonFavEvent);
-//			viewHolder.botonRetweetEvent = (RelativeLayout) v
-//					.findViewById(R.id.botonRetweetEvent);
+			// viewHolder.botonFavoritos = (RelativeLayout) v
+			// .findViewById(R.id.botonFavEvent);
+			// viewHolder.botonRetweetEvent = (RelativeLayout) v
+			// .findViewById(R.id.botonRetweetEvent);
 			viewHolder.categoriaEvento = (TextView) v
 					.findViewById(R.id.categoriaFavorito);
 			viewHolder.nombreEvento = (TextView) v
 					.findViewById(R.id.nombreFavorito);
 			viewHolder.fechaEvento = (TextView) v
 					.findViewById(R.id.fechaFavorito);
-//			viewHolder.lugarEvento = (TextView) v
-//					.findViewById(R.id.lugarFavorito);
+			// viewHolder.lugarEvento = (TextView) v
+			// .findViewById(R.id.lugarFavorito);
 			viewHolder.distanciaEvento = (TextView) v
 					.findViewById(R.id.distanciaFavorito);
-//			viewHolder.descripcionEvento = (TextView) v
-//					.findViewById(R.id.descripcionFavorito);
+			// viewHolder.descripcionEvento = (TextView) v
+			// .findViewById(R.id.descripcionFavorito);
 			viewHolder.thumbEvento = (ImageView) v
 					.findViewById(R.id.thumbnailFavorite);
 			viewHolder.iconCategoria = (ImageView) v
@@ -109,33 +108,22 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		} else {
 			viewHolder = (ViewHolder) v.getTag();
 		}
-
+		
 		inicioTweet = v.getResources().getString(R.string.cadenaTweet_inicio);
 		enTweet = v.getResources().getString(R.string.cadenaTweet_en);
 		setIconCategoria(position, viewHolder);
-		
+
 		final int pos = position;
 		v.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Constants_Settings constants = new Constants_Settings();
-				SharedPreferencesHelper shrpref = new SharedPreferencesHelper(
-						constants.SHARED_PREF_NAME, thisContext);
-				String dualPane = shrpref
-						.Get_stringfrom_shprf(constants.DUAL_PANE);
-
-				if (dualPane.equals("true")) {
-					// ShowFragment();
-				} else {
-					Bundle bundle = new Bundle();
-					bundle.putParcelable("Event", getItem(pos));
-					Intent intent = new Intent(thisContext,
-							DetailActivity.class);
-					intent.putExtras(bundle);
-					thisContext.startActivity(intent);
-					Page_TimeLine.eventoActivo = true;
-					Page_TimeLine.favoritoActivo = false;
-				}
+				Bundle bundle = new Bundle();
+				bundle.putParcelable("Event", getItem(pos));
+				Intent intent = new Intent(thisContext, DetailActivity.class);
+				intent.putExtras(bundle);
+				thisContext.startActivity(intent);
+				Page_TimeLine.eventoActivo = true;
+				Page_TimeLine.favoritoActivo = false;
 			}
 		});
 
@@ -197,30 +185,29 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		lat = eventoObjeto.getLatEvento();
 		lon = eventoObjeto.getLonEvento();
 		lugarEvento = eventoObjeto.getLugarEvento();
-		distanciaEvento = "A " + eventoObjeto.getDistancia();
+		distanciaEvento = "a " + eventoObjeto.getDistancia().toLowerCase();
 		imagenEvento = eventoObjeto.getImagenEvento();
 		urlImagen = eventoObjeto.getUrlImagen();
 		imagenCategoria = eventoObjeto.getImagenCategoria();
 
 		SubF_Events.iFavoritos = new int[this.getCount()];
 
-		
-		
 		// Asignamos al view las variables intermedias
-//		eventView.nombreEvento.setText(nombreEvento);
+		// eventView.nombreEvento.setText(nombreEvento);
 		eventView.categoriaEvento.setText(categoriaEvento);
 		eventView.fechaEvento.setText(fechaEvento);
-//		eventView.lugarEvento.setText(lugarEvento);
+		// eventView.lugarEvento.setText(lugarEvento);
 		eventView.distanciaEvento.setText(distanciaEvento);
-		//eventView.descripcionEvento.setText(descripcionEvento);
+		// eventView.descripcionEvento.setText(descripcionEvento);
 
-//		if(!urlImagen.equals("No disponible")){
-//			imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
-//		}
+		// if(!urlImagen.equals("No disponible")){
+		// imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
+		// }
 
 		// dependiendo de los resultados prendemos o apagamos las estrellas de
 		// favoritos
-		Cursor cursor = managerDBFavorites.queryEventByIndex(getItem(position).getIndexOfEvent());
+		Cursor cursor = managerDBFavorites.queryEventByIndex(getItem(position)
+				.getIndexOfEvent());
 		boolean activaEliminarDB = false;
 		if (cursor.getCount() > 0) {
 			activaEliminarDB = true;
@@ -231,8 +218,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 					.setImageResource(R.drawable.ic_action_important);
 		}
 
-		eventView.nombreEvento.setText(getItem(position)
-				.getNombreEvento());
+		//eventView.nombreEvento.setText(getItem(position).getNombreEvento());
 
 		Typeface tf;
 		try {
@@ -245,8 +231,8 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 		// Crea la cadena del tweet
 		String tweetString = inicioTweet + " \""
-				+ getItem(position).getNombreEvento() + "\" "
-				+ enTweet + " " + lugarEvento + " Vía yiepa!";
+				+ getItem(position).getNombreEvento() + "\" " + enTweet + " "
+				+ lugarEvento + " Vía yiepa!";
 		lanzarAlertDialogTweet(tweetString, eventView, position);
 		agregarFavoritos(eventView, position, managerDBFavorites);
 	}
@@ -406,55 +392,49 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 				if (v.getContext() instanceof FragmentActivity) {
 					Log.d(null,
 							"Posicion en el array " + String.valueOf(position));
-					
-					Cursor cursor = managerDBFavorites.queryEventByIndex(getItem(position).getIndexOfEvent());
-					
+
+					Cursor cursor = managerDBFavorites
+							.queryEventByIndex(getItem(position)
+									.getIndexOfEvent());
+
 					if (cursor.getCount() > 0) {
 						eventView.iconFavorito
 								.setImageResource(R.drawable.ic_action_important);
 
-						managerDBFavorites.eliminar(String
-								.valueOf(getItem(position)
-										.getIndexOfEvent()));
+						managerDBFavorites.eliminar(String.valueOf(getItem(
+								position).getIndexOfEvent()));
 
 						Log.d(null, "Se elimino registro "
-								+ getItem(position)
-										.getNombreEvento());
+								+ getItem(position).getNombreEvento());
 
 					} else {
 						eventView.iconFavorito
 								.setImageResource(R.drawable.ic_action_important_active);
 
 						managerDBFavorites
-								.insertar(getItem(position)
-										.getNombreEvento(), getItem(position).getCategoriaEvento(),
-										getItem(position).getCategoriaIDEvento(),
+								.insertar(getItem(position).getNombreEvento(),
+										getItem(position).getCategoriaEvento(),
 										getItem(position)
-												.getFechaEvento(),
-										getItem(position)
-												.getDescripcion(),
-										getItem(position)
-												.getFuente(),
-										getItem(position)
-												.getLugarEvento(),
-										getItem(position)
-												.getDireccion(),
-										getItem(position)
-												.getTelefono(), getItem(position).getBoleto(),
-										String.valueOf(getItem(
-												position).getDistancia()),
-										String.valueOf(getItem(
-												position).getLatEvento()),
-										String.valueOf(getItem(
-												position).getLonEvento()),
-										getItem(position)
-												.getUrlImagen(), String
-												.valueOf(position), String
-												.valueOf(getItem(
-														position)
+												.getCategoriaIDEvento(),
+										getItem(position).getFechaEvento(),
+										getItem(position).getDescripcion(),
+										getItem(position).getFuente(),
+										getItem(position).getLugarEvento(),
+										getItem(position).getDireccion(),
+										getItem(position).getTelefono(),
+										getItem(position).getBoleto(), String
+												.valueOf(getItem(position)
+														.getDistancia()),
+										String.valueOf(getItem(position)
+												.getLatEvento()), String
+												.valueOf(getItem(position)
+														.getLonEvento()),
+										getItem(position).getUrlImagen(),
+										String.valueOf(position), String
+												.valueOf(getItem(position)
 														.getIndexOfEvent()),
-										String.valueOf(getItem(
-												position).getFechaUnix()));
+										String.valueOf(getItem(position)
+												.getFechaUnix()));
 						Log.d(null, "Registro Insertado en DB");
 					}
 				}
@@ -572,61 +552,74 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 				Toast.LENGTH_SHORT).show();
 		return false;
 	}
-	
-	private void setIconCategoria(int position, ViewHolder eventView){
-		CategoriasConfig categoriaId = CategoriasConfig.valueOf(getItem(position).getCategoriaIDEvento().toUpperCase());
-		
-		switch(categoriaId){
-		case A :
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_antros);
+
+	private void setIconCategoria(int position, ViewHolder eventView) {
+		CategoriasConfig categoriaId = CategoriasConfig.valueOf(getItem(
+				position).getCategoriaIDEvento().toUpperCase());
+
+		switch (categoriaId) {
+		case A:
+			eventView.iconCategoria
+					.setImageResource(R.drawable.ic_small_antros);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_antros);
 			break;
-		case B :
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_cultura);
+		case B:
+			eventView.iconCategoria
+					.setImageResource(R.drawable.ic_small_cultura);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_cultura);
 			break;
-		case C :
+		case C:
 			eventView.iconCategoria.setImageResource(R.drawable.ic_small_cine);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_cine);
 			break;
-		case D :
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_deportes);
+		case D:
+			eventView.iconCategoria
+					.setImageResource(R.drawable.ic_small_deportes);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_deportes);
 			break;
-		case E :
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_negocios);
+		case E:
+			eventView.iconCategoria
+					.setImageResource(R.drawable.ic_small_negocios);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_negocios);
 			break;
-		case F :
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_con_ninos);
+		case F:
+			eventView.iconCategoria
+					.setImageResource(R.drawable.ic_small_con_ninos);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_con_ninos);
 			break;
-		case G :
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_gastronomia);
-			getItem(position).setImagenCategoria(R.drawable.ic_small_gastronomia);
+		case G:
+			eventView.iconCategoria
+					.setImageResource(R.drawable.ic_small_gastronomia);
+			getItem(position).setImagenCategoria(
+					R.drawable.ic_small_gastronomia);
 			break;
-		case H :
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_musica);
+		case H:
+			eventView.iconCategoria
+					.setImageResource(R.drawable.ic_small_musica);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_musica);
 			break;
-		case I :
+		case I:
 			eventView.iconCategoria.setImageResource(R.drawable.ic_small_salud);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_salud);
 			break;
-		case J :
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_sociales);
+		case J:
+			eventView.iconCategoria
+					.setImageResource(R.drawable.ic_small_sociales);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_sociales);
 			break;
-		case K :
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_tecnologia);
-			getItem(position).setImagenCategoria(R.drawable.ic_small_tecnologia);
+		case K:
+			eventView.iconCategoria
+					.setImageResource(R.drawable.ic_small_tecnologia);
+			getItem(position)
+					.setImagenCategoria(R.drawable.ic_small_tecnologia);
 			break;
-		case L :
+		case L:
 			eventView.iconCategoria.setImageResource(R.drawable.ic_small_verde);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_verde);
 			break;
 		default:
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_sociales);
+			eventView.iconCategoria
+					.setImageResource(R.drawable.ic_small_sociales);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_sociales);
 		}
 
@@ -638,12 +631,12 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		TextView nombreEvento;
 		TextView categoriaEvento;
 		TextView fechaEvento;
-//		TextView lugarEvento;
+		// TextView lugarEvento;
 		TextView distanciaEvento;
-		//TextView descripcionEvento;
-		//RelativeLayout botonRetweetEvent;
-		//TextView tweetCounter;
-		//RelativeLayout botonFavoritos;
+		// TextView descripcionEvento;
+		// RelativeLayout botonRetweetEvent;
+		// TextView tweetCounter;
+		// RelativeLayout botonFavoritos;
 		ImageView iconFavorito;
 		ImageView iconRetweet;
 	}

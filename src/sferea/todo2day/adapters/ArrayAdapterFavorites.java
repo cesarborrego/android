@@ -40,7 +40,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 	
 	@SuppressWarnings("unchecked")
 	public ArrayAdapterFavorites(Activity activity, Context context, ArrayList<FavoritosObjeto> datos) {
-		super(activity,  R.layout.row_favorites_responsive_tablet, datos);
+		super(activity,  R.layout.row_favorite_tablet, datos);
 		this.activityAdapter = activity;
 		this.contex = context;
 		this.imageloader = ImageUtil.getImageLoader();
@@ -54,7 +54,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 		View v = convertView;
 		
 		if(v == null){
-			v = LayoutInflater.from(getContext()).inflate(R.layout.row_favorites_responsive_tablet, null);
+			v = LayoutInflater.from(getContext()).inflate(R.layout.row_favorite_tablet, null);
 			viewHolder = new ViewHolder();
 //			viewHolder.botonFavorito = (RelativeLayout) v.findViewById(R.id.botonFavEvent);
 			viewHolder.categoriaFavorito = (TextView) v.findViewById(R.id.categoriaFavorito);

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <item name="activity_main_responsive" type="layout">@layout/responsive_smartphone</item>
-    <item name="row_event_responsive" type="layout">@layout/row_event_smartphone</item>
-    <item name="row_favorites_responsive" type="layout">@layout/row_favorite</item>
-    <item name="row_favorites_responsive_tablet" type="layout">@layout/row_favorite_tablet</item>
-    <bool name="doublePane">false</bool>
-    <bool name="landscape">true</bool>
-</resources>
