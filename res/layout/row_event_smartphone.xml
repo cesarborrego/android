@@ -77,7 +77,7 @@
                     android:layout_marginRight="5dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="Tumblr PBR skateboard Truffaut, craft beer church-key messenger bag ennui bicycle rights lo-fi jean shorts plaid."
+                    android:text="@string/defaultEventTitle"
                     android:textSize="12sp"
                     android:textColor="@android:color/white" />
             </LinearLayout>

@@ -68,7 +68,7 @@
                     android:layout_marginRight="5dp"
                     android:singleLine="True"
                     android:text="@string/defaultCategoria"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textColor="@android:color/white" />
 
                 <TextView
@@ -79,7 +79,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="Tumblr PBR skateboard Truffaut, craft beer church-key messenger bag ennui bicycle rights lo-fi jean shorts plaid."
-                    android:textSize="17sp"
+                    android:textSize="16sp"
                     android:textColor="@android:color/white" />
             </LinearLayout>
         </RelativeLayout>
