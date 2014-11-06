@@ -193,16 +193,16 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		SubF_Events.iFavoritos = new int[this.getCount()];
 
 		// Asignamos al view las variables intermedias
-		// eventView.nombreEvento.setText(nombreEvento);
+		eventView.nombreEvento.setText(nombreEvento);
 		eventView.categoriaEvento.setText(categoriaEvento);
 		eventView.fechaEvento.setText(fechaEvento);
 		// eventView.lugarEvento.setText(lugarEvento);
 		eventView.distanciaEvento.setText(distanciaEvento);
 		// eventView.descripcionEvento.setText(descripcionEvento);
 
-		// if(!urlImagen.equals("No disponible")){
-		// imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
-		// }
+		if (!urlImagen.equals("No disponible")) {
+			imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
+		}
 
 		// dependiendo de los resultados prendemos o apagamos las estrellas de
 		// favoritos
@@ -212,10 +212,10 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		if (cursor.getCount() > 0) {
 			activaEliminarDB = true;
 			eventView.iconFavorito
-					.setImageResource(R.drawable.ic_action_important_active);
+					.setImageResource(R.drawable.ic_favorito_encendido);
 		} else {
 			eventView.iconFavorito
-					.setImageResource(R.drawable.ic_action_important);
+					.setImageResource(R.drawable.ic_favorito);
 		}
 
 		//eventView.nombreEvento.setText(getItem(position).getNombreEvento());
@@ -399,7 +399,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 					if (cursor.getCount() > 0) {
 						eventView.iconFavorito
-								.setImageResource(R.drawable.ic_action_important);
+								.setImageResource(R.drawable.ic_favorito);
 
 						managerDBFavorites.eliminar(String.valueOf(getItem(
 								position).getIndexOfEvent()));
@@ -409,7 +409,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 					} else {
 						eventView.iconFavorito
-								.setImageResource(R.drawable.ic_action_important_active);
+								.setImageResource(R.drawable.ic_favorito_encendido);
 
 						managerDBFavorites
 								.insertar(getItem(position).getNombreEvento(),
