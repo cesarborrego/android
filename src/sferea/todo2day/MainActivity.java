@@ -355,7 +355,7 @@ public class MainActivity extends ActionBarActivity {
 			
 			final ProgressDialog pDialog = new ProgressDialog(MainActivity.this);
 	        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-	        pDialog.setMessage("Procesando nueva b��squeda...");
+	        pDialog.setMessage("Procesando nueva busqueda...");
 	        pDialog.setCancelable(true);
 	        pDialog.setMax(100);
 	        
@@ -391,7 +391,7 @@ public class MainActivity extends ActionBarActivity {
 					super.onCancelled();
 				};
 	    		
-	    	}.execute("http://yapi.sferea.com/?" +
+	    	}.execute("http://yapidev.sferea.com/?" +
 	    			"latitud="+latOrigin+"" +
 	    			"&longitud="+lonOrigin+"" +
 	    			"&radio="+SplashActivity.distanciaEvento+"" +

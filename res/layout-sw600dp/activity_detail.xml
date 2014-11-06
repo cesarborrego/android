@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="#fff" >
+
+        <RelativeLayout
+            android:id="@+id/details_header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="500dp" >
+
+            <ImageView
+                android:id="@+id/imagenHeader"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/header_catergories" />
+
+            <ImageView
+                android:id="@+id/degradado"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/degradado_de_imagen" />
+
+            <RelativeLayout
+                android:id="@+id/cabeceraLayOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iconCategoria"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/detallesCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="@string/defaultCategoria"
+                    android:textColor="#A8A2A2"
+                    android:textSize="27sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/detallesTitulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/detallesCategoria"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/defaultEventTitle"
+                    android:textColor="#A8A2A2"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/detallesTitulo"
+                    android:src="@drawable/divisor_horizontal" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bannerBtns"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/cabeceraLayOut"
+                android:paddingBottom="20dp" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:id="@+id/anotaloImgId"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="50dp"
+                        android:src="@drawable/anotalo" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:src="@drawable/divisor_vertical" />
+
+                    <ImageView
+                        android:id="@+id/tweetImgId"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="50dp"
+                        android:src="@drawable/tweet" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:src="@drawable/divisor_vertical" />
+
+                    <ImageView
+                        android:id="@+id/favoritoImgId"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="50dp"
+                        android:src="@drawable/favorito" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:src="@drawable/divisor_vertical" />
+
+                    <ImageView
+                        android:id="@+id/organizadorImgId"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="50dp"
+                        android:src="@drawable/organizador" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iconCategoria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="230dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="63dp"
+                android:src="@drawable/ic_small_musica" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/contenedorOrganizador"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/details_header_layout" >
+
+            <ImageView
+                android:id="@+id/bannerOrganizador"
+                android:layout_width="600dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/barra_curva" />
+
+            <LinearLayout
+                android:id="@+id/contenedorOrg"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp" >
+
+                <TextView
+                    android:id="@+id/organizadorTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/defaultOrganizador"
+                    android:textColor="#A8A2A2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/nombreOrgTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/nombreOrganizador"
+                    android:textColor="#A8A2A2"
+                    android:textSize="18sp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contenedorFechaOrg"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp" >
+
+                <ImageView
+                    android:id="@+id/iconoFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="30dp"
+                    android:adjustViewBounds="true"
+                    android:maxWidth="28dp"
+                    android:src="@drawable/ic_fecha" />
+
+                <TextView
+                    android:id="@+id/detallesFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/defaultFecha"
+                    android:textColor="#A8A2A2"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:paddingLeft="3dp"
+                    android:text="@string/defaultHrs"
+                    android:textColor="#A8A2A2"
+                    android:textSize="19sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/separador1"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_below="@id/contenedorOrganizador"
+            android:src="@drawable/separador" />
+
+        <!--
+        LinearLayout
+            android:id="@+id/layoutShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/details_header_layout"
+            android:layout_alignRight="@id/details_header_layout"
+            android:layout_marginBottom="3dp"
+            android:layout_marginRight="3dp"
+            android:background="#DDFFFFFF"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/botonRetweetEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/iconRetweetFavorito"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:adjustViewBounds="true"
+                    android:maxWidth="18dp"
+                    android:src="@drawable/ic_action_refresh" />
+
+                <TextView
+                    android:id="@+id/textRetweetCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/iconRetweetFavorito"
+                    android:paddingLeft="5dp"
+                    android:text="@string/defaultCounter"
+                    android:textColor="#AAA" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="15dp"
+                android:layout_height="1dp" />
+
+            <RelativeLayout
+                android:id="@+id/botonFavEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/iconFavFavorito"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:adjustViewBounds="true"
+                    android:maxWidth="18dp"
+                    android:src="@drawable/ic_action_important" />
+
+                <TextView
+                    android:id="@+id/textFavCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/iconFavFavorito"
+                    android:paddingLeft="5dp"
+                    android:text="@string/defaultCounter"
+                    android:textColor="#AAA" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="1dp" />
+        </LinearLayout
+        -->
+
+        <TextView
+            android:id="@+id/detallesDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/separador1"
+            android:padding="10dp"
+            android:text="@string/defaultDescripcionEvento"
+            android:textColor="#575757" />
+
+        <ImageView
+            android:id="@+id/separador4"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_below="@id/detallesDescripcion"
+            android:src="@drawable/separador" />
+
+        <RelativeLayout
+            android:id="@+id/contenedorTelefonoFuente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/separador4" >
+
+            <ImageView
+                android:id="@+id/iconoTelefono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:adjustViewBounds="true"
+                android:maxWidth="30dp"
+                android:paddingLeft="10dp"
+                android:src="@drawable/ic_telefono" />
+
+            <TextView
+                android:id="@+id/detallesTelefono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:lines="1"
+                android:paddingLeft="34dp"
+                android:text="@string/defaultTelefono"
+                android:textColor="#A8A2A2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/detallesFuente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingRight="35dp"
+                android:text="@string/tituloFuente"
+                android:textColor="#A8A2A2"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iconoFuente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:adjustViewBounds="true"
+                android:maxWidth="35dp"
+                android:paddingRight="15dp"
+                android:src="@drawable/ic_fuente" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/separador2"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_below="@id/contenedorTelefonoFuente"
+            android:src="@drawable/separador" />
+
+        <ImageView
+            android:id="@+id/iconoBoleto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/separador2"
+            android:adjustViewBounds="true"
+            android:maxWidth="34dp"
+            android:paddingLeft="8dp"
+            android:src="@drawable/ic_boletos" />
+
+        <LinearLayout
+            android:id="@+id/contenedorBoleto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/separador2"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/etiquetaBoletos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="35dp"
+                android:text="@string/defaultBoleto"
+                android:textColor="#A8A2A2"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/descBoletos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tipoBoleto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="35dp"
+                    android:paddingTop="2dp"
+                    android:text="@string/defaultTipoBoleto"
+                    android:textColor="#A8A2A2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/signoPesos"
+                    android:textColor="#A8A2A2" />
+
+                <TextView
+                    android:id="@+id/precioBoleto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="1dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/defaultPrecio"
+                    android:textColor="#A8A2A2" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/separador3"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_below="@id/contenedorBoleto"
+            android:src="@drawable/separador" />
+
+        <TextView
+            android:id="@+id/detallesLugar"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/separador3"
+            android:lines="2"
+            android:paddingLeft="10dp"
+            android:text="@string/defaultLugar"
+            android:textColor="#A8A2A2" />
+
+        <LinearLayout
+            android:id="@+id/contenedorDIrUbicacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detallesLugar"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp" >
+
+            <TextView
+                android:id="@+id/detallesDireccion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:lines="3"
+                android:text="@string/defaultDireccion"
+                android:textColor="#575757"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:id="@+id/contenedorUbicacion"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight=".5" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal"
+                    android:paddingRight="15dp" >
+
+                    <ImageView
+                        android:id="@+id/iconoUbicacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="20dp"
+                        android:src="@drawable/ic_ubicacion" />
+
+                    <TextView
+                        android:id="@+id/detallesDistancia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="2dp"
+                        android:text="@string/defaultDistancia"
+                        android:textColor="#A8A2A2"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <!--
+     <fragment
+         android:id="@+id/detallesMap"
+         android:layout_width="match_parent"
+         android:layout_height="140dp"
+         android:layout_below="@id/detallesDistancia"
+         android:layout_marginLeft="15dp"
+         android:layout_marginRight="15dp"
+         android:layout_marginBottom="15dp"
+         class="com.google.android.gms.maps.SupportMapFragment"/>
+        -->
+
+        <View
+            android:id="@+id/separadorMapa"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@id/contenedorBoleto" />
+
+        <RelativeLayout
+            android:id="@+id/capaMapa"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/contenedorDIrUbicacion"
+            android:layout_marginTop="10dp" >
+
+            <ImageView
+                android:id="@+id/imgMapa"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@id/capaMapa" />
+    </RelativeLayout>
+
+</ScrollView>
