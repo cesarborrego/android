@@ -78,27 +78,34 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="@string/defaultEventTitle"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/layOutDistanciaEvento"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_below="@+id/layoutEventInfo"
             android:background="@android:color/black"
-            android:gravity="center"
             android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/icon_ubicacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_toLeftOf="@+id/distanciaFavorito"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_ubicacion" />
 
             <TextView
                 android:id="@+id/fechaFavorito"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"
-                android:gravity="left"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/icon_reloj"
                 android:text="@string/defaultFecha"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
@@ -107,13 +114,23 @@
                 android:id="@+id/distanciaFavorito"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:gravity="right"
+                android:layout_alignBaseline="@+id/fechaFavorito"
+                android:layout_alignBottom="@+id/fechaFavorito"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="3dp"
                 android:text="@string/defaultDistancia"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
-        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/icon_reloj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_reloj" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout
@@ -123,7 +140,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background="@drawable/gradient" >
 
         <ImageView
             android:id="@+id/iconFavFavorito"
@@ -132,12 +150,12 @@
             android:layout_margin="3dp"
             android:adjustViewBounds="true"
             android:maxWidth="25dp"
-            android:src="@drawable/ic_action_important" />
+            android:src="@drawable/ic_favorito" />
 
         <View
             android:id="@+id/divider2"
             android:layout_width="1dp"
-            android:layout_height="35dp"
+            android:layout_height="25dp"
             android:background="@android:color/darker_gray" />
 
         <ImageView
@@ -147,7 +165,7 @@
             android:layout_margin="3dp"
             android:adjustViewBounds="true"
             android:maxWidth="25dp"
-            android:src="@drawable/ic_action_refresh" />
+            android:src="@drawable/ic_tweet" />
     </LinearLayout>
 
 </RelativeLayout>
