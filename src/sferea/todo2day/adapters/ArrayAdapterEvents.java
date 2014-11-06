@@ -193,16 +193,16 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		SubF_Events.iFavoritos = new int[this.getCount()];
 
 		// Asignamos al view las variables intermedias
-		// eventView.nombreEvento.setText(nombreEvento);
+		eventView.nombreEvento.setText(nombreEvento);
 		eventView.categoriaEvento.setText(categoriaEvento);
 		eventView.fechaEvento.setText(fechaEvento);
 		// eventView.lugarEvento.setText(lugarEvento);
 		eventView.distanciaEvento.setText(distanciaEvento);
 		// eventView.descripcionEvento.setText(descripcionEvento);
 
-		// if(!urlImagen.equals("No disponible")){
-		// imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
-		// }
+		if (!urlImagen.equals("No disponible")) {
+			imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
+		}
 
 		// dependiendo de los resultados prendemos o apagamos las estrellas de
 		// favoritos
