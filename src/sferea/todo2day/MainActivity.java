@@ -1,17 +1,9 @@
 package sferea.todo2day;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.Helpers.JsonHelper;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterSettings;
@@ -20,13 +12,11 @@ import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
 import sferea.todo2day.config.SharedPreferencesHelper;
 import sferea.todo2day.subfragments.Page_Favorites;
-import sferea.todo2day.subfragments.Page_TimeLine;
 import sferea.todo2day.subfragments.SubF_Categories;
 import sferea.todo2day.subfragments.SubF_Events;
 import sferea.todo2day.subfragments.SubF_Settings;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -42,12 +32,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -365,7 +355,7 @@ public class MainActivity extends ActionBarActivity {
 			
 			final ProgressDialog pDialog = new ProgressDialog(MainActivity.this);
 	        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-	        pDialog.setMessage("Procesando nueva búsqueda...");
+	        pDialog.setMessage("Procesando nueva b��squeda...");
 	        pDialog.setCancelable(true);
 	        pDialog.setMax(100);
 	        
@@ -424,7 +414,7 @@ public class MainActivity extends ActionBarActivity {
 //				Log.d("GPS", "Longitud "+lonOrigin);
 //			}else{
 //				Toast.makeText(getApplicationContext(), "Yieppa funciona mejor cuando activas el GPS :)", Toast.LENGTH_LONG).show();
-//				//Asumimos que esta prendido el wireless ya que si no lo fuera, no entraría a la app
+//				//Asumimos que esta prendido el wireless ya que si no lo fuera, no entrar��a a la app
 //				if(isWirelessActive){
 //					Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 //					latOrigin = location.getLatitude();

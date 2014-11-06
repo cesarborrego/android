@@ -106,8 +106,8 @@ public class DetailActivity extends ActionBarActivity {
 		
 		manager = new DataBaseSQLiteManager(getApplicationContext());
 		
-		btnR = (ImageView)findViewById(R.id.iconRetweetFavorito);	
-		btnF = (ImageView)findViewById(R.id.iconFavFavorito);
+		btnR = (ImageView)findViewById(R.id.tweetImgId);	
+		btnF = (ImageView)findViewById(R.id.favoritoImgId);
 		DataBaseSQLiteManager managerDBFavorites = new DataBaseSQLiteManager(
 				getApplicationContext());
 		
@@ -131,7 +131,7 @@ public class DetailActivity extends ActionBarActivity {
 				if (cursor.getCount() > 0) {
 					btnF.setImageResource(R.drawable.ic_action_important_active);
 				} else {
-					btnF.setImageResource(R.drawable.ic_action_important);
+					btnF.setImageResource(R.drawable.favorito);
 				}
 				
 				//Colocamos la info del evento en el activity_detail
@@ -142,7 +142,7 @@ public class DetailActivity extends ActionBarActivity {
 				((TextView)findViewById(R.id.detallesFecha)).setText(evento.getFechaEvento());
 				((TextView)findViewById(R.id.detallesLugar)).setText(evento.getLugarEvento());
 				((TextView)findViewById(R.id.detallesDescripcion)).setText(evento.getDescripcion());
-				((TextView)findViewById(R.id.detallesFuente)).setText(evento.getFuente());
+//				((TextView)findViewById(R.id.detallesFuente)).setText(evento.getFuente());
 				((TextView)findViewById(R.id.detallesDireccion)).setText(evento.getDireccion());
 				((TextView)findViewById(R.id.detallesTelefono)).setText(evento.getTelefono());
 				((TextView)findViewById(R.id.tipoBoleto)).setText(evento.getBoleto());
@@ -188,7 +188,7 @@ public class DetailActivity extends ActionBarActivity {
 				if (cursor.getCount() > 0) {
 					btnF.setImageResource(R.drawable.ic_action_important_active);
 				} else {
-					btnF.setImageResource(R.drawable.ic_action_important);
+					btnF.setImageResource(R.drawable.favorito);
 				}
 				
 				((TextView)findViewById(R.id.detallesTitulo)).setText(favoritosObjeto.getNombreEvento());
@@ -198,7 +198,7 @@ public class DetailActivity extends ActionBarActivity {
 				((TextView)findViewById(R.id.detallesFecha)).setText(favoritosObjeto.getFechaEvento());
 				((TextView)findViewById(R.id.detallesLugar)).setText(favoritosObjeto.getLugarEvento());
 				((TextView)findViewById(R.id.detallesDescripcion)).setText(favoritosObjeto.getDescripcion());
-				((TextView)findViewById(R.id.detallesFuente)).setText(favoritosObjeto.getFuente());
+//				((TextView)findViewById(R.id.detallesFuente)).setText(favoritosObjeto.getFuente());
 				((TextView)findViewById(R.id.detallesDireccion)).setText(favoritosObjeto.getDireccion());
 				((TextView)findViewById(R.id.detallesTelefono)).setText(favoritosObjeto.getTelefono());
 				((TextView)findViewById(R.id.etiquetaBoletos)).setText(favoritosObjeto.getBoleto());
@@ -237,7 +237,7 @@ public class DetailActivity extends ActionBarActivity {
 				}
 			});
 			
-			((RelativeLayout)findViewById(R.id.botonFavEvent)).setOnClickListener(new OnClickListener() {
+			((ImageView)findViewById(R.id.favoritoImgId)).setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View arg0) {
@@ -513,7 +513,7 @@ public class DetailActivity extends ActionBarActivity {
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
 				
-				btnF.setImageResource(R.drawable.ic_action_important);
+				btnF.setImageResource(R.drawable.favorito);
 			}else{
 				//Si esta apagada solo prendemos e insertamos
 				manager.insertar(evento.getNombreEvento(), 
@@ -553,7 +553,7 @@ public class DetailActivity extends ActionBarActivity {
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
 				
-				btnF.setImageResource(R.drawable.ic_action_important);
+				btnF.setImageResource(R.drawable.favorito);
 			}else{
 				//Si esta apagada solo prendemos e insertamos
 				manager.insertar(favoritosObjeto.getNombreEvento(), 
@@ -610,3 +610,4 @@ public class DetailActivity extends ActionBarActivity {
 		super.onBackPressed();
 	}
 }
+

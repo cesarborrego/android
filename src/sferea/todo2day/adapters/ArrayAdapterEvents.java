@@ -232,7 +232,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		// Crea la cadena del tweet
 		String tweetString = inicioTweet + " \""
 				+ getItem(position).getNombreEvento() + "\" " + enTweet + " "
-				+ lugarEvento + " Vía yiepa!";
+				+ lugarEvento + " V��a yiepa!";
 		lanzarAlertDialogTweet(tweetString, eventView, position);
 		agregarFavoritos(eventView, position, managerDBFavorites);
 	}
@@ -376,7 +376,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 	}
 
 	/**
-	 * Esta funci�n va a mandar llamar el boton de favoritos agregando los
+	 * Esta funci���n va a mandar llamar el boton de favoritos agregando los
 	 * datos de la fila que se seleccione
 	 * 
 	 * @param eventView
@@ -548,7 +548,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 						return true;
 					}
 		}
-		Toast.makeText(thisContext, "Verificar la conexión a internet",
+		Toast.makeText(thisContext, "Verificar la conexi��n a internet",
 				Toast.LENGTH_SHORT).show();
 		return false;
 	}
@@ -560,66 +560,66 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		switch (categoriaId) {
 		case A:
 			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_small_antros);
+					.setImageResource(R.drawable.ic_bar_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_antros);
 			break;
 		case B:
 			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_small_cultura);
+					.setImageResource(R.drawable.ic_cultura_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_cultura);
 			break;
 		case C:
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_cine);
+			eventView.iconCategoria.setImageResource(R.drawable.ic_cine_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_cine);
 			break;
 		case D:
 			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_small_deportes);
+					.setImageResource(R.drawable.ic_deportes_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_deportes);
 			break;
 		case E:
 			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_small_negocios);
+					.setImageResource(R.drawable.ic_negocios_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_negocios);
 			break;
 		case F:
 			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_small_con_ninos);
+					.setImageResource(R.drawable.ic_ninios_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_con_ninos);
 			break;
 		case G:
 			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_small_gastronomia);
+					.setImageResource(R.drawable.ic_gastronomia_white);
 			getItem(position).setImagenCategoria(
 					R.drawable.ic_small_gastronomia);
 			break;
 		case H:
 			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_small_musica);
+					.setImageResource(R.drawable.ic_musica_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_musica);
 			break;
 		case I:
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_salud);
+			eventView.iconCategoria.setImageResource(R.drawable.ic_salud_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_salud);
 			break;
 		case J:
 			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_small_sociales);
+					.setImageResource(R.drawable.ic_sociales_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_sociales);
 			break;
 		case K:
 			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_small_tecnologia);
+					.setImageResource(R.drawable.ic_tecnologia_white);
 			getItem(position)
 					.setImagenCategoria(R.drawable.ic_small_tecnologia);
 			break;
 		case L:
-			eventView.iconCategoria.setImageResource(R.drawable.ic_small_verde);
+			eventView.iconCategoria.setImageResource(R.drawable.ic_verde_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_verde);
 			break;
 		default:
 			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_small_sociales);
+					.setImageResource(R.drawable.ic_sociales_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_sociales);
 		}
 
