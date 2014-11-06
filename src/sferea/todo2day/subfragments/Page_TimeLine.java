@@ -480,8 +480,8 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 //					Toast.makeText(
 //							getActivity().getApplicationContext(),
 //							"No hay Eventos Disponibles\n"
-//									+ "Prueba con otras categorías!\n"
-//									+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
+//									+ "Prueba con otras categorï¿½as!\n"
+//									+ "Y/o Aumenta el Radio de bï¿½squeda en los ajustes",
 //									Toast.LENGTH_LONG).show();
 				}
 			};
@@ -566,7 +566,7 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 				headerAdded = false;
 			}
 
-		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + ""
+		}.execute("http://yapidev.sferea.com/?latitud=" + latOrigin + ""
 				+ "&longitud=" + lonOrigin + "" + "&radio="
 				+ SplashActivity.distanciaEvento + "" + "&categoria="
 				+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
@@ -604,8 +604,8 @@ public class Page_TimeLine extends Fragment implements TaskListener{
 //				Toast.makeText(
 //						getActivity().getApplicationContext(),
 //						"No hay Eventos Disponibles\n"
-//								+ "Prueba con otras categorías!\n"
-//								+ "Y/o Aumenta el Radio de búsqueda en los ajustes",
+//								+ "Prueba con otras categorï¿½as!\n"
+//								+ "Y/o Aumenta el Radio de bï¿½squeda en los ajustes",
 //								Toast.LENGTH_LONG).show();
 			}
 			progressFooter.setVisibility(View.GONE);
