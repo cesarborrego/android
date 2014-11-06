@@ -10,7 +10,8 @@
     <ListView
         android:id="@+id/listviewFavoritos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:divider="@null" >
     </ListView>
 
 </FrameLayout>
