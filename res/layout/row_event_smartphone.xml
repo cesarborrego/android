@@ -163,7 +163,7 @@
             android:layout_margin="3dp"
             android:adjustViewBounds="true"
             android:maxWidth="25dp"
-            android:src="@drawable/ic_tweet" />
+            android:background="@drawable/tweet_button" />
     </LinearLayout>
 
     <ImageView
@@ -171,7 +171,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="36dp"
+        android:layout_marginLeft="30dp"
         android:adjustViewBounds="true"
         android:maxWidth="40dp"
         android:src="@drawable/ic_nuevo" />

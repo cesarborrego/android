@@ -37,10 +37,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -108,7 +109,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		} else {
 			viewHolder = (ViewHolder) v.getTag();
 		}
-		
+
 		inicioTweet = v.getResources().getString(R.string.cadenaTweet_inicio);
 		enTweet = v.getResources().getString(R.string.cadenaTweet_en);
 		setIconCategoria(position, viewHolder);
@@ -214,11 +215,10 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 			eventView.iconFavorito
 					.setImageResource(R.drawable.ic_favorito_encendido);
 		} else {
-			eventView.iconFavorito
-					.setImageResource(R.drawable.ic_favorito);
+			eventView.iconFavorito.setImageResource(R.drawable.ic_favorito);
 		}
 
-		//eventView.nombreEvento.setText(getItem(position).getNombreEvento());
+		// eventView.nombreEvento.setText(getItem(position).getNombreEvento());
 
 		Typeface tf;
 		try {
@@ -247,6 +247,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 			final ViewHolder eventView, int position) {
 		// Se coloca el OnClickListener al boton de retweet el cual crea un
 		// dialogo
+
 		eventView.iconRetweet.setOnClickListener(new OnClickListener() {
 			// btnRet.setOnClickListener(new OnClickListener() {
 			@Override
@@ -509,8 +510,6 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 					// //TODO cambiar de strings
 					// iContador++;
 					// contadorTweet(eventView, iContador);
-					eventView.iconRetweet
-							.setImageResource(R.drawable.ic_action_refresh_inactive);
 					Toast.makeText(getContext().getApplicationContext(),
 							"Tweet posteado exitosamente", Toast.LENGTH_SHORT)
 							.show();
@@ -559,8 +558,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 		switch (categoriaId) {
 		case A:
-			eventView.iconCategoria
-					.setImageResource(R.drawable.ic_bar_white);
+			eventView.iconCategoria.setImageResource(R.drawable.ic_bar_white);
 			getItem(position).setImagenCategoria(R.drawable.ic_small_antros);
 			break;
 		case B:
