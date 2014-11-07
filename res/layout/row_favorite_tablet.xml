@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="140dp" >
 
-	<ImageView
+    <ImageView
         android:id="@+id/thumbnailFavorite"
         android:layout_width="match_parent"
         android:layout_height="140dp"
@@ -42,13 +42,13 @@
                 android:maxWidth="30dp"
                 android:src="@drawable/ic_small_musica" />
 
-            <View
+            <ImageView
                 android:id="@+id/divider1"
                 android:layout_width="1dp"
                 android:layout_height="45dp"
-                android:layout_margin="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_toRightOf="@+id/iconCategoriaFavorito"
-                android:background="@android:color/white" />
+                android:src="@drawable/ic_division_boton" />
 
             <LinearLayout
                 android:id="@+id/layoutDatosEvento"
@@ -149,11 +149,12 @@
             android:maxWidth="25dp"
             android:src="@drawable/ic_favorito_encendido" />
 
-        <View
+        <ImageView
             android:id="@+id/divider2"
             android:layout_width="1dp"
-            android:layout_height="25dp"
-            android:background="@android:color/white" />
+            android:layout_height="45dp"
+            android:layout_margin="2dp"
+            android:src="@drawable/ic_division_boton" />
 
         <ImageView
             android:id="@+id/iconRetweetFavorito"
