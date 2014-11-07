@@ -225,9 +225,13 @@ public class DetailActivity extends ActionBarActivity {
 				if(checkInternetConnection.isConnectedToInternet()){
 					String pixelesMapa = null;
 					if(pantalla<=34){
-						pixelesMapa = "300x200";
+						pixelesMapa = "350x250";
 					}else{
-						pixelesMapa = "600x300";
+						if(pantalla>=268435476){
+							pixelesMapa = "640x200";
+						}else{
+							pixelesMapa = "600x300";
+						}
 					}
 					String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
 							"center="+evento.getLatEvento()+","+evento.getLonEvento()+"" +
