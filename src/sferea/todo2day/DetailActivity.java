@@ -159,7 +159,7 @@ public class DetailActivity extends ActionBarActivity {
 				if(checkInternetConnection.isConnectedToInternet()){
 					String pixelesMapa = null;
 					if(pantalla<=34){
-						pixelesMapa = "300x200";
+						pixelesMapa = "350x250";
 					}else{
 						pixelesMapa = "600x300";
 					}

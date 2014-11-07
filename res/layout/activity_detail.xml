@@ -13,7 +13,6 @@
             android:id="@+id/details_header_layout"
             android:layout_width="match_parent"
             android:layout_height="300dp" >
-
             <ImageView
                 android:id="@+id/imagenHeader"
                 android:layout_width="match_parent"
@@ -27,14 +26,24 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/degradado_de_imagen" />
+            
+            <ImageView
+                android:id="@+id/iconCategoria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
+                android:layout_marginTop="60dp"
+                android:maxWidth="63dp"
+                android:src="@drawable/ic_small_musica" />
 
             <RelativeLayout
                 android:id="@+id/cabeceraLayOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/iconCategoria"
                 android:adjustViewBounds="true"
+                android:layout_below="@id/iconCategoria"
                 android:orientation="vertical" >
 
                 <TextView
@@ -132,18 +141,7 @@
                         android:src="@drawable/organizador" />
                 </LinearLayout>
             </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/iconCategoria"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="60dp"
-                android:adjustViewBounds="true"
-                android:maxWidth="35dp"
-                android:src="@drawable/ic_small_musica" />
-
+            
         </RelativeLayout>
         
         <ImageView
@@ -175,7 +173,7 @@
                     android:layout_marginTop="20dp"
                     android:text="@string/defaultOrganizador"
                     android:textColor="#A8A2A2"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -465,7 +463,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/detallesLugar"
             android:orientation="horizontal"
-            android:paddingBottom="10dp"
             android:paddingLeft="10dp" >
 
             <TextView
@@ -529,9 +526,8 @@
         <RelativeLayout
             android:id="@+id/capaMapa"
             android:layout_width="fill_parent"
-            android:layout_height="150dp"
-            android:layout_below="@id/contenedorDIrUbicacion"
-            android:layout_marginTop="5dp" >
+            android:layout_height="250dp"
+            android:layout_below="@id/contenedorDIrUbicacion">
 
             <ImageView
                 android:id="@+id/imgMapa"
