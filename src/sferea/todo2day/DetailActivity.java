@@ -112,6 +112,7 @@ public class DetailActivity extends ActionBarActivity {
 				getApplicationContext());
 		
 		Cursor cursor = null;
+		int pantalla = getResources().getConfiguration().screenLayout;
 		
 		if(this!=null){
 			if(Page_TimeLine.eventoActivo){			
@@ -156,10 +157,16 @@ public class DetailActivity extends ActionBarActivity {
 				final String tweetString = inicioTweet+" \""+evento.getNombreEvento()+"\" "+enTweet+" "+evento.getLugarEvento()+" Vía yiepa!";
 				
 				if(checkInternetConnection.isConnectedToInternet()){
+					String pixelesMapa = null;
+					if(pantalla<=34){
+						pixelesMapa = "300x200";
+					}else{
+						pixelesMapa = "600x300";
+					}
 					String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
 							"center="+evento.getLatEvento()+","+evento.getLonEvento()+"" +
 							"&zoom=15" +
-							"&size=300x300" +
+							"&size="+pixelesMapa+"" +
 							"&scale=2" +
 							"&maptype=roadmap" +
 							"&markers=color:blue%7C"+evento.getLatEvento()+","+evento.getLonEvento()+"" +
@@ -211,13 +218,19 @@ public class DetailActivity extends ActionBarActivity {
 				final String tweetString = inicioTweet+" \""+favoritosObjeto.getNombreEvento()+"\" "+enTweet+" "+favoritosObjeto.getLugarEvento()+" Vía yiepa!";
 				
 				if(checkInternetConnection.isConnectedToInternet()){
+					String pixelesMapa = null;
+					if(pantalla<=34){
+						pixelesMapa = "300x200";
+					}else{
+						pixelesMapa = "600x300";
+					}
 					String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
-							"center="+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
+							"center="+evento.getLatEvento()+","+evento.getLonEvento()+"" +
 							"&zoom=15" +
-							"&size=300x300" +
+							"&size="+pixelesMapa+"" +
 							"&scale=2" +
 							"&maptype=roadmap" +
-							"&markers=color:blue%7C"+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
+							"&markers=color:blue%7C"+evento.getLatEvento()+","+evento.getLonEvento()+"" +
 							"&sensor=true_or_false";
 					Log.d(null, imageHttpAddress);
 					

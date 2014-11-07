@@ -62,8 +62,9 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:layout_below="@id/detallesTitulo"
                     android:src="@drawable/divisor_horizontal" />
             </RelativeLayout>
@@ -145,6 +146,13 @@
                 android:maxWidth="63dp"
                 android:src="@drawable/ic_small_musica" />
         </RelativeLayout>
+        
+        <ImageView
+                android:id="@+id/bannerOrganizador"
+                android:layout_width="600dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/barra_curva"
+                android:layout_marginTop="460dp" />
 
         <RelativeLayout
             android:id="@+id/contenedorOrganizador"
@@ -152,11 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/details_header_layout" >
 
-            <ImageView
-                android:id="@+id/bannerOrganizador"
-                android:layout_width="600dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/barra_curva" />
+            
 
             <LinearLayout
                 android:id="@+id/contenedorOrg"
@@ -314,7 +318,8 @@
             android:layout_below="@id/separador1"
             android:padding="10dp"
             android:text="@string/defaultDescripcionEvento"
-            android:textColor="#575757" />
+            android:textColor="#575757"
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/separador4"
@@ -348,6 +353,7 @@
                 android:paddingLeft="34dp"
                 android:text="@string/defaultTelefono"
                 android:textColor="#A8A2A2"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -358,6 +364,7 @@
                 android:paddingRight="35dp"
                 android:text="@string/tituloFuente"
                 android:textColor="#A8A2A2"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -366,7 +373,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:adjustViewBounds="true"
-                android:maxWidth="35dp"
+                android:maxWidth="38dp"
                 android:paddingRight="15dp"
                 android:src="@drawable/ic_fuente" />
         </RelativeLayout>
@@ -404,6 +411,7 @@
                 android:paddingLeft="35dp"
                 android:text="@string/defaultBoleto"
                 android:textColor="#A8A2A2"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -420,7 +428,8 @@
                     android:paddingLeft="35dp"
                     android:paddingTop="2dp"
                     android:text="@string/defaultTipoBoleto"
-                    android:textColor="#A8A2A2" />
+                    android:textColor="#A8A2A2"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -429,7 +438,8 @@
                     android:paddingLeft="15dp"
                     android:paddingTop="3dp"
                     android:text="@string/signoPesos"
-                    android:textColor="#A8A2A2" />
+                    android:textColor="#A8A2A2"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/precioBoleto"
@@ -439,7 +449,9 @@
                     android:paddingLeft="1dp"
                     android:paddingTop="3dp"
                     android:text="@string/defaultPrecio"
-                    android:textColor="#A8A2A2" />
+                    android:textColor="#A8A2A2"
+                    android:textSize="17sp" />
+
             </LinearLayout>
         </LinearLayout>
 
@@ -459,7 +471,8 @@
             android:lines="2"
             android:paddingLeft="10dp"
             android:text="@string/defaultLugar"
-            android:textColor="#A8A2A2" />
+            android:textColor="#A8A2A2"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:id="@+id/contenedorDIrUbicacion"
@@ -478,7 +491,7 @@
                 android:lines="3"
                 android:text="@string/defaultDireccion"
                 android:textColor="#575757"
-                android:textSize="12sp" />
+                android:textSize="16sp" />
 
             <RelativeLayout
                 android:id="@+id/contenedorUbicacion"
@@ -500,7 +513,7 @@
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
                         android:maxWidth="20dp"
-                        android:src="@drawable/ic_ubicacion" />
+                        android:src="@drawable/ic_ubicacion_dark" />
 
                     <TextView
                         android:id="@+id/detallesDistancia"
@@ -510,7 +523,9 @@
                         android:paddingTop="2dp"
                         android:text="@string/defaultDistancia"
                         android:textColor="#A8A2A2"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
+
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -527,18 +542,12 @@
          class="com.google.android.gms.maps.SupportMapFragment"/>
         -->
 
-        <View
-            android:id="@+id/separadorMapa"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_below="@id/contenedorBoleto" />
-
         <RelativeLayout
             android:id="@+id/capaMapa"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_below="@id/contenedorDIrUbicacion"
-            android:layout_marginTop="10dp" >
+            android:layout_marginTop="5dp" >
 
             <ImageView
                 android:id="@+id/imgMapa"
@@ -548,7 +557,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="5dp"
             android:layout_below="@id/capaMapa" />
     </RelativeLayout>
 

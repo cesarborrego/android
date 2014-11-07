@@ -1617,7 +1617,7 @@ containing a value of this type.
         public static final int avatarHeaderTwitter=0x7f090088;
         public static final int backgroundGradient=0x7f0900ad;
         public static final int bannerBtns=0x7f090054;
-        public static final int bannerOrganizador=0x7f09005b;
+        public static final int bannerOrganizador=0x7f09005a;
         public static final int beginning=0x7f090023;
         public static final int book_now=0x7f090010;
         public static final int botonCategoriaAntrosYBares=0x7f0900bf;
@@ -1645,7 +1645,7 @@ containing a value of this type.
         public static final int buy_now=0x7f09000f;
         public static final int buy_with_google=0x7f09000e;
         public static final int cabeceraLayOut=0x7f090051;
-        public static final int capaMapa=0x7f090079;
+        public static final int capaMapa=0x7f090078;
         public static final int caracteresRestantes=0x7f090085;
         public static final int categoriaFavorito=0x7f09009f;
         public static final int categories_header_layout=0x7f0900bb;
@@ -1659,7 +1659,7 @@ containing a value of this type.
         public static final int contenedorDIrUbicacion=0x7f090073;
         public static final int contenedorFechaOrg=0x7f09005f;
         public static final int contenedorOrg=0x7f09005c;
-        public static final int contenedorOrganizador=0x7f09005a;
+        public static final int contenedorOrganizador=0x7f09005b;
         public static final int contenedorTelefonoFuente=0x7f090065;
         public static final int contenedorUbicacion=0x7f090075;
         public static final int content_Favorites=0x7f090093;
@@ -1723,7 +1723,7 @@ containing a value of this type.
         public static final int ifRoom=0x7f09001d;
         public static final int image=0x7f090039;
         public static final int imagenHeader=0x7f09004f;
-        public static final int imgMapa=0x7f09007a;
+        public static final int imgMapa=0x7f090079;
         public static final int layOutDiaFecha=0x7f0900b8;
         public static final int layOutDistanciaEvento=0x7f0900b2;
         public static final int layOutLugarFavorito=0x7f0900b9;
@@ -1792,7 +1792,7 @@ containing a value of this type.
         public static final int separador4=0x7f090064;
         public static final int separadorEvento=0x7f0900a0;
         public static final int separadorEventoDos=0x7f0900a3;
-        public static final int separadorMapa=0x7f090078;
+        public static final int separadorMapa=0x7f09007a;
         public static final int settingsWebview=0x7f0900e2;
         public static final int shortcut=0x7f090040;
         public static final int showCustom=0x7f09001a;
