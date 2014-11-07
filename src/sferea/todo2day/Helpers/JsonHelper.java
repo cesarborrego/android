@@ -70,7 +70,7 @@ public class JsonHelper {
 			}
 
 			if(inputStream!=null){
-//				readStreamPrimerJson(inputStream);
+				readStreamPrimerJson(inputStream);
 			}								
 		}
 	}

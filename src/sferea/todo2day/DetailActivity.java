@@ -99,7 +99,7 @@ public class DetailActivity extends ActionBarActivity {
 		actionBar.setIcon(R.drawable.ic_action_go_to_today_dark);
 		actionBar.setBackgroundDrawable(new ColorDrawable(0xFFF78326));
 		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-		if(actionBarTitleId > 0 ){
+		if(actionBarTitleId > 0 ){ 
 			TextView title = (TextView)findViewById(actionBarTitleId);
 			if(title!=null){title.setTextColor(Color.WHITE);}
 		}

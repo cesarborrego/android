@@ -163,7 +163,7 @@
             android:layout_margin="3dp"
             android:adjustViewBounds="true"
             android:maxWidth="25dp"
-            android:background="@drawable/tweet_button" />
+            android:src="@drawable/tweet_button" />
     </LinearLayout>
 
     <ImageView

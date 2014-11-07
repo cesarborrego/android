@@ -7,11 +7,11 @@ import android.app.Activity;
 import android.os.AsyncTask;
 
 public class AddMoreEventsTask extends AsyncTask<String, Void, Boolean> {
-	TaskListener listener;
+	AddMoreTaskListener listener;
 	Activity activity;
 	boolean result;
 	
-	public AddMoreEventsTask(Activity activity, TaskListener listener){
+	public AddMoreEventsTask(Activity activity, AddMoreTaskListener listener){
 		this.activity = activity;
 		this.listener = listener;
 	}

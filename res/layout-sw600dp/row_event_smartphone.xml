@@ -16,7 +16,7 @@
         android:id="@+id/backgroundGradient"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
         android:src="@drawable/gradient_timeline" />
@@ -26,7 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/layoutBotonesEvento"
         android:gravity="bottom" >
 
         <RelativeLayout
@@ -39,7 +38,7 @@
                 android:id="@+id/iconCategoriaFavorito"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_alignTop="@+id/divider1"
                 android:layout_margin="3dp"
                 android:adjustViewBounds="true"
                 android:maxWidth="50dp"
@@ -100,7 +99,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="3dp"
                 android:layout_toLeftOf="@+id/distanciaFavorito"
-                android:adjustViewBounds="true"
                 android:src="@drawable/ic_ubicacion" />
 
             <TextView
@@ -131,7 +129,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:adjustViewBounds="true"
                 android:src="@drawable/ic_reloj" />
         </RelativeLayout>
     </RelativeLayout>
@@ -139,7 +136,7 @@
     <LinearLayout
         android:id="@+id/layoutBotonesEvento"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
@@ -156,10 +153,9 @@
 
         <ImageView
             android:id="@+id/divider2"
-            android:layout_width="2dp"
-            android:layout_height="40dp"
+            android:layout_width="1dp"
+            android:layout_height="45dp"
             android:layout_margin="2dp"
-            android:layout_toRightOf="@+id/iconCategoriaFavorito"
             android:src="@drawable/ic_division_boton" />
 
         <ImageView
@@ -169,15 +165,15 @@
             android:layout_margin="3dp"
             android:adjustViewBounds="true"
             android:maxWidth="40dp"
-            android:src="@drawable/ic_tweet" />
+            android:src="@drawable/tweet_button" />
     </LinearLayout>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/relativeLayout1"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="41dp"
         android:src="@drawable/ic_nuevo" />
 
 </RelativeLayout>

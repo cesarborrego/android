@@ -404,34 +404,7 @@ public class MainActivity extends ActionBarActivity {
 			
 			isGpsActive = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 			isWirelessActive = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-			
-//			//Verificamos que este el gps activado, si no entonces toma la ubicacion por red
-//			if(isGpsActive){
-//				Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//				latOrigin = location.getLatitude();
-//				lonOrigin = location.getLongitude();
-//				Log.d("GPS", "Latitud "+latOrigin);
-//				Log.d("GPS", "Longitud "+lonOrigin);
-//			}else{
-//				Toast.makeText(getApplicationContext(), "Yieppa funciona mejor cuando activas el GPS :)", Toast.LENGTH_LONG).show();
-//				//Asumimos que esta prendido el wireless ya que si no lo fuera, no entrar��a a la app
-//				if(isWirelessActive){
-//					Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//					latOrigin = location.getLatitude();
-//					lonOrigin = location.getLongitude();
-//					Log.d("WIFI", "Latitud "+latOrigin);
-//					Log.d("WIFI", "Longitud "+lonOrigin);
-//				}
-//				
-////				finish();
-//			}
-//			if(isWirelessActive){
-//				Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//				latOrigin = location.getLatitude();
-//				lonOrigin = location.getLongitude();
-//				Log.d("WIFI", "Latitud "+latOrigin);
-//				Log.d("WIFI", "Longitud "+lonOrigin);
-//			}
+
 
 			LocationListener locationListener = new LocationListener() {
 
