@@ -43,8 +43,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
-		OnTouchListener, OnScrollListener {
+public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTouchListener, OnScrollListener{
 
 	public static final float REFRESH_THRESHOLD = 50;
 	public static ArrayList<EventoObjeto> listaEventos;
@@ -198,7 +197,7 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 
 	ProgressBar progressFooter;
 	TextView footerNoInternet, footerNoInternetClic;
-
+	
 	AddMoreEventsTask task;
 
 	public Page_TimeLine() {
@@ -213,11 +212,10 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 				getActivity());
 		if (SplashActivity.leeJSONCache) {
 		} else {
-			if (jsonHelper.leerPrimerJson() != null) {
 				json = jsonHelper.leerPrimerJson();
-				guardaPrimerJsonDB();
+				if(json != null && !json.isEmpty())
+					guardaPrimerJsonDB();
 			}
-		}
 	}
 
 	@Override
@@ -232,24 +230,20 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 		// Infla el view del footer
 		footerView = LayoutInflater.from(getActivity()).inflate(
 				R.layout.listview_footer, null);
+		
 
-		// footerAddView =
-		// LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer_noevents,
-		// null);
+		//		footerAddView = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer_noevents, null);
 
 		// Crea un nuevo arraylist de eventos
 		listaEventos = new ArrayList<EventoObjeto>();
 		// Obtiene la vista del listView
 		listView_Eventos = ((ListView) view.findViewById(R.id.listviewEventos));
 
-		progressFooter = ((ProgressBar) footerView
-				.findViewById(R.id.progressBarFooter));
-
-		footerNoInternet = (TextView) footerView
-				.findViewById(R.id.textoFooterNOInternet);
-
-		footerNoInternetClic = (TextView) footerView
-				.findViewById(R.id.textoFooterNOInternetClic);
+		progressFooter = ((ProgressBar) footerView.findViewById(R.id.progressBarFooter));
+		
+		footerNoInternet = (TextView) footerView.findViewById(R.id.textoFooterNOInternet);
+		
+		footerNoInternetClic = (TextView) footerView.findViewById(R.id.textoFooterNOInternetClic);
 
 		readTableEvents_fillListEvent();
 		if (SplashActivity.leeJSONCache) {
@@ -257,9 +251,7 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 		}
 
 		// Crea el arrayAdapter de eventos
-		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(),
-				R.layout.row_event_responsive, R.id.listviewEventos,
-				listaEventos);
+		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(),R.layout.row_event_responsive, R.id.listviewEventos,listaEventos);
 
 		// Agrega el header
 		listView_Eventos.addHeaderView(headerView);
@@ -271,9 +263,8 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 		listView_Eventos.setAdapter(arrayAdapterEvents);
 
 		listView_Eventos.setOnScrollListener(this);
-
 		listView_Eventos.setOnTouchListener(this);
-
+		
 		return view;
 	}
 
@@ -303,12 +294,12 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 					// Toast.makeText(getActivity().getApplicationContext(),"Listo verifica la DB Events!",
 					// Toast.LENGTH_LONG).show();
 				} else {
-					// Toast.makeText(
-					// getActivity().getApplicationContext(),
-					// "No hay Eventos Disponibles\n"
-					// + "Prueba con otras categor���as!\n"
-					// + "Y/o Aumenta el Radio de b���squeda en los ajustes",
-					// Toast.LENGTH_LONG).show();
+//					Toast.makeText(
+//							getActivity().getApplicationContext(),
+//							"No hay Eventos Disponibles\n"
+//									+ "Prueba con otras categor���as!\n"
+//									+ "Y/o Aumenta el Radio de b���squeda en los ajustes",
+//									Toast.LENGTH_LONG).show();
 				}
 			};
 		}.execute();
@@ -319,9 +310,8 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 			ReadTableDB readTableDB;
 
 			protected void onPreExecute() {
-				if (getActivity().getApplicationContext() != null) {
-					readTableDB = new ReadTableDB(getActivity()
-							.getApplicationContext());
+				if(getActivity().getApplicationContext()!=null){
+					readTableDB = new ReadTableDB(getActivity().getApplicationContext());
 				}
 
 			};
@@ -340,24 +330,23 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 	}
 
 	public void addMoreEvents(final double lat, final double lon) {
-
-		if (task == null) {
+		
+		if(task == null){
 
 			progressFooter.setVisibility(View.VISIBLE);
-
+			
 			footerNoInternet.setVisibility(View.GONE);
 			footerNoInternetClic.setVisibility(View.GONE);
-
+			
 			SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 					getActivity().getApplicationContext());
 
 			task = new AddMoreEventsTask(getActivity(), this);
 			task.execute("http://yapi.sferea.com/?latitud=" + latOrigin
-					+ "&longitud=" + lonOrigin + "" + "&radio=10"
-					+ "&categoria="
-					+ sharedPreferencesHelper.obtieneCategoriasPreferences()
-					+ "" + "&numEventos=0" + "&idEvento=" + indexEvent + ""
-					+ "&fecha=" + fechaUnix + "");
+					+ "&longitud=" + lonOrigin + "" + "&radio=10" + "&categoria="
+					+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
+					+ "&numEventos=0" + "&idEvento=" + indexEvent + "" + "&fecha="
+					+ fechaUnix + "");
 		}
 	}
 
@@ -370,27 +359,33 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 			protected void onPreExecute() {
 				// TODO El dialog de cargar
 				super.onPreExecute();
-
+				
+				
 				((TextView) headerView.findViewById(R.id.textoHeaderListview))
-						.setVisibility(View.GONE);
+				.setVisibility(View.GONE);
 				((ProgressBar) headerView.findViewById(R.id.progressBarHeader))
-						.setVisibility(View.VISIBLE);
-
+				.setVisibility(View.VISIBLE);
+				
 			}
 
 			protected Void doInBackground(String... params) {
 				jsonHelper.connectionMongo_Json(params[0]);
-				guardaPrimerJsonDB();
+				json = jsonHelper.leerPrimerJson();
+				if(json != null && !json.isEmpty())
+					guardaPrimerJsonDB();
 				return null;
 			}
 
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
+				ReadTableDB readTableDB = new ReadTableDB(getActivity().getApplicationContext());
+				readTableDB.readTable_FillList();
+				arrayAdapterEvents.notifyDataSetChanged();
 				((TextView) headerView.findViewById(R.id.textoHeaderListview))
-						.setVisibility(View.GONE);
+				.setVisibility(View.GONE);
 				((ProgressBar) headerView.findViewById(R.id.progressBarHeader))
-						.setVisibility(View.GONE);
+				.setVisibility(View.GONE);
 				headerAdded = false;
 			}
 
@@ -403,7 +398,7 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 
 	static {
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-				.permitAll().build();
+		.permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 	}
 
@@ -414,29 +409,27 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 		System.gc();
 	}
 
-	public void onTaskCompleted(Object result) {
-
-		if (getActivity() != null) {
-			ReadTableDB readTableDB = new ReadTableDB(getActivity()
-					.getApplicationContext());
-			if ((Boolean) result) {
-
-				if (readTableDB.readTable() == arrayAdapterEvents.getCount()) {
-					// ((TextView)
-					// footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
+	public void onTaskCompleted(Object result){	
+		
+		if(getActivity()!=null){
+			ReadTableDB readTableDB = new ReadTableDB(getActivity().getApplicationContext());
+			if ((Boolean)result) {
+				
+				if(readTableDB.readTable()==arrayAdapterEvents.getCount()){
+//					((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
 					progressFooter.setVisibility(View.GONE);
 				}
-
+				
 				arrayAdapterEvents.clear();
 				readTableDB.readTable_FillList();
 				arrayAdapterEvents.notifyDataSetChanged();
 			} else {
-				// Toast.makeText(
-				// getActivity().getApplicationContext(),
-				// "No hay Eventos Disponibles\n"
-				// + "Prueba con otras categor���as!\n"
-				// + "Y/o Aumenta el Radio de b���squeda en los ajustes",
-				// Toast.LENGTH_LONG).show();
+//				Toast.makeText(
+//						getActivity().getApplicationContext(),
+//						"No hay Eventos Disponibles\n"
+//								+ "Prueba con otras categor���as!\n"
+//								+ "Y/o Aumenta el Radio de b���squeda en los ajustes",
+//								Toast.LENGTH_LONG).show();
 			}
 			progressFooter.setVisibility(View.GONE);
 			task = null;
@@ -444,170 +437,180 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener,
 	}
 
 	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		float y = event.getY();
-
-		switch (event.getAction()) {
-
-		case MotionEvent.ACTION_MOVE: {
-			if (!downCounterUsed) {
-				startY = y;
-				downCounterUsed = true;
-			}
-
-			y1 = event.getY();
-
-			allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
-			Log.d("FirstVisible",
-					String.valueOf(listView_Eventos.getFirstVisiblePosition()));
-
-			if (allowRefresh) {
-				if ((y - startY) > REFRESH_THRESHOLD) {
-					refresh = true;
-					ImageUtil.getImageLoader().clearDiskCache();
-					if (!headerAdded) {
-						if (checkInternetConnection.isConnectedToInternet()) {
-							((TextView) headerView
-									.findViewById(R.id.textoHeaderListview))
-									.setVisibility(View.VISIBLE);
-							headerAdded = true;
-							((TextView) headerView
-									.findViewById(R.id.textoHeaderNoInternet))
-									.setVisibility(View.GONE);
-						} else {
-							((TextView) headerView
-									.findViewById(R.id.textoHeaderNoInternet))
-									.setVisibility(View.VISIBLE);
-						}
-
-					}
-				} else {
-					refresh = false;
-				}
-			}
-
-			if (y < startY) {
-				if (checkInternetConnection.isConnectedToInternet()) {
-					if (listView_Eventos.getFirstVisiblePosition() == 0) {
-						((TextView) footerView.findViewById(R.id.textoFooter))
-								.setVisibility(View.VISIBLE);
-					}
-
-				} else {
-					if (listView_Eventos.getFirstVisiblePosition() == 0) {
-						footerNoInternet.setVisibility(View.VISIBLE);
-						footerNoInternetClic.setVisibility(View.GONE);
-						((TextView) footerView.findViewById(R.id.textoFooter))
-								.setVisibility(View.GONE);
-					} else {
-						footerNoInternet.setVisibility(View.GONE);
-						footerNoInternetClic.setVisibility(View.VISIBLE);
-						((TextView) footerView.findViewById(R.id.textoFooter))
-								.setVisibility(View.GONE);
-					}
-
-				}
-			}
-			break;
-		}
-
-		case MotionEvent.ACTION_UP: {
-			y2 = event.getY();
-			//
-			if (startY > y1) {
-				View v1 = listView_Eventos.getChildAt(listView_Eventos
-						.getAdapter().getCount() - 1);
-
-				if (v1 != null) {
-					if (v1.getBottom() <= listView_Eventos.getHeight()) {
-						if (checkInternetConnection.isConnectedToInternet()) {
-							((TextView) footerView
-									.findViewById(R.id.textoFooter))
-									.setVisibility(View.GONE);
-
-						} else {
-							((TextView) footerView
-									.findViewById(R.id.textoFooterNOInternet))
-									.setVisibility(View.GONE);
-						}
-					}
-				}
-			}
-
-			Log.d("FirstVisiblePosition",
-					String.valueOf(listView_Eventos.getFirstVisiblePosition()));
-
-			if (checkInternetConnection.isConnectedToInternet()) {
-				if (refresh) {
-					refreshTimeLine();
-				} else {
-					((TextView) headerView
-							.findViewById(R.id.textoHeaderListview))
-							.setVisibility(View.GONE);
-					((ProgressBar) headerView
-							.findViewById(R.id.progressBarHeader))
-							.setVisibility(View.GONE);
-				}
-			} else {
-				((TextView) headerView.findViewById(R.id.textoHeaderNoInternet))
-						.setVisibility(View.GONE);
-			}
-			downCounterUsed = false;
-			refresh = false;
-			break;
-		}
-
-		case MotionEvent.ACTION_DOWN: {
-			y1 = event.getY();
-
-			break;
-		}
-		}
-		return false;
-	}
-
-	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-
+		
 		Page_TimeLine.this.totalItemCount = totalItemCount;
-		if (((firstVisibleItem + visibleItemCount) == totalItemCount) & listView_Eventos.getFirstVisiblePosition() > 0) {
+		if (((firstVisibleItem + visibleItemCount) == totalItemCount)
+				& listView_Eventos.getFirstVisiblePosition() > 0) {
 			if (listView_Eventos.getLastVisiblePosition() == listView_Eventos.getAdapter().getCount() - 1
-					&& listView_Eventos.getChildAt(listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos
-							.getHeight()) {
+					&& listView_Eventos.getChildAt(listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos.getHeight()) {
 				Log.d(null, "Final");
 				if (checkInternetConnection.isConnectedToInternet()) {
 					addMoreEvents(latOrigin, lonOrigin);
 					footerNoInternet.setVisibility(View.GONE);
 					footerNoInternetClic.setVisibility(View.GONE);
-					((TextView) footerView.findViewById(R.id.textoFooter))
-							.setVisibility(View.GONE);
+					((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
 				} else {
 					footerNoInternet.setVisibility(View.GONE);
 					footerNoInternetClic.setVisibility(View.VISIBLE);
-					((TextView) footerView.findViewById(R.id.textoFooter))
-							.setVisibility(View.GONE);
-					footerNoInternetClic
-							.setOnClickListener(new OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									if (checkInternetConnection
-											.isConnectedToInternet()) {
-										footerNoInternetClic
-												.setVisibility(View.GONE);
-										addMoreEvents(latOrigin, lonOrigin);
-									}
-								}
-							});
+					((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
+					footerNoInternetClic.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							if(checkInternetConnection.isConnectedToInternet()){
+								footerNoInternetClic.setVisibility(View.GONE);
+								addMoreEvents(latOrigin, lonOrigin);
+							}
+//							else{								
+//								
+//								footerNoInternet.setOnTouchListener(new OnTouchListener() {
+//
+//									@Override
+//									public boolean onTouch(View v, MotionEvent event) {
+//										float y = event.getY();
+//
+//										switch (event.getAction()) {
+//
+//											case MotionEvent.ACTION_MOVE: {}
+//
+//											case MotionEvent.ACTION_UP: {
+//												progressFooter.setVisibility(View.GONE);
+//											}
+//
+//											case MotionEvent.ACTION_DOWN: {
+//												footerNoInternet.setVisibility(View.GONE);
+//												progressFooter.setVisibility(View.VISIBLE);
+//											}
+//										}
+//										return false;
+//									}
+//								});
+//								
+//								
+//								
+//								
+//								
+//								
+//							}
+						}
+					});
 				}
 			}
 		}
 	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		
+		float y = event.getY();
+
+		switch (event.getAction()) {
+
+			case MotionEvent.ACTION_MOVE: {
+				if (!downCounterUsed) {
+					startY = y;
+					downCounterUsed = true;
+				}
+	
+				y1 = event.getY();
+	
+				allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
+				Log.d("FirstVisible", String.valueOf(listView_Eventos
+						.getFirstVisiblePosition()));
+	
+				if (allowRefresh) {
+					if ((y - startY) > REFRESH_THRESHOLD) {
+						refresh = true;
+						ImageUtil.getImageLoader().clearDiskCache();
+						if (!headerAdded) {
+							if(checkInternetConnection.isConnectedToInternet()){
+								((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
+								headerAdded = true;
+								((TextView) headerView.findViewById(R.id.textoHeaderNoInternet)).setVisibility(View.GONE);
+							}else{
+								((TextView) headerView.findViewById(R.id.textoHeaderNoInternet)).setVisibility(View.VISIBLE);
+							}
+							
+						}
+					} else {
+						refresh = false;
+					}
+				}
+				
+				if(y<startY){
+					if (checkInternetConnection.isConnectedToInternet()){
+						if(listView_Eventos.getFirstVisiblePosition() == 0){
+							((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
+						}
+						
+					} else {
+						if(listView_Eventos.getFirstVisiblePosition() == 0){
+							footerNoInternet.setVisibility(View.VISIBLE);
+							footerNoInternetClic.setVisibility(View.GONE);
+							((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
+						}else{
+							footerNoInternet.setVisibility(View.GONE);
+							footerNoInternetClic.setVisibility(View.VISIBLE);
+							((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
+						}
+						
+					}
+				}
+				break;
+			}
+	
+			case MotionEvent.ACTION_UP: {
+				y2 = event.getY();
+				//
+				if (startY > y1) {
+					View v1 = listView_Eventos.getChildAt(listView_Eventos.getAdapter().getCount() - 1);
+	
+					if (v1 != null) {
+						if (v1.getBottom() <= listView_Eventos.getHeight()) {
+							if (checkInternetConnection.isConnectedToInternet()){
+								((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
+								
+							} else {
+								((TextView) footerView.findViewById(R.id.textoFooterNOInternet)).setVisibility(View.GONE);
+							}							
+						}
+					}
+				}
+	
+				Log.d("FirstVisiblePosition",String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+				
+				
+				if(checkInternetConnection.isConnectedToInternet()){
+					if (refresh) {
+						refreshTimeLine();						
+					} else {
+						((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
+						((ProgressBar) headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
+					}
+				}else{
+					((TextView) headerView.findViewById(R.id.textoHeaderNoInternet)).setVisibility(View.GONE);
+				}
+				downCounterUsed = false;
+				refresh = false;
+				break;
+			}
+	
+			case MotionEvent.ACTION_DOWN: {
+				y1 = event.getY();
+				Log.i("DOWN", "Y1 = " + y1 + " Y2 = " + y2);
+				
+				break;
+			}
+		}
+		return false;
+	}
+
 }

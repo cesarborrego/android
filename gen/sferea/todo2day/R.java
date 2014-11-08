@@ -2231,7 +2231,7 @@ containing a value of this type.
         public static final int culturaImgId=0x7f0600c5;
         public static final int decor_content_parent=0x7f060042;
         public static final int default_activity_button=0x7f060037;
-        public static final int degradado=0x7f060055;
+        public static final int degradado=0x7f060054;
         public static final int deportesImgId=0x7f0600c9;
         public static final int descBoletos=0x7f060072;
         public static final int descripcionFavorito=0x7f0600af;
@@ -2273,7 +2273,7 @@ containing a value of this type.
         public static final int homeAsUp=0x7f060007;
         public static final int hybrid=0x7f060022;
         public static final int icon=0x7f060039;
-        public static final int iconCategoria=0x7f060053;
+        public static final int iconCategoria=0x7f060055;
         public static final int iconCategoriaFavorito=0x7f0600a1;
         public static final int iconFavFavorito=0x7f0600ad;
         public static final int iconRetweetFavorito=0x7f0600aa;
@@ -2286,7 +2286,7 @@ containing a value of this type.
         public static final int iconoUbicacion=0x7f06007a;
         public static final int ifRoom=0x7f06000c;
         public static final int image=0x7f060036;
-        public static final int imagenHeader=0x7f060054;
+        public static final int imagenHeader=0x7f060053;
         public static final int imgMapa=0x7f06007d;
         public static final int layOutDiaFecha=0x7f0600bb;
         public static final int layOutDistanciaEvento=0x7f0600b5;
