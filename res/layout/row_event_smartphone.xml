@@ -37,10 +37,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="3dp"
+                android:layout_margin="5dp"
                 android:adjustViewBounds="true"
-                android:maxWidth="30dp"
-                android:src="@drawable/ic_small_musica" />
+                android:maxWidth="25dp"
+                android:src="@drawable/ic_musica_white" />
 
             <ImageView
                 android:id="@+id/divider1"
@@ -146,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:adjustViewBounds="true"
-            android:maxWidth="25dp"
+            android:maxWidth="20dp"
             android:src="@drawable/ic_favorito" />
 
         <ImageView
@@ -162,7 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:adjustViewBounds="true"
-            android:maxWidth="25dp"
+            android:maxWidth="20dp"
             android:src="@drawable/tweet_button" />
     </LinearLayout>
 
