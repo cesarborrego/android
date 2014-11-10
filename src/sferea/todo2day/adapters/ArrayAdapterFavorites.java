@@ -56,12 +56,9 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 		if(v == null){
 			v = LayoutInflater.from(getContext()).inflate(R.layout.row_favorite_tablet, null);
 			viewHolder = new ViewHolder();
-//			viewHolder.botonFavorito = (RelativeLayout) v.findViewById(R.id.botonFavEvent);
 			viewHolder.categoriaFavorito = (TextView) v.findViewById(R.id.categoriaFavorito);
-//			viewHolder.descripcionFavorito = (TextView) v.findViewById(R.id.descripcionFavorito);
 			viewHolder.distanciaFavorito = (TextView) v.findViewById(R.id.distanciaFavorito);
 			viewHolder.fechaFavorito = (TextView) v.findViewById(R.id.fechaFavorito);
-//			viewHolder.lugarFavorito = (TextView) v.findViewById(R.id.lugarFavorito);
 			viewHolder.iconFavFavorito = (ImageView) v.findViewById(R.id.iconFavFavorito);
 			viewHolder.nombreFavorito = (TextView) v.findViewById(R.id.nombreFavorito);
 			viewHolder.thumbnailFavorito = (ImageView) v.findViewById(R.id.thumbnailFavorite);
@@ -75,23 +72,10 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 		
 		setIconCategoria(position, viewHolder);
 				
-		FavoritosObjeto favoritosObjeto = getItem(position);
-		
-		String nombre = favoritosObjeto.getNombreEvento();
-		String categoria = favoritosObjeto.getCategoriaEvento();
-		String fecha = favoritosObjeto.getFechaEvento();
-		String lugar = favoritosObjeto.getLugarEvento();
-		String distancia = favoritosObjeto.getDistanciaEvento();
-		String descripcion = favoritosObjeto.getDescripcion();
-		
-		String imagen = favoritosObjeto.getUrlImagen();
-				
 		viewHolder.nombreFavorito.setText(getItem(position).getNombreEvento());
 		viewHolder.categoriaFavorito.setText(getItem(position).getCategoriaEvento());
 		viewHolder.fechaFavorito.setText(getItem(position).getFechaEvento());
-//		viewHolder.lugarFavorito.setText(lugar);
 		viewHolder.distanciaFavorito.setText("a " + getItem(position).getDistanciaEvento().toLowerCase());
-//		viewHolder.descripcionFavorito.setText(descripcion);
 		
 		imageloader.displayImage(getItem(position).getUrlImagen(), viewHolder.thumbnailFavorito, options);
 		
@@ -103,10 +87,6 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 			}
 		});		
 		
-		if(	DetailActivity.activaRefreshFavorites_Details){
-			refreshFavoritesFragment(position);
-		}
-		
 		return v;
 	}
 	
@@ -115,22 +95,11 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 	private void deleteFavorites(final int position){
 		DataBaseSQLiteManager managerDB = new DataBaseSQLiteManager(activityAdapter.getApplicationContext());
 		managerDB.eliminar(getItem(position).getIndexOfEvent());
-		refreshFavoritesFragment(position);
+		this.remove(getItem(position));
+		this.notifyDataSetChanged();
 		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 	}
-	
-	private void refreshFavoritesFragment(int position){
-		// la volvemos a hacer falsa	
-		DetailActivity.activaRefreshFavorites_Details= false;
-		 //inicializamos la varible
-		 Fragment fragment = null;
-		 fragment = new Page_Favorites();
 
-		 if(fragment!=null){
-			 FragmentManager fragmentManager = ((FragmentActivity)activityAdapter).getSupportFragmentManager();
-			 fragmentManager.beginTransaction().replace(R.id.content_Favorites, fragment).commit();
-		 }		 
-	 }
 	
 	private void setIconCategoria(int position, ViewHolder eventView){
 		CategoriasConfig categoriaId = CategoriasConfig.valueOf(getItem(position).getCategoriaIDEvento().toUpperCase());
@@ -196,9 +165,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 		public TextView nombreFavorito;
 		public TextView categoriaFavorito;
 		public TextView fechaFavorito;
-//		public TextView lugarFavorito;
 		public TextView distanciaFavorito;
-//		public TextView descripcionFavorito;
 		public ImageView thumbnailFavorito;
 		public ImageView iconCategoria;
 		public ImageView iconFavFavorito;
