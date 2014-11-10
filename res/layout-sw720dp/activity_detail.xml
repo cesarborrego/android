@@ -89,7 +89,7 @@
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:maxWidth="50dp"
-                        android:src="@drawable/anotalo" />
+                        android:src="@drawable/boton_anotalo_details" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -131,7 +131,7 @@
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:maxWidth="50dp"
-                        android:src="@drawable/organizador" />
+                        android:src="@drawable/boton_organizador_details" />
                 </LinearLayout>
             </RelativeLayout>
 

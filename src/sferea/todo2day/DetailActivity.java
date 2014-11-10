@@ -77,6 +77,7 @@ public class DetailActivity extends ActionBarActivity {
 	TextView tel;
 	ImageView btnF;
 	ImageView btnR;
+	ImageView phoneOrg;
 	ImageLoader imageloader;
 	DisplayImageOptions options;
 	String tweetString;
@@ -108,6 +109,7 @@ public class DetailActivity extends ActionBarActivity {
 		
 		btnR = (ImageView)findViewById(R.id.tweetImgId);
 		btnF = (ImageView)findViewById(R.id.favoritoImgId);
+		phoneOrg = (ImageView) findViewById(R.id.organizadorImgId);
 		
 		manager = new DataBaseSQLiteManager(getApplicationContext());
 		
@@ -256,9 +258,27 @@ public class DetailActivity extends ActionBarActivity {
 				
 				@Override
 				public void onClick(View v) {
-					Uri number = Uri.parse("tel:"+tel.getText().toString());
-			        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
-			        startActivity(callIntent);
+					if(!tel.getText().toString().equals("No disponible")){
+						Uri number = Uri.parse("tel:"+tel.getText().toString());
+				        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+				        startActivity(callIntent);
+					}else{
+						Toast.makeText(getApplicationContext(), "Número telefónico no válido", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+			
+			phoneOrg.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if(!tel.getText().toString().equals("No disponible")){
+						Uri number = Uri.parse("tel:"+tel.getText().toString());
+				        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+				        startActivity(callIntent);
+					}else{
+						Toast.makeText(getApplicationContext(), "Número telefónico no válido", Toast.LENGTH_SHORT).show();
+					}
 				}
 			});
 			
