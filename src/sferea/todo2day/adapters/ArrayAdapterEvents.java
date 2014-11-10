@@ -54,11 +54,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 
 	Context thisContext;
-	public static int positionFav;
-	public static ImageView iconFavorite = null;
-	public static ImageView iconFavoriteInactive = null;
-	private byte[] img = null;
-	int favoritosAdd = 2;
 	ImageLoader imageloader;
 	DisplayImageOptions options;
 	String inicioTweet;
@@ -80,22 +75,14 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 			v = LayoutInflater.from(getContext()).inflate(
 					R.layout.row_event_smartphone, null);
 			viewHolder = new ViewHolder();
-			// viewHolder.botonFavoritos = (RelativeLayout) v
-			// .findViewById(R.id.botonFavEvent);
-			// viewHolder.botonRetweetEvent = (RelativeLayout) v
-			// .findViewById(R.id.botonRetweetEvent);
 			viewHolder.categoriaEvento = (TextView) v
 					.findViewById(R.id.categoriaFavorito);
 			viewHolder.nombreEvento = (TextView) v
 					.findViewById(R.id.nombreFavorito);
 			viewHolder.fechaEvento = (TextView) v
 					.findViewById(R.id.fechaFavorito);
-			// viewHolder.lugarEvento = (TextView) v
-			// .findViewById(R.id.lugarFavorito);
 			viewHolder.distanciaEvento = (TextView) v
 					.findViewById(R.id.distanciaFavorito);
-			// viewHolder.descripcionEvento = (TextView) v
-			// .findViewById(R.id.descripcionFavorito);
 			viewHolder.thumbEvento = (ImageView) v
 					.findViewById(R.id.thumbnailFavorite);
 			viewHolder.iconCategoria = (ImageView) v
@@ -114,21 +101,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		enTweet = v.getResources().getString(R.string.cadenaTweet_en);
 		setIconCategoria(position, viewHolder);
 
-		final int pos = position;
-		v.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Bundle bundle = new Bundle();
-				bundle.putParcelable("Event", getItem(pos));
-				Intent intent = new Intent(thisContext, DetailActivity.class);
-				intent.putExtras(bundle);
-				thisContext.startActivity(intent);
-				Page_TimeLine.eventoActivo = true;
-				Page_TimeLine.favoritoActivo = false;
-			}
-		});
-
-		setInfoAndListenersInEvent(viewHolder, pos);
+		setInfoAndListenersInEvent(viewHolder, position);
 		return v;
 	}
 
@@ -148,61 +121,19 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		DataBaseSQLiteManager managerDBFavorites = new DataBaseSQLiteManager(
 				thisContext);
 
-		String nombreEvento;
-		String categoriaEvento;
-		String categoriaIDEvento;
-		String fechaEvento;
-		String horarioEvento;
-		String urlImagen;
-		String lugarEvento;
-		String distanciaEvento;
-
-		Bitmap imagenEvento;
-		int imagenCategoria;
-
 		/* Nuevos */
-		String descripcionEvento;
-		String fuenteEvento;
-		String direccionEvento;
-		String boletoEvento;
-		String telefono;
-		double lat;
-		double lon;
-
-		// Obtenemos el objeto
-		EventoObjeto eventoObjeto = getItem(position);
-
-		nombreEvento = eventoObjeto.getNombreEvento();
-		categoriaEvento = eventoObjeto.getCategoriaEvento();
-		categoriaIDEvento = eventoObjeto.getCategoriaIDEvento();
-		fechaEvento = eventoObjeto.getFechaEvento();
-		horarioEvento = eventoObjeto.getHoraEvento();
-		/** Nuevos elementos para llenar el Evento **/
-		descripcionEvento = eventoObjeto.getDescripcion();
-		fuenteEvento = eventoObjeto.getFuente();
-		direccionEvento = eventoObjeto.getDireccion();
-		telefono = eventoObjeto.getTelefono();
-		boletoEvento = eventoObjeto.getBoleto();
-		lat = eventoObjeto.getLatEvento();
-		lon = eventoObjeto.getLonEvento();
-		lugarEvento = eventoObjeto.getLugarEvento();
-		distanciaEvento = "a " + eventoObjeto.getDistancia().toLowerCase();
-		imagenEvento = eventoObjeto.getImagenEvento();
-		urlImagen = eventoObjeto.getUrlImagen();
-		imagenCategoria = eventoObjeto.getImagenCategoria();
 
 		SubF_Events.iFavoritos = new int[this.getCount()];
 
 		// Asignamos al view las variables intermedias
-		eventView.nombreEvento.setText(nombreEvento);
-		eventView.categoriaEvento.setText(categoriaEvento);
-		eventView.fechaEvento.setText(fechaEvento);
+		eventView.nombreEvento.setText(getItem(position).getNombreEvento());
+		eventView.categoriaEvento.setText(getItem(position).getCategoriaEvento());
+		eventView.fechaEvento.setText(getItem(position).getFechaEvento());
 		// eventView.lugarEvento.setText(lugarEvento);
-		eventView.distanciaEvento.setText(distanciaEvento);
-		// eventView.descripcionEvento.setText(descripcionEvento);
+		eventView.distanciaEvento.setText("a " + getItem(position).getDistancia().toLowerCase());
 
-		if (!urlImagen.equals("No disponible")) {
-			imageloader.displayImage(urlImagen, eventView.thumbEvento, options);
+		if (!getItem(position).getUrlImagen().equals("No disponible")) {
+			imageloader.displayImage(getItem(position).getUrlImagen(), eventView.thumbEvento, options);
 		}
 
 		// dependiendo de los resultados prendemos o apagamos las estrellas de
@@ -218,8 +149,6 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 			eventView.iconFavorito.setImageResource(R.drawable.ic_favorito);
 		}
 
-		// eventView.nombreEvento.setText(getItem(position).getNombreEvento());
-
 		Typeface tf;
 		try {
 			tf = Typeface.createFromAsset(thisContext.getAssets(),
@@ -232,7 +161,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		// Crea la cadena del tweet
 		String tweetString = inicioTweet + " \""
 				+ getItem(position).getNombreEvento() + "\" " + enTweet + " "
-				+ lugarEvento + " V��a yiepa!";
+				+ getItem(position).getLugarEvento() + " Viva yiepa!";
 		lanzarAlertDialogTweet(tweetString, eventView, position);
 		agregarFavoritos(eventView, position, managerDBFavorites);
 	}
@@ -415,39 +344,26 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 						managerDBFavorites
 								.insertar(getItem(position).getNombreEvento(),
 										getItem(position).getCategoriaEvento(),
-										getItem(position)
-												.getCategoriaIDEvento(),
+										getItem(position).getCategoriaIDEvento(),
 										getItem(position).getFechaEvento(),
 										getItem(position).getDescripcion(),
 										getItem(position).getFuente(),
 										getItem(position).getLugarEvento(),
 										getItem(position).getDireccion(),
 										getItem(position).getTelefono(),
-										getItem(position).getBoleto(), String
-												.valueOf(getItem(position)
-														.getDistancia()),
-										String.valueOf(getItem(position)
-												.getLatEvento()), String
-												.valueOf(getItem(position)
-														.getLonEvento()),
+										getItem(position).getBoleto(), 
+										String.valueOf(getItem(position).getDistancia()),
+										String.valueOf(getItem(position).getLatEvento()), 
+										String.valueOf(getItem(position).getLonEvento()),
 										getItem(position).getUrlImagen(),
-										String.valueOf(position), String
-												.valueOf(getItem(position)
-														.getIndexOfEvent()),
-										String.valueOf(getItem(position)
-												.getFechaUnix()));
+										String.valueOf(position), 
+										String.valueOf(getItem(position).getIndexOfEvent()),
+										String.valueOf(getItem(position).getFechaUnix()));
 						Log.d(null, "Registro Insertado en DB");
 					}
 				}
 			}
 		});
-	}
-
-	private byte[] codificarBitmap(Bitmap b) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		// Calidad de imagen png al 30%
-		b.compress(Bitmap.CompressFormat.PNG, 30, bos);
-		return img = bos.toByteArray();
 	}
 
 	public boolean Send_Tweet(String tweet_text, final ViewHolder eventView) {
@@ -529,11 +445,6 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 			return false;
 		}
 
-	}
-
-	public void contadorTweet(View eventView, int iConta) {
-		((TextView) eventView.findViewById(R.id.textRetweetCounter))
-				.setText(String.valueOf(iConta));
 	}
 
 	public boolean isConnectedToInternet(Context _context) {
@@ -629,12 +540,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		TextView nombreEvento;
 		TextView categoriaEvento;
 		TextView fechaEvento;
-		// TextView lugarEvento;
 		TextView distanciaEvento;
-		// TextView descripcionEvento;
-		// RelativeLayout botonRetweetEvent;
-		// TextView tweetCounter;
-		// RelativeLayout botonFavoritos;
 		ImageView iconFavorito;
 		ImageView iconRetweet;
 	}

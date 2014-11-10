@@ -2,12 +2,8 @@ package sferea.todo2day.subfragments;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import com.google.android.gms.internal.ff;
-
+import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.SplashActivity;
 import sferea.todo2day.Helpers.CheckInternetConnection;
@@ -21,9 +17,9 @@ import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.config.LocationHelper;
 import sferea.todo2day.tasks.AddMoreEventsTask;
 import sferea.todo2day.tasks.AddMoreTaskListener;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -37,11 +33,11 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTouchListener, OnScrollListener{
 
@@ -261,6 +257,25 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 
 		// Asigna el arrayAdapter al listview
 		listView_Eventos.setAdapter(arrayAdapterEvents);
+		
+		listView_Eventos.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				EventoObjeto evento = (EventoObjeto)parent.getItemAtPosition(position);
+				
+				Bundle bundle = new Bundle();
+				bundle.putParcelable("Event", evento);
+				Intent intent = new Intent(getActivity(), DetailActivity.class);
+				intent.putExtras(bundle);
+				getActivity().startActivity(intent);
+				eventoActivo = true;
+				favoritoActivo = false;
+				
+			}
+		});
 
 		listView_Eventos.setOnScrollListener(this);
 		listView_Eventos.setOnTouchListener(this);

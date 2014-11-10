@@ -198,6 +198,7 @@ public class DetailActivity extends ActionBarActivity {
 					editor.commit(); 
 				}
 				
+<<<<<<< HEAD
 				cursor = managerDBFavorites.queryEventByIndex(favoritosObjeto.getIndexOfEvent());
 				
 				if (cursor.getCount() > 0) {
@@ -206,6 +207,8 @@ public class DetailActivity extends ActionBarActivity {
 					btnF.setImageResource(R.drawable.favorito);
 				}
 				
+=======
+>>>>>>> 3726dafcf2e10db9122f2a9a87166423902c96e7
 				((TextView)findViewById(R.id.detallesTitulo)).setText(favoritosObjeto.getNombreEvento());
 				imageloader.displayImage(favoritosObjeto.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
 				((ImageView)findViewById(R.id.iconCategoria)).setImageResource(favoritosObjeto.getImagenCategoria());

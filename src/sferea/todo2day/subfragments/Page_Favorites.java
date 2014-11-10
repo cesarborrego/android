@@ -3,11 +3,13 @@ package sferea.todo2day.subfragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.adapters.ArrayAdapterFavorites;
 import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.adapters.FavoritosObjeto;
 import sferea.todo2day.config.DataBaseSQLiteManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,6 +19,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class Page_Favorites extends Fragment {
@@ -52,6 +56,27 @@ public class Page_Favorites extends Fragment {
 		
 		adapterFavorites = new ArrayAdapterFavorites(getActivity(), getActivity().getApplicationContext(),listaObjectFavoritos);
 		listaFavoritos.setAdapter(adapterFavorites);
+		
+		listaFavoritos.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				Page_TimeLine.favoritoActivo = true;
+				Page_TimeLine.eventoActivo = false;
+				FavoritosObjeto favorito = (FavoritosObjeto) parent.getItemAtPosition(position);
+				
+				Bundle bundle = new Bundle();
+				bundle.putParcelable("Favorito", favorito);
+				Intent intent = new Intent(getActivity(), DetailActivity.class);
+				intent.putExtras(bundle);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				getActivity().startActivity(intent);
+				
+			}
+		});
+		
 		adapterFavorites.notifyDataSetChanged();
 	
 		return view;

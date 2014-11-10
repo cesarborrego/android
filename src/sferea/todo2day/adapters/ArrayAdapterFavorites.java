@@ -74,22 +74,6 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 		}
 		
 		setIconCategoria(position, viewHolder);
-		
-		v.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				Page_TimeLine.favoritoActivo = true;
-				Page_TimeLine.eventoActivo = false;
-				
-				Bundle bundle = new Bundle();
-				bundle.putParcelable("Favorito", getItem(position));
-				Intent intent = new Intent(contex, DetailActivity.class);
-				intent.putExtras(bundle);
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				contex.startActivity(intent);
-			}
-		});
 				
 		FavoritosObjeto favoritosObjeto = getItem(position);
 		
@@ -102,14 +86,14 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 		
 		String imagen = favoritosObjeto.getUrlImagen();
 				
-		viewHolder.nombreFavorito.setText(nombre);
-		viewHolder.categoriaFavorito.setText(categoria);
-		viewHolder.fechaFavorito.setText(fecha);
+		viewHolder.nombreFavorito.setText(getItem(position).getNombreEvento());
+		viewHolder.categoriaFavorito.setText(getItem(position).getCategoriaEvento());
+		viewHolder.fechaFavorito.setText(getItem(position).getFechaEvento());
 //		viewHolder.lugarFavorito.setText(lugar);
-		viewHolder.distanciaFavorito.setText(distancia);
+		viewHolder.distanciaFavorito.setText("a " + getItem(position).getDistanciaEvento().toLowerCase());
 //		viewHolder.descripcionFavorito.setText(descripcion);
 		
-		imageloader.displayImage(imagen, viewHolder.thumbnailFavorito, options);
+		imageloader.displayImage(getItem(position).getUrlImagen(), viewHolder.thumbnailFavorito, options);
 		
 		viewHolder.iconFavFavorito.setOnClickListener(new OnClickListener() {
 			
