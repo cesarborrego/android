@@ -195,14 +195,6 @@ public class DetailActivity extends ActionBarActivity {
 					editor.commit(); 
 				}
 				
-				cursor = managerDBFavorites.queryEventByIndex(favoritosObjeto.getIndexOfEvent());
-				
-				if (cursor.getCount() > 0) {
-					btnF.setImageResource(R.drawable.ic_action_important_active);
-				} else {
-					btnF.setImageResource(R.drawable.favorito);
-				}
-				
 				((TextView)findViewById(R.id.detallesTitulo)).setText(favoritosObjeto.getNombreEvento());
 				imageloader.displayImage(favoritosObjeto.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
 				((ImageView)findViewById(R.id.iconCategoria)).setImageResource(favoritosObjeto.getImagenCategoria());
@@ -234,12 +226,12 @@ public class DetailActivity extends ActionBarActivity {
 						}
 					}
 					String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
-							"center="+evento.getLatEvento()+","+evento.getLonEvento()+"" +
+							"center="+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
 							"&zoom=15" +
 							"&size="+pixelesMapa+"" +
 							"&scale=2" +
 							"&maptype=roadmap" +
-							"&markers=color:blue%7C"+evento.getLatEvento()+","+evento.getLonEvento()+"" +
+							"&markers=color:blue%7C"+favoritosObjeto.getLatEvento()+","+favoritosObjeto.getLonEvento()+"" +
 							"&sensor=true_or_false";
 					Log.d(null, imageHttpAddress);
 					

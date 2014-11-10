@@ -34,9 +34,9 @@ public class ImageUtil {
 	
 	public static DisplayImageOptions getOptionsImageLoader() {
 		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.evento)
-				.showImageForEmptyUri(R.drawable.evento)
-				.showImageOnFail(R.drawable.evento).cacheInMemory(true)
+				.showImageOnLoading(R.drawable.event_placeholder)
+				.showImageForEmptyUri(R.drawable.event_placeholder)
+				.showImageOnFail(R.drawable.event_placeholder).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
 		return options;
 	}

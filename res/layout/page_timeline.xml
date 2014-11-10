@@ -11,8 +11,7 @@
         android:id="@+id/listviewEventos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:scrollbarFadeDuration="0"
+        android:fadeScrollbars="true"
         android:divider="@null"/>
 
 </LinearLayout>
