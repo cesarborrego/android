@@ -8,7 +8,11 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
+import sferea.todo2day.Application;
+import sferea.todo2day.adapters.EventoObjeto;
+import sferea.todo2day.parsers.EventParser;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -23,7 +27,8 @@ public class JsonHelper {
 		this.thisActivity = a;
 	}	
 	
-	public void connectionMongo_Json(String param){
+	public boolean connectionMongo_Json(String param){
+		boolean result = false;
 		if(thisActivity!=null){
 			InputStream inputStream = null;
 
@@ -44,9 +49,11 @@ public class JsonHelper {
 			}
 
 			if(inputStream!=null){
-				readStreamPrimerJson(inputStream);
+				result = readStreamPrimerJson(inputStream);
 			}								
 		}
+		
+		return result;
 	}
 	
 	public void connectionMongo_JsonFake(String param){
@@ -124,19 +131,18 @@ public class JsonHelper {
     	return jsonCache;
     }
 	
-	public void readStreamPrimerJson(InputStream in) {
+	public boolean readStreamPrimerJson(InputStream in) {
+		boolean result = false;
 		BufferedReader reader = null;
-		OutputStreamWriter outputStreamWriter = null;
+		ParseJson_AddDB parser = null;
 		try {
 			reader = new BufferedReader(new InputStreamReader(in));
 			String line = "";
 			while ((line = reader.readLine()) != null) {
-				outputStreamWriter = new OutputStreamWriter(thisCOntext.openFileOutput("Json.txt", Context.MODE_PRIVATE));
-				outputStreamWriter.write(line);	    					
-				outputStreamWriter.flush();
-				outputStreamWriter.close();				
+				
+				parser = new ParseJson_AddDB(Application.getInstance(), thisActivity);
+				result = parser.parseFirstJson_AddDB(line);
 			}
-			Log.d(null, "Primer Json creado!");	
 
 			
 		} catch (IOException e) {
@@ -150,5 +156,7 @@ public class JsonHelper {
 				}
 			}	    		
 		}
+		
+		return result;
 	}
 }

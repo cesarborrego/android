@@ -26,17 +26,8 @@ public class EventoObjeto implements Parcelable{
 	String indexOfEvent;
 	int fechaUnix;
 	
-	public EventoObjeto(String nombreEvento, String categoria){
-		this.nombreEvento = nombreEvento;
-		this.categoriaEvento = categoria;
-	}
-	
-	public EventoObjeto(String nomEvento, String catEvento, String catIDEvento, String fechEvento, String horEvento, String lugEvento, 
-			double latEv, double lonEv, String dist, Bitmap imgEvento){
-		setNombreEvento(nomEvento); setCategoriaEvento(catEvento); setFechaEvento(fechEvento); setHoraEvento(horEvento);
-		setLugarEvento(lugEvento); setLatLonEvento(latEv, lonEv); setDistancia(dist); setImagenEvento(imgEvento);
-		setCategoriaIDEvento(catIDEvento);
-//		setImagenCategoria(imgCategoria);
+	public EventoObjeto(){
+		
 	}
 	
 	public EventoObjeto(String nombreEvento, String catEvento, String catIDEvento, String fechaEvento, String descripcionEvento, String fuenteEvento, String LugarEvento, 
@@ -64,23 +55,6 @@ public class EventoObjeto implements Parcelable{
 	}
 
 	
-	/*public EventoObjeto(String nombreEvento, String catEvento, String fechaEvento, String descripcionEvento, String fuenteEvento, String LugarEvento, 
-			String direccionEvento, String telefonoEvento, double lat, double lon, String dist, String boletoEvento, int imgCategoria,int posicion){
-		setNombreEvento(nombreEvento);
-		setCategoriaEvento(catEvento);
-		setFechaEvento(fechaEvento);
-		setDescripcion(descripcionEvento);
-		setFuente(fuenteEvento);
-		setLugarEvento(LugarEvento);
-		setDireccion(direccionEvento);
-		setTelefono(telefonoEvento);
-		setBoleto(boletoEvento);
-		setDistancia(dist);
-		setLatEvento(lat);
-		setLonEvento(lon);
-		setImagenCategoria(imgCategoria);
-		setPosicion(posicion);
-	}*/
 	
 	/** Setter & getters*/
 	public String getNombreEvento() { return nombreEvento; } 
@@ -95,10 +69,6 @@ public class EventoObjeto implements Parcelable{
 	public String getLugarEvento() { return lugarEvento; } 
 	public void setLugarEvento(String lugarEvento) { this.lugarEvento = lugarEvento; }
 
-	
-//	public double getDistancia() { return distancia; } 
-//	public void setDistancia(double distancia) { this.distancia = distancia; }	
-	
 	public String getDistancia() {return distancia;}
 	public void setDistancia(String distancia) {this.distancia = distancia;}
 	
@@ -220,25 +190,6 @@ public class EventoObjeto implements Parcelable{
 		dest.writeString(precio);
 		dest.writeInt(imagenCategoria);
 		
-		
-//		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//		imagenEvento.compress(Bitmap.CompressFormat.JPEG, 100, stream);		
-//		byte[] byteArray = stream.toByteArray();		
-//		dest.writeInt(byteArray.length);
-//		dest.writeByteArray(byteArray);
-		
-		/*ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
-		btnRetweet.compress(Bitmap.CompressFormat.JPEG, 100, stream1);		
-		byte[] byteArray1 = stream1.toByteArray();		
-		dest.writeInt(byteArray1.length);
-		dest.writeByteArray(byteArray1);
-		
-		ByteArrayOutputStream stream2 = new ByteArrayOutputStream();
-		btnFav.compress(Bitmap.CompressFormat.JPEG, 100, stream2);		
-		byte[] byteArray2 = stream2.toByteArray();		
-		dest.writeInt(byteArray2.length);
-		dest.writeByteArray(byteArray2);*/
-		
 	}
 	
 	/** Static field used to regenerate object, individually or as arrays */
@@ -272,21 +223,6 @@ public class EventoObjeto implements Parcelable{
 		setUrlImagen(pc.readString());
 		setPrecio(pc.readString());
 		setImagenCategoria(pc.readInt());
-		
-		//Obtenemos la imagen 
-//		byte[] byteArrayImage= new byte[pc.readInt()];
-//		pc.readByteArray(byteArrayImage);		
-//		setImagenEvento(BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage.length));
-		
-		/*//Obtenemos la imagen Retweet
-		byte[] byteArrayBtnRet= new byte[pc.readInt()];
-		pc.readByteArray(byteArrayBtnRet);		
-		setBtnRetweet(BitmapFactory.decodeByteArray(byteArrayBtnRet, 0, byteArrayBtnRet.length));
-		
-		//Obtenemos la imagen Favoritos
-		byte[] byteArrayBtnFav= new byte[pc.readInt()];
-		pc.readByteArray(byteArrayBtnFav);		
-		setBtnFav(BitmapFactory.decodeByteArray(byteArrayBtnFav, 0, byteArrayBtnFav.length));*/
 	}
 	
 }

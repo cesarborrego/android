@@ -1,5 +1,6 @@
 package sferea.todo2day.Helpers;
 
+import sferea.todo2day.R;
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -26,7 +27,7 @@ public class CheckInternetConnection {
 					}
 		}
 		Toast.makeText(thisContext,
-				"Verificar la conexión a internet", Toast.LENGTH_SHORT).show();
+				R.string.NoInternetToastMessage, Toast.LENGTH_SHORT).show();
 		thisActivity.finish();
 		return false;
 	}
@@ -42,8 +43,6 @@ public class CheckInternetConnection {
 						return true;
 					}
 		}
-//		Toast.makeText(thisContext,
-//				"Verificar la conexión a internet", Toast.LENGTH_SHORT).show();
 		return false;
 	}
 

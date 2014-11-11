@@ -1,10 +1,14 @@
 package sferea.todo2day.Helpers;
 
+import java.util.ArrayList;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
+import sferea.todo2day.parsers.EventParser;
 import sferea.todo2day.subfragments.Page_TimeLine;
 import android.app.Activity;
 import android.content.Context;
@@ -39,6 +43,7 @@ public class ParseJson_AddDB {
 	public boolean parseFirstJson_AddDB (String line){
 		boolean respuesta = false;
 		if(line!=null){
+			
 			JSONParser parser = new JSONParser();
 			Object object = null;
 			try {

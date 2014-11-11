@@ -10,7 +10,6 @@ public class DataBaseSQLiteManagerEvents {
 	
 	public static final String DB_NAME="EVENTS";
 	public static final String ID ="ID_EVENTO";
-	//DATOS
 	public static final String TITULO_EVENTO = "TITULO_EVENTO";
 	public static final String CATEGORIA = "CATEGORIA";
 	public static final String CATEGORIA_ID = "CATEGORIA_ID";
@@ -92,18 +91,48 @@ public class DataBaseSQLiteManagerEvents {
 	}
 	
 	
-	public void insertar(String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
-			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
-			String telefonoEvento, String boletoEvento, String precioEvento, String distanciaEvento, String latitudEvento, 
-			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
-		//db.insert(table, nullColumnHack, values)		
-		db.insert(DB_NAME, null, generarContentValues(tituloEvento, categoriEvento, categoriIDEvento, fechaEvento, descripcionEvento, 
-				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, precioEvento, distanciaEvento, latitudEvento, longitudEvento,
-				urlImagen, posicion, indexOfEvent, fechaUnix));		
+	public void insertar(String tituloEvento, 
+			String categoriEvento, 
+			String categoriIDEvento, 
+			String fechaEvento, 
+			String descripcionEvento, 
+			String fuenteEvento, 
+			String lugarEvento, 
+			String direccionEvento,
+			String telefonoEvento, 
+			String boletoEvento, 
+			String precioEvento, 
+			String distanciaEvento, 
+			String latitudEvento, 
+			String longitudEvento, 
+			String urlImagen, 
+			String posicion, 
+			String indexOfEvent, 
+			String fechaUnix){	
+		
+		db.insert(DB_NAME, 
+				null, 
+				generarContentValues(tituloEvento, 
+						categoriEvento, 
+						categoriIDEvento, 
+						fechaEvento, 
+						descripcionEvento, 
+						fuenteEvento, 
+						lugarEvento, 
+						direccionEvento, 
+						telefonoEvento, 
+						boletoEvento, 
+						precioEvento, 
+						distanciaEvento, 
+						latitudEvento, 
+						longitudEvento,
+						urlImagen, 
+						posicion, 
+						indexOfEvent, 
+						fechaUnix));		
 	}
 	
 	public void eliminar(String indexOfEvent){
-		//db.delete(table, whereClause, whereArgs)
 		db.delete(DB_NAME, INDEX_OF_EVENT+"=?", new String[]{indexOfEvent});
 	}
 	

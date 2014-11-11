@@ -83,5 +83,6 @@
     <string name="cadenaTweet_en">en</string>
     <string name="tweetMuyLargo">Tweet muy Largo!</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="NoInternetToastMessage">"Verificar la conexión a internet."</string>
 
 </resources>

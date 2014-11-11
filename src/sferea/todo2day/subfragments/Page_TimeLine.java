@@ -9,7 +9,6 @@ import sferea.todo2day.SplashActivity;
 import sferea.todo2day.Helpers.CheckInternetConnection;
 import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.Helpers.JsonHelper;
-import sferea.todo2day.Helpers.ParseJson_AddDB;
 import sferea.todo2day.Helpers.ReadTableDB;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterEvents;
@@ -24,6 +23,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -39,7 +40,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTouchListener, OnScrollListener{
+public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTouchListener, OnScrollListener, OnRefreshListener{
 
 	public static final float REFRESH_THRESHOLD = 50;
 	public static ArrayList<EventoObjeto> listaEventos;
@@ -179,6 +180,8 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	String urlImagenes[];
 
 	JsonHelper jsonHelper;
+	
+	SwipeRefreshLayout swipeLayout;
 
 	// bandera tomara el valor que retorna @parseFirstJson_AddDB(json) para que
 	// dependiendo de su resultado activara
@@ -206,12 +209,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 				.getApplicationContext(), getActivity());
 		jsonHelper = new JsonHelper(getActivity().getApplicationContext(),
 				getActivity());
-		if (SplashActivity.leeJSONCache) {
-		} else {
-				json = jsonHelper.leerPrimerJson();
-				if(json != null && !json.isEmpty())
-					guardaPrimerJsonDB();
-			}
 	}
 
 	@Override
@@ -227,9 +224,14 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 		footerView = LayoutInflater.from(getActivity()).inflate(
 				R.layout.listview_footer, null);
 		
-
-		//		footerAddView = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer_noevents, null);
-
+		 
+	    swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+	    swipeLayout.setOnRefreshListener(this);
+	    swipeLayout.setColorScheme(
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 		// Crea un nuevo arraylist de eventos
 		listaEventos = new ArrayList<EventoObjeto>();
 		// Obtiene la vista del listView
@@ -242,6 +244,7 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 		footerNoInternetClic = (TextView) footerView.findViewById(R.id.textoFooterNOInternetClic);
 
 		readTableEvents_fillListEvent();
+		
 		if (SplashActivity.leeJSONCache) {
 			refreshTimeLine();
 		}
@@ -281,43 +284,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 		listView_Eventos.setOnTouchListener(this);
 		
 		return view;
-	}
-
-	public void guardaPrimerJsonDB() {
-		new AsyncTask<Void, Void, Void>() {
-			ParseJson_AddDB parseJson_AddDB;
-
-			protected void onPreExecute() {
-				if (getActivity() != null) {
-					if (!isCancelled()) {
-						parseJson_AddDB = new ParseJson_AddDB(getActivity()
-								.getApplicationContext(), getActivity());
-					}
-				}
-			};
-
-			@Override
-			protected Void doInBackground(Void... arg0) {
-				if (!isCancelled()) {
-					bandera = parseJson_AddDB.parseFirstJson_AddDB(json);
-				}
-				return null;
-			}
-
-			protected void onPostExecute(Void result) {
-				if (bandera) {
-					// Toast.makeText(getActivity().getApplicationContext(),"Listo verifica la DB Events!",
-					// Toast.LENGTH_LONG).show();
-				} else {
-//					Toast.makeText(
-//							getActivity().getApplicationContext(),
-//							"No hay Eventos Disponibles\n"
-//									+ "Prueba con otras categor���as!\n"
-//									+ "Y/o Aumenta el Radio de b���squeda en los ajustes",
-//									Toast.LENGTH_LONG).show();
-				}
-			};
-		}.execute();
 	}
 
 	public void readTableEvents_fillListEvent() {
@@ -375,19 +341,10 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 				// TODO El dialog de cargar
 				super.onPreExecute();
 				
-				
-				((TextView) headerView.findViewById(R.id.textoHeaderListview))
-				.setVisibility(View.GONE);
-				((ProgressBar) headerView.findViewById(R.id.progressBarHeader))
-				.setVisibility(View.VISIBLE);
-				
 			}
 
 			protected Void doInBackground(String... params) {
 				jsonHelper.connectionMongo_Json(params[0]);
-				json = jsonHelper.leerPrimerJson();
-				if(json != null && !json.isEmpty())
-					guardaPrimerJsonDB();
 				return null;
 			}
 
@@ -397,11 +354,7 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 				ReadTableDB readTableDB = new ReadTableDB(getActivity().getApplicationContext());
 				readTableDB.readTable_FillList();
 				arrayAdapterEvents.notifyDataSetChanged();
-				((TextView) headerView.findViewById(R.id.textoHeaderListview))
-				.setVisibility(View.GONE);
-				((ProgressBar) headerView.findViewById(R.id.progressBarHeader))
-				.setVisibility(View.GONE);
-				headerAdded = false;
+				swipeLayout.setRefreshing(false);
 			}
 
 		}.execute("http://yapidev.sferea.com/?latitud=" + latOrigin + ""
@@ -431,7 +384,7 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 			if ((Boolean)result) {
 				
 				if(readTableDB.readTable()==arrayAdapterEvents.getCount()){
-//					((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
+					((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
 					progressFooter.setVisibility(View.GONE);
 				}
 				
@@ -484,37 +437,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 								footerNoInternetClic.setVisibility(View.GONE);
 								addMoreEvents(latOrigin, lonOrigin);
 							}
-//							else{								
-//								
-//								footerNoInternet.setOnTouchListener(new OnTouchListener() {
-//
-//									@Override
-//									public boolean onTouch(View v, MotionEvent event) {
-//										float y = event.getY();
-//
-//										switch (event.getAction()) {
-//
-//											case MotionEvent.ACTION_MOVE: {}
-//
-//											case MotionEvent.ACTION_UP: {
-//												progressFooter.setVisibility(View.GONE);
-//											}
-//
-//											case MotionEvent.ACTION_DOWN: {
-//												footerNoInternet.setVisibility(View.GONE);
-//												progressFooter.setVisibility(View.VISIBLE);
-//											}
-//										}
-//										return false;
-//									}
-//								});
-//								
-//								
-//								
-//								
-//								
-//								
-//							}
 						}
 					});
 				}
@@ -530,35 +452,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 		switch (event.getAction()) {
 
 			case MotionEvent.ACTION_MOVE: {
-				if (!downCounterUsed) {
-					startY = y;
-					downCounterUsed = true;
-				}
-	
-				y1 = event.getY();
-	
-				allowRefresh = (listView_Eventos.getFirstVisiblePosition() == 0);
-				Log.d("FirstVisible", String.valueOf(listView_Eventos
-						.getFirstVisiblePosition()));
-	
-				if (allowRefresh) {
-					if ((y - startY) > REFRESH_THRESHOLD) {
-						refresh = true;
-						ImageUtil.getImageLoader().clearDiskCache();
-						if (!headerAdded) {
-							if(checkInternetConnection.isConnectedToInternet()){
-								((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.VISIBLE);
-								headerAdded = true;
-								((TextView) headerView.findViewById(R.id.textoHeaderNoInternet)).setVisibility(View.GONE);
-							}else{
-								((TextView) headerView.findViewById(R.id.textoHeaderNoInternet)).setVisibility(View.VISIBLE);
-							}
-							
-						}
-					} else {
-						refresh = false;
-					}
-				}
 				
 				if(y<startY){
 					if (checkInternetConnection.isConnectedToInternet()){
@@ -602,19 +495,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	
 				Log.d("FirstVisiblePosition",String.valueOf(listView_Eventos.getFirstVisiblePosition()));
 				
-				
-				if(checkInternetConnection.isConnectedToInternet()){
-					if (refresh) {
-						refreshTimeLine();						
-					} else {
-						((TextView) headerView.findViewById(R.id.textoHeaderListview)).setVisibility(View.GONE);
-						((ProgressBar) headerView.findViewById(R.id.progressBarHeader)).setVisibility(View.GONE);
-					}
-				}else{
-					((TextView) headerView.findViewById(R.id.textoHeaderNoInternet)).setVisibility(View.GONE);
-				}
-				downCounterUsed = false;
-				refresh = false;
 				break;
 			}
 	
@@ -626,6 +506,12 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void onRefresh() {
+		// TODO Auto-generated method stub
+		refreshTimeLine();
 	}
 
 }
