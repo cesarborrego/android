@@ -45,7 +45,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="@string/defaultCategoria"
-                    android:textColor="#A8A2A2"
+                    android:textColor="#fff"
                     android:textSize="27sp"
                     android:textStyle="bold" />
 
@@ -57,7 +57,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/defaultEventTitle"
-                    android:textColor="#A8A2A2"
+                    android:textColor="#fff"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -89,7 +89,7 @@
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:maxWidth="50dp"
-                        android:src="@drawable/anotalo" />
+                        android:src="@drawable/boton_anotalo_details" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:maxWidth="50dp"
-                        android:src="@drawable/tweet" />
+                        android:src="@drawable/boton_tweet_details" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -131,7 +131,7 @@
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:maxWidth="50dp"
-                        android:src="@drawable/organizador" />
+                        android:src="@drawable/boton_organizador_details" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -143,8 +143,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="180dp"
                 android:adjustViewBounds="true"
-                android:maxWidth="63dp"
-                android:src="@drawable/ic_small_musica" />
+                android:maxWidth="55dp"
+                android:src="@drawable/musica" />
         </RelativeLayout>
         
         <ImageView
@@ -545,7 +545,7 @@
         <RelativeLayout
             android:id="@+id/capaMapa"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="300dp"
             android:layout_below="@id/contenedorDIrUbicacion"
             android:layout_marginTop="5dp" >
 

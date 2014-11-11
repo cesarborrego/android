@@ -77,8 +77,11 @@ public class DetailActivity extends ActionBarActivity {
 	TextView tel;
 	ImageView btnF;
 	ImageView btnR;
+	ImageView phoneOrg;
 	ImageLoader imageloader;
 	DisplayImageOptions options;
+	String tweetString;
+	
 	
 	CheckInternetConnection checkInternetConnection;
 	
@@ -104,10 +107,12 @@ public class DetailActivity extends ActionBarActivity {
 			if(title!=null){title.setTextColor(Color.WHITE);}
 		}
 		
+		btnR = (ImageView)findViewById(R.id.tweetImgId);
+		btnF = (ImageView)findViewById(R.id.favoritoImgId);
+		phoneOrg = (ImageView) findViewById(R.id.organizadorImgId);
+		
 		manager = new DataBaseSQLiteManager(getApplicationContext());
 		
-		btnR = (ImageView)findViewById(R.id.tweetImgId);	
-		btnF = (ImageView)findViewById(R.id.favoritoImgId);
 		DataBaseSQLiteManager managerDBFavorites = new DataBaseSQLiteManager(
 				getApplicationContext());
 		
@@ -130,7 +135,7 @@ public class DetailActivity extends ActionBarActivity {
 				cursor = managerDBFavorites.queryEventByIndex(evento.getIndexOfEvent());
 				
 				if (cursor.getCount() > 0) {
-					btnF.setImageResource(R.drawable.ic_action_important_active);
+					btnF.setImageResource(R.drawable.favorito_encendido);
 				} else {
 					btnF.setImageResource(R.drawable.favorito);
 				}
@@ -154,7 +159,7 @@ public class DetailActivity extends ActionBarActivity {
 				
 				String inicioTweet = getResources().getString(R.string.cadenaTweet_inicio);
 				String enTweet = getResources().getString(R.string.cadenaTweet_en);
-				final String tweetString = inicioTweet+" \""+evento.getNombreEvento()+"\" "+enTweet+" "+evento.getLugarEvento()+" Vía yiepa!";
+				tweetString = inicioTweet+" \""+evento.getNombreEvento()+"\" "+enTweet+" "+evento.getLugarEvento()+" Vía yiepa!";
 				
 				if(checkInternetConnection.isConnectedToInternet()){
 					String pixelesMapa = null;
@@ -163,9 +168,9 @@ public class DetailActivity extends ActionBarActivity {
 						pixelesMapa = "350x250";
 					}else{
 						if(pantalla>=268435476){
-							pixelesMapa = "640x200";
+							pixelesMapa = "350x250";
 						}else{
-							pixelesMapa = "600x300";
+							pixelesMapa = "640x200";
 						}
 					}
 					String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
@@ -180,7 +185,7 @@ public class DetailActivity extends ActionBarActivity {
 					
 					downloadPicture(imageHttpAddress);
 				}else{
-					((ImageView) findViewById(R.id.imgMapa)).setImageResource(R.drawable.nowifi);
+					((ImageView) findViewById(R.id.imgMapa)).setImageResource(R.drawable.nomapa);
 				}
 				
 			} else {
@@ -193,6 +198,14 @@ public class DetailActivity extends ActionBarActivity {
 					editor.putString("lat", String.valueOf(favoritosObjeto.getLatEvento()));
 					editor.putString("lon", String.valueOf(favoritosObjeto.getLonEvento()));
 					editor.commit(); 
+				}
+				
+				cursor = managerDBFavorites.queryEventByIndex(favoritosObjeto.getIndexOfEvent());
+				
+				if (cursor.getCount() > 0) {
+					btnF.setImageResource(R.drawable.favorito_encendido);
+				} else {
+					btnF.setImageResource(R.drawable.favorito);
 				}
 				
 				((TextView)findViewById(R.id.detallesTitulo)).setText(favoritosObjeto.getNombreEvento());
@@ -212,7 +225,7 @@ public class DetailActivity extends ActionBarActivity {
 				
 				String inicioTweet = getResources().getString(R.string.cadenaTweet_inicio);
 				String enTweet = getResources().getString(R.string.cadenaTweet_en);
-				final String tweetString = inicioTweet+" \""+favoritosObjeto.getNombreEvento()+"\" "+enTweet+" "+favoritosObjeto.getLugarEvento()+" Vía yiepa!";
+				tweetString = inicioTweet+" \""+favoritosObjeto.getNombreEvento()+"\" "+enTweet+" "+favoritosObjeto.getLugarEvento()+" Vía yiepa!";
 				
 				if(checkInternetConnection.isConnectedToInternet()){
 					String pixelesMapa = null;
@@ -220,7 +233,7 @@ public class DetailActivity extends ActionBarActivity {
 						pixelesMapa = "350x250";
 					}else{
 						if(pantalla>=268435476){
-							pixelesMapa = "640x200";
+							pixelesMapa = "350x250";
 						}else{
 							pixelesMapa = "600x300";
 						}
@@ -237,7 +250,7 @@ public class DetailActivity extends ActionBarActivity {
 					
 					downloadPicture(imageHttpAddress);
 				}else{
-					((ImageView) findViewById(R.id.imgMapa)).setImageResource(R.drawable.nowifi);
+					((ImageView) findViewById(R.id.imgMapa)).setImageResource(R.drawable.nomapa);
 				}
 			}
 			
@@ -245,18 +258,43 @@ public class DetailActivity extends ActionBarActivity {
 				
 				@Override
 				public void onClick(View v) {
-					Uri number = Uri.parse("tel:"+tel.getText().toString());
-			        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
-			        startActivity(callIntent);
+					if(!tel.getText().toString().equals("No disponible")){
+						Uri number = Uri.parse("tel:"+tel.getText().toString());
+				        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+				        startActivity(callIntent);
+					}else{
+						Toast.makeText(getApplicationContext(), "Número telefónico no válido", Toast.LENGTH_SHORT).show();
+					}
 				}
 			});
 			
-			((ImageView)findViewById(R.id.favoritoImgId)).setOnClickListener(new OnClickListener() {
+			phoneOrg.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if(!tel.getText().toString().equals("No disponible")){
+						Uri number = Uri.parse("tel:"+tel.getText().toString());
+				        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+				        startActivity(callIntent);
+					}else{
+						Toast.makeText(getApplicationContext(), "Número telefónico no válido", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+			
+			btnF.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View arg0) {
-					Log.d(null, "Presionado");
 					agregarFavoritos();
+				}
+			});
+			
+			btnR.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					lanzarAlertDialogTweet(tweetString, btnR, arg0);
 				}
 			});
 			
@@ -334,96 +372,91 @@ public class DetailActivity extends ActionBarActivity {
 	 * @param tweetString
 	 * @param eventView
 	 */
-	private void lanzarAlertDialogTweet(final String tweetString, final ImageView btnRet){
-		//Se coloca el OnClickListener al boton de retweet el cual crea un dialogo
-//		((RelativeLayout)eventView.findViewById(R.id.botonRetweetEvent)).setOnClickListener(new OnClickListener() {
-		btnRet.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
+	private void lanzarAlertDialogTweet(final String tweetString, final ImageView btnRet, final View v){
 
-				//Si el contexto es de tipo FragmentActivity
-				if(v.getContext() instanceof FragmentActivity){
-					//Crea un nuevo dialog
-					DialogFragment tweetDialog = new DialogFragment (){
+
+		//Si el contexto es de tipo FragmentActivity
+		if(v.getContext() instanceof FragmentActivity){
+			//Crea un nuevo dialog
+			DialogFragment tweetDialog = new DialogFragment (){
+				@Override
+				public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+					//Infla la vista del contenido del dialog
+					View tweetView = getActivity().getLayoutInflater().inflate(R.layout.dialog_tweet, null);
+					EditText editTweet = ((EditText)tweetView.findViewById(R.id.editText_Tweet));
+					final TextView contador = ((TextView)tweetView.findViewById(R.id.caracteresRestantes));
+					final String muyLargo = getActivity().getResources().getString(R.string.tweetMuyLargo);
+
+					//Pone los OnChangedListener al editText del tweet para mostrar al usuario el limite del tweet
+					editTweet.addTextChangedListener(new TextWatcher() {
 						@Override
-						public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-							//Infla la vista del contenido del dialog
-							View tweetView = getActivity().getLayoutInflater().inflate(R.layout.dialog_tweet, null);
-							EditText editTweet = ((EditText)tweetView.findViewById(R.id.editText_Tweet));
-							final TextView contador = ((TextView)tweetView.findViewById(R.id.caracteresRestantes));
-							final String muyLargo = getActivity().getResources().getString(R.string.tweetMuyLargo);
-
-							//Pone los OnChangedListener al editText del tweet para mostrar al usuario el limite del tweet
-							editTweet.addTextChangedListener(new TextWatcher() {
-								@Override
-								public void onTextChanged(CharSequence s, int start, int before, int count) {
-									if(140-s.length()>=0){
-										//si esta dentro del limite de 140 caracteres
-										contador.setText(""+(140-s.length()));
-										contador.setTextColor(Color.parseColor("#828282"));
-									}else{
-										//si pasa los 140 caracteres
-										contador.setText(muyLargo);
-										contador.setTextColor(Color.parseColor("#AB4D44"));
-									}
-								}
-								@Override public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
-								@Override public void afterTextChanged(Editable s) {}
-							});
-
-							//Cambia el texto del editText por la cadena tweet creada
-							editTweet.setText(tweetString);
-
-							// Use the Builder class for convenient dialog construction
-							AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-							//TODO cambiar cadenas para obtenerlas de R.strings
-							builder.setMessage("Twittear evento?")
-							.setPositiveButton("Twittear!", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {
-									if(isConnectedToInternet(getApplicationContext())){
-										Log.d(null,"conectado!");
-										new AsyncTask<Void,Void,Void>() {
-
-											@Override
-											protected Void doInBackground(
-													Void... params) {
-												Log.d(null,"Empezare con lo del tweet");
-												Send_Tweet(tweetString, getView(), btnRet);
-												return null;
-											}
-
-											@Override
-											protected void onPostExecute(
-													Void result) {
-												// TODO Auto-generated method stub
-												super.onPostExecute(result);
-											}
-
-											@Override
-											protected void onPreExecute() {
-												// TODO Auto-generated method stub
-												super.onPreExecute();
-											}
-
-										}.execute();
-									}
-								}
-							})
-							.setNegativeButton("Mejor no", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {}
-							})
-							.setView(tweetView);
-							// Create the AlertDialog object and return it
-							return builder.create();
-
+						public void onTextChanged(CharSequence s, int start, int before, int count) {
+							if(140-s.length()>=0){
+								//si esta dentro del limite de 140 caracteres
+								contador.setText(""+(140-s.length()));
+								contador.setTextColor(Color.parseColor("#828282"));
+							}else{
+								//si pasa los 140 caracteres
+								contador.setText(muyLargo);
+								contador.setTextColor(Color.parseColor("#AB4D44"));
+							}
 						}
-					};
-					tweetDialog.show(((FragmentActivity)v.getContext()).getSupportFragmentManager(), "Tweet Event");
+						@Override public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+						@Override public void afterTextChanged(Editable s) {}
+					});
+
+					//Cambia el texto del editText por la cadena tweet creada
+					editTweet.setText(tweetString);
+
+					// Use the Builder class for convenient dialog construction
+					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+					//TODO cambiar cadenas para obtenerlas de R.strings
+					builder.setMessage("Twittear evento?")
+					.setPositiveButton("Twittear!", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							if(isConnectedToInternet(getApplicationContext())){
+								Log.d(null,"conectado!");
+								new AsyncTask<Void,Void,Void>() {
+
+									@Override
+									protected Void doInBackground(
+											Void... params) {
+										Log.d(null,"Empezare con lo del tweet");
+										Send_Tweet(tweetString, getView(), btnRet);
+										return null;
+									}
+
+									@Override
+									protected void onPostExecute(
+											Void result) {
+										// TODO Auto-generated method stub
+										super.onPostExecute(result);
+									}
+
+									@Override
+									protected void onPreExecute() {
+										// TODO Auto-generated method stub
+										super.onPreExecute();
+									}
+
+								}.execute();
+							}
+						}
+					})
+					.setNegativeButton("Mejor no", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {}
+					})
+					.setView(tweetView);
+					// Create the AlertDialog object and return it
+					return builder.create();
+
 				}
-			}
-		});
+			};
+			tweetDialog.show(((FragmentActivity)v.getContext()).getSupportFragmentManager(), "Tweet Event");
+		}
+	
 	}
 	
 	public boolean isConnectedToInternet(Context _context){
@@ -552,7 +585,7 @@ public class DetailActivity extends ActionBarActivity {
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
 				
-				btnF.setImageResource(R.drawable.ic_action_important_active);
+				btnF.setImageResource(R.drawable.favorito_encendido);
 			}
 		} else {
 			//Entro por favoritos y ahora obtenemos el estado de la estrella 
@@ -592,7 +625,7 @@ public class DetailActivity extends ActionBarActivity {
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
 				
-				btnF.setImageResource(R.drawable.ic_action_important_active);
+				btnF.setImageResource(R.drawable.favorito_encendido);
 			}
 		}
 		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();

@@ -32,10 +32,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="60dp"
-                android:maxWidth="63dp"
-                android:src="@drawable/ic_small_musica" />
+                android:adjustViewBounds="true"
+                android:maxWidth="45dp"
+                android:src="@drawable/musica" />
 
             <RelativeLayout
                 android:id="@+id/cabeceraLayOut"
@@ -55,7 +55,7 @@
                     android:padding="10dp"
                     android:text="@string/defaultEventTitle"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#A8A2A2"
+                    android:textColor="#fff"
                     android:textStyle="bold" />
 
                 <TextView
@@ -66,7 +66,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="@string/defaultCategoria"
-                    android:textColor="#A8A2A2"
+                    android:textColor="#fff"
                     android:textStyle="bold" />
                 
                 <ImageView
@@ -96,7 +96,7 @@
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:maxWidth="80dp"
-                        android:src="@drawable/anotalo" />
+                        android:src="@drawable/boton_anotalo_details" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -110,7 +110,7 @@
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:maxWidth="80dp"
-                        android:src="@drawable/tweet" />
+                        android:src="@drawable/boton_tweet_details" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -138,7 +138,7 @@
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:maxWidth="70dp"
-                        android:src="@drawable/organizador" />
+                        android:src="@drawable/boton_organizador_details" />
                 </LinearLayout>
             </RelativeLayout>
             
