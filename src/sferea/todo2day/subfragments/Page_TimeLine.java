@@ -7,7 +7,6 @@ import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.SplashActivity;
 import sferea.todo2day.Helpers.CheckInternetConnection;
-import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.Helpers.JsonHelper;
 import sferea.todo2day.Helpers.ReadTableDB;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
@@ -19,6 +18,7 @@ import sferea.todo2day.tasks.AddMoreTaskListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -42,9 +42,7 @@ import android.widget.TextView;
 
 public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTouchListener, OnScrollListener, OnRefreshListener{
 
-	public static final float REFRESH_THRESHOLD = 50;
 	public static ArrayList<EventoObjeto> listaEventos;
-	EventoObjeto eo;
 	public static ArrayAdapterEvents arrayAdapterEvents;
 	ListView listView_Eventos;
 	boolean allowRefresh = false;
@@ -53,22 +51,8 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 
 	boolean headerAdded = false;
 	float startY;
-	String imagenesEventos[] = null;
 	public static String activaUbicate = "no";
 	public static String activaRuta = "no";
-
-	public static boolean antrosActiva = true;
-	public static boolean culturaActiva = true;
-	public static boolean cineActiva = true;
-	public static boolean deportesActiva = true;
-	public static boolean negociosActiva = true;
-	public static boolean pequesActiva = true;
-	public static boolean gastronomiaActiva = true;
-	public static boolean musicaActiva = true;
-	public static boolean saludActiva = true;
-	public static boolean socialesActiva = true;
-	public static boolean tecnologiaActiva = true;
-	public static boolean verdeActiva = true;
 
 	public static String antros = "A";
 	public static String cultura = "B";
@@ -87,38 +71,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	public static double latOrigin = 19.355582;
 	public static double lonOrigin = -99.186726;
 
-	// public static double latOrigin;
-	// public static double lonOrigin;
-	String Titulos[];
-	String EventoID[];
-	String Categorias[];
-
-	String Fechas[];
-	String[] strFecha;
-	Date fecha[];
-	String formatedDate[];
-	String fechaFinal[];
-
-	Long FechayHoraUnix[];
-	Long IndexOfEvent[];
-
-	String Descripciones[];
-	String Boletos[];
-	String Fuentes[];
-	String Lugares[];
-	String Direcciones[];
-	String Telefonos[];
-	String Distancias[];
-	double Longitudes[];
-	double Latitudes[];
-	static String ImagenEvento[];
-
-	Bitmap imagenesCargadas[];
-
-	Bitmap img[];
-
-	int imagenesCategorias[];
-
 	SharedPreferences shrpref_fav;
 
 	View view;
@@ -129,10 +81,8 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	boolean isLoading = false;
 
 	LocationHelper locationHelper;
-	boolean isScrollActive = true;
 
 	int iContador = 0;
-	String catt = "";
 	public static int numeroEventos = 0;
 
 	public static boolean eventoActivo = false;
@@ -140,44 +90,13 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 
 	java.text.DateFormat formatoDelTexto;
 
-	String json;
-	String jsonAddMore;
-	String jsonCache;
-
-	String categorias = "";
-	String idevento = "";
 	public static String fechaUnix = "";
 	public static String indexEvent = "";
-
-	// Esta variable se usa por si no llega a descargar eventos no pasa al hilo
-	// de descargar imagenes
-	boolean descargaImagenesFirstAccess = false;
 
 	boolean isGpsActive = false;
 	boolean isWirelessActive = false;
 
 	int totalItemCount = 0;
-
-	// Aqui tenemos que recuperar los eventos anteriores y juntarlos con los
-	// nuevos
-	// para que en la lista el total de eventos sea correcto y no por partes
-	String[] titulo;
-	String[] categoriasSave;
-	String[] fechaSave;
-	String[] descripciones;
-	String[] fuentes;
-	String[] lugares;
-	String[] direcciones;
-	String[] telefonos;
-	Double[] latitudes;
-	Double[] longitudes;
-	String[] distancias;
-	String[] boletos;
-	Bitmap[] imagenEventoSave;
-	int[] imgCategorias;
-	int[] indexOfEventSave;
-	int[] fechaUnixSave;
-	String urlImagenes[];
 
 	JsonHelper jsonHelper;
 	
@@ -190,10 +109,8 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	boolean bandera = false;
 
 	float y1;
-	float y2;
 
 	CheckInternetConnection checkInternetConnection;
-
 	ProgressBar progressFooter;
 	TextView footerNoInternet, footerNoInternetClic;
 	
@@ -227,11 +144,9 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 		 
 	    swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 	    swipeLayout.setOnRefreshListener(this);
-	    swipeLayout.setColorScheme(
-                android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+	    swipeLayout.setColorSchemeColors(
+	    		Color.RED, Color.GREEN, Color.CYAN);
+	    
 		// Crea un nuevo arraylist de eventos
 		listaEventos = new ArrayList<EventoObjeto>();
 		// Obtiene la vista del listView
@@ -392,12 +307,7 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 				readTableDB.readTable_FillList();
 				arrayAdapterEvents.notifyDataSetChanged();
 			} else {
-//				Toast.makeText(
-//						getActivity().getApplicationContext(),
-//						"No hay Eventos Disponibles\n"
-//								+ "Prueba con otras categor���as!\n"
-//								+ "Y/o Aumenta el Radio de b���squeda en los ajustes",
-//								Toast.LENGTH_LONG).show();
+				((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
 			}
 			progressFooter.setVisibility(View.GONE);
 			task = null;
@@ -476,7 +386,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 			}
 	
 			case MotionEvent.ACTION_UP: {
-				y2 = event.getY();
 				//
 				if (startY > y1) {
 					View v1 = listView_Eventos.getChildAt(listView_Eventos.getAdapter().getCount() - 1);
@@ -500,7 +409,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	
 			case MotionEvent.ACTION_DOWN: {
 				y1 = event.getY();
-				Log.i("DOWN", "Y1 = " + y1 + " Y2 = " + y2);
 				
 				break;
 			}

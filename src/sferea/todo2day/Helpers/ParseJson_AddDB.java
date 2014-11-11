@@ -8,7 +8,6 @@ import org.json.simple.parser.ParseException;
 
 import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
-import sferea.todo2day.parsers.EventParser;
 import sferea.todo2day.subfragments.Page_TimeLine;
 import android.app.Activity;
 import android.content.Context;
