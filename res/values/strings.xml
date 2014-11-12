@@ -67,7 +67,7 @@
     <string name="defaultFuente">www.google.com.mx</string>
     <string name="defaultCategoria">Categoría</string>
     <string name="defaultFecha"> Dia XX de AlgunMes | 23:59</string>
-    <string name="defaultHrs">hrs</string>
+    <string name="defaultHrs">hrs.</string>
     <string name="defaultLugar">Teatro Cultural Poliforum</string>
     <string name="defaultCounter">0</string>
     <string name="defaultDistancia">A 3.5 km</string>

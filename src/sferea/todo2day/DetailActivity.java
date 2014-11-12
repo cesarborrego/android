@@ -17,6 +17,7 @@ import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.adapters.ArrayAdapterFavorites;
 import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.adapters.FavoritosObjeto;
+import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.DataBaseSQLiteManager;
 import sferea.todo2day.config.SharedPreferencesHelper;
@@ -143,7 +144,7 @@ public class DetailActivity extends ActionBarActivity {
 				//Colocamos la info del evento en el activity_detail
 				((TextView)findViewById(R.id.detallesTitulo)).setText(evento.getNombreEvento());
 				imageloader.displayImage(evento.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
-				((ImageView)findViewById(R.id.iconCategoria)).setImageResource(evento.getImagenCategoria());
+				imagenCategoria(evento.getCategoriaIDEvento());
 				((TextView)findViewById(R.id.detallesCategoria)).setText(evento.getCategoriaEvento());
 				((TextView)findViewById(R.id.detallesFecha)).setText(evento.getFechaEvento());
 				((TextView)findViewById(R.id.detallesLugar)).setText(evento.getLugarEvento());
@@ -168,7 +169,7 @@ public class DetailActivity extends ActionBarActivity {
 						pixelesMapa = "350x250";
 					}else{
 						if(pantalla>=268435476){
-							pixelesMapa = "350x250";
+							pixelesMapa = "495x250";
 						}else{
 							pixelesMapa = "640x200";
 						}
@@ -210,7 +211,7 @@ public class DetailActivity extends ActionBarActivity {
 				
 				((TextView)findViewById(R.id.detallesTitulo)).setText(favoritosObjeto.getNombreEvento());
 				imageloader.displayImage(favoritosObjeto.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
-				((ImageView)findViewById(R.id.iconCategoria)).setImageResource(favoritosObjeto.getImagenCategoria());
+				imagenCategoria(favoritosObjeto.getCategoriaIDEvento());
 				((TextView)findViewById(R.id.detallesCategoria)).setText(favoritosObjeto.getCategoriaEvento());
 				((TextView)findViewById(R.id.detallesFecha)).setText(favoritosObjeto.getFechaEvento());
 				((TextView)findViewById(R.id.detallesLugar)).setText(favoritosObjeto.getLugarEvento());
@@ -233,9 +234,9 @@ public class DetailActivity extends ActionBarActivity {
 						pixelesMapa = "350x250";
 					}else{
 						if(pantalla>=268435476){
-							pixelesMapa = "350x250";
+							pixelesMapa = "495x250";
 						}else{
-							pixelesMapa = "600x300";
+							pixelesMapa = "640x200";
 						}
 					}
 					String imageHttpAddress ="http://maps.googleapis.com/maps/api/staticmap?" +
@@ -648,6 +649,63 @@ public class DetailActivity extends ActionBarActivity {
 			 fragmentManager.beginTransaction().replace(R.id.content_Favorites, fragment).commit();
 		 }		 
 	 }
+	
+	public void imagenCategoria(String categoriaID){
+		CategoriasConfig categoriaId = CategoriasConfig.valueOf(categoriaID.toUpperCase());
+		switch (categoriaId) {
+		case A:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.musica);
+			break;
+
+		case B:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.cultura);
+			break;
+			
+		case C:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.cine_y_teatro);
+			break;
+			
+		case D:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.deportes);
+			break;
+			
+		case E:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.emprendedores_y_negocios);
+			break;
+			
+		case F:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.con_ninnos);
+			break;
+			
+		case G:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.gastronomia);
+			break;
+			
+		case H:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.musica);
+			break;
+			
+		case I:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.salud);
+			break;
+			
+		case J:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.sociales);
+			break;
+			
+		case K:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.tecnologia);
+			break;
+			
+		case L:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.verde_y_responsabilidad_social);
+			break;
+			
+		case M:
+			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.sociales);
+			break;
+		}
+	}
 	
 	@Override
 	public void onBackPressed() {
