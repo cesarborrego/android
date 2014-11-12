@@ -1,10 +1,8 @@
 package sferea.todo2day.Helpers;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
 import sferea.todo2day.R;
 import sferea.todo2day.adapters.EventoObjeto;
+import sferea.todo2day.config.DataBaseSQLiteManager;
 import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
 import sferea.todo2day.subfragments.Page_TimeLine;
 import android.content.Context;
@@ -14,10 +12,13 @@ import android.util.Log;
 public class ReadTableDB {
 	Context thisContext;
 	DataBaseSQLiteManagerEvents dataBaseSQLiteManagerEvents;
+	DataBaseSQLiteManager dataBaseSQLiteManagerFavorites;
 
 	public ReadTableDB(Context c) {
 		this.thisContext = c;
 		dataBaseSQLiteManagerEvents = new DataBaseSQLiteManagerEvents(
+				thisContext);
+		dataBaseSQLiteManagerFavorites = new DataBaseSQLiteManager(
 				thisContext);
 	}
 
@@ -41,13 +42,14 @@ public class ReadTableDB {
 		String descripcion;
 		try {
 			if (cursor.moveToFirst()) {
+				Page_TimeLine.listaEventos.clear();
 				do {
 					if(cursor.getString(cursor.getColumnIndex("DESCRIPCION"))==null){
 						descripcion = "No disponible";
 					}else{
 						descripcion = cursor.getString(cursor.getColumnIndex("DESCRIPCION"));
 					}
-					Page_TimeLine.arrayAdapterEvents
+					Page_TimeLine.listaEventos
 							.add(new EventoObjeto(
 									cursor.getString(cursor
 											.getColumnIndex("TITULO_EVENTO")),
@@ -92,7 +94,22 @@ public class ReadTableDB {
 			Log.d("Lista Eventos", "Lista cargada desde DB!");
 			dataBaseSQLiteManagerEvents.cerrarDB();
 		}
-//		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
+	}
+	
+	public void readFavoritesTable() {
+		Cursor cursor = dataBaseSQLiteManagerFavorites.cargarTablas();
+		try {
+			if (cursor.moveToFirst()) {
+				do{
+					Page_TimeLine.favorites.add(cursor.getString(cursor.getColumnIndex("INDEX_OF_EVENT")));
+				}while(cursor.moveToNext());
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}finally{
+			cursor.close();
+			dataBaseSQLiteManagerFavorites.cerrarDB();
+		}
 	}
 	
 	public int readTable() {
