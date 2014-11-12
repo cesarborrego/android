@@ -264,7 +264,7 @@ public class DetailActivity extends ActionBarActivity {
 				        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
 				        startActivity(callIntent);
 					}else{
-						Toast.makeText(getApplicationContext(), "Número telefónico no válido", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), "Número telefónico no disponible", Toast.LENGTH_SHORT).show();
 					}
 				}
 			});
@@ -278,7 +278,7 @@ public class DetailActivity extends ActionBarActivity {
 				        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
 				        startActivity(callIntent);
 					}else{
-						Toast.makeText(getApplicationContext(), "Número telefónico no válido", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), "Número telefónico no disponible", Toast.LENGTH_SHORT).show();
 					}
 				}
 			});
