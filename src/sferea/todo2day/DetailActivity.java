@@ -73,7 +73,7 @@ public class DetailActivity extends ActionBarActivity {
 	GoogleMap mMap;
 	public static boolean activaRefreshFavorites_Details = false;
 	DataBaseSQLiteManager manager = null;
-	byte[] img=null;
+
 	FavoritosObjeto favoritosObjeto;
 	TextView tel;
 	ImageView btnF;
@@ -558,6 +558,7 @@ public class DetailActivity extends ActionBarActivity {
 				
 				Log.d(null, "Se elimino Registro en DB "+evento.getNombreEvento());
 				
+				Page_TimeLine.favorites.remove(evento.getIndexOfEvent());
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
 				
@@ -583,6 +584,8 @@ public class DetailActivity extends ActionBarActivity {
 						String.valueOf(evento.getFechaUnix()));
 				Log.d(null, "Registro Insertado en DB");						
 				
+				Page_TimeLine.favorites.add(evento.getIndexOfEvent());
+				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
 				
@@ -600,6 +603,7 @@ public class DetailActivity extends ActionBarActivity {
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
+				Page_TimeLine.favorites.remove(favoritosObjeto.getIndexOfEvent());
 				
 				btnF.setImageResource(R.drawable.favorito);
 			}else{
@@ -627,17 +631,14 @@ public class DetailActivity extends ActionBarActivity {
 				activaRefreshFavorites_Details = true;
 				
 				btnF.setImageResource(R.drawable.favorito_encendido);
+				Page_TimeLine.favorites.add(favoritosObjeto.getIndexOfEvent());
 			}
 		}
+		
 		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 		Page_Favorites.adapterFavorites.notifyDataSetChanged();
 	}
 	
-	private byte[] codificarBitmap(Bitmap b) {
-		ByteArrayOutputStream bos=new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.PNG, 100, bos);
-        return img=bos.toByteArray();		
-	}
 	
 	private void refreshFavoritesFragment(){
 		 //inicializamos la varible

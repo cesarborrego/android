@@ -1,7 +1,8 @@
 package sferea.todo2day.subfragments;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
@@ -17,7 +18,6 @@ import sferea.todo2day.tasks.AddMoreEventsTask;
 import sferea.todo2day.tasks.AddMoreTaskListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,32 +40,19 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTouchListener, OnScrollListener, OnRefreshListener{
+public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTouchListener, OnScrollListener {
 
 	public static ArrayList<EventoObjeto> listaEventos;
+	public static ArrayList<String> favorites;
 	public static ArrayAdapterEvents arrayAdapterEvents;
 	ListView listView_Eventos;
 	boolean allowRefresh = false;
 	boolean refresh = false;
-	boolean downCounterUsed = false;
 
 	boolean headerAdded = false;
 	float startY;
 	public static String activaUbicate = "no";
 	public static String activaRuta = "no";
-
-	public static String antros = "A";
-	public static String cultura = "B";
-	public static String cine = "C";
-	public static String deportes = "D";
-	public static String negocios = "E";
-	public static String peques = "F";
-	public static String gastronomia = "G";
-	public static String musica = "H";
-	public static String salud = "I";
-	public static String sociales = "J";
-	public static String tecnologia = "K";
-	public static String verde = "L";
 
 	// Debemos obtener la lat y lon correcta desde el gps
 	public static double latOrigin = 19.355582;
@@ -143,7 +130,16 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 		
 		 
 	    swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-	    swipeLayout.setOnRefreshListener(this);
+	    swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				
+				refreshTimeLine();
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	    swipeLayout.setColorSchemeColors(
 	    		Color.RED, Color.GREEN, Color.CYAN);
 	    
@@ -157,12 +153,14 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 		footerNoInternet = (TextView) footerView.findViewById(R.id.textoFooterNOInternet);
 		
 		footerNoInternetClic = (TextView) footerView.findViewById(R.id.textoFooterNOInternetClic);
-
+		
+		favorites = new ArrayList<String>();
+		
 		readTableEvents_fillListEvent();
 		
-		if (SplashActivity.leeJSONCache) {
-			refreshTimeLine();
-		}
+		ReadTableDB readTableDB = new ReadTableDB(getActivity().getApplicationContext());
+		
+		readTableDB.readFavoritesTable();
 
 		// Crea el arrayAdapter de eventos
 		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(),R.layout.row_event_responsive, R.id.listviewEventos,listaEventos);
@@ -202,27 +200,9 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	}
 
 	public void readTableEvents_fillListEvent() {
-		new AsyncTask<Void, Void, Void>() {
-			ReadTableDB readTableDB;
-
-			protected void onPreExecute() {
-				if(getActivity().getApplicationContext()!=null){
-					readTableDB = new ReadTableDB(getActivity().getApplicationContext());
-				}
-
-			};
-
-			@Override
-			protected Void doInBackground(Void... arg0) {
-				return null;
-			}
-
-			protected void onPostExecute(Void result) {
-				readTableDB.readTable_FillList();
-				progressFooter.setVisibility(View.GONE);
-			};
-
-		}.execute();
+		
+		ReadTableDB readTableDB = new ReadTableDB(getActivity().getApplicationContext());
+		readTableDB.readTable_FillList();
 	}
 
 	public void addMoreEvents(final double lat, final double lon) {
@@ -306,6 +286,7 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 				arrayAdapterEvents.clear();
 				readTableDB.readTable_FillList();
 				arrayAdapterEvents.notifyDataSetChanged();
+				
 			} else {
 				((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
 			}
@@ -414,12 +395,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void onRefresh() {
-		// TODO Auto-generated method stub
-		refreshTimeLine();
 	}
 
 }
