@@ -639,18 +639,6 @@ public class DetailActivity extends ActionBarActivity {
 		Page_Favorites.adapterFavorites.notifyDataSetChanged();
 	}
 	
-	
-	private void refreshFavoritesFragment(){
-		 //inicializamos la varible
-		 Fragment fragment = null;
-		 fragment = new Page_Favorites();
-
-		 if(fragment!=null){
-			 FragmentManager fragmentManager = getSupportFragmentManager();
-			 fragmentManager.beginTransaction().replace(R.id.content_Favorites, fragment).commit();
-		 }		 
-	 }
-	
 	public void imagenCategoria(String categoriaID){
 		CategoriasConfig categoriaId = CategoriasConfig.valueOf(categoriaID.toUpperCase());
 		switch (categoriaId) {

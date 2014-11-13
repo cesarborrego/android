@@ -381,8 +381,8 @@ public class MainActivity extends ActionBarActivity {
 				protected void onPostExecute(Void result) {
 	    			SplashActivity.leeJSONCache = false;
 	    			pDialog.dismiss();
-	    			atHome=true;
-	    			refreshPage_TimelLineFragment();
+	    			atHome=true;	    			
+	    			refreshPage_TimelLineFragment();refreshFavoritesFragment();
 	    			
 				};
 				

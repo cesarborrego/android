@@ -8,25 +8,35 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:background="#fff" >
+        
+        <ImageView
+                android:id="@+id/imagenHeader"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/header_catergories" />
+        
+        <ImageView
+                android:id="@+id/degradado"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/degradado_de_imagen" />
 
         <RelativeLayout
             android:id="@+id/details_header_layout"
             android:layout_width="match_parent"
-            android:layout_height="500dp" >
-
+            android:layout_height="wrap_content">            
+            
             <ImageView
-                android:id="@+id/imagenHeader"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/header_catergories" />
-
-            <ImageView
-                android:id="@+id/degradado"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/degradado_de_imagen" />
+                android:id="@+id/iconCategoria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="225dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="45dp"
+                android:src="@drawable/musica" />
 
             <RelativeLayout
                 android:id="@+id/cabeceraLayOut"
@@ -56,33 +66,34 @@
                         android:id="@+id/detallesTitulo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/defaultEventTitle"
                         android:gravity="center"
+                        android:text="@string/defaultEventTitle"
                         android:textColor="#fff"
                         android:textSize="24sp"
                         android:textStyle="bold" />
+
                 </LinearLayout>
             </RelativeLayout>
             
             <ImageView
+                android:id="@+id/divisorCabecera"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/cabeceraLayOut"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/divisor_horizontal" />
+                    android:src="@drawable/divisor_horizontal"/>
 
             <RelativeLayout
                 android:id="@+id/bannerBtns"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@id/cabeceraLayOut"
+                android:layout_below="@id/divisorCabecera"
+                android:layout_marginTop="20dp"
                 android:paddingBottom="10dp" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="70dp"
-                    android:layout_alignParentBottom="true"
                     android:orientation="horizontal" >
 
                     <ImageView
@@ -91,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
-                        android:maxWidth="50dp"
+                        android:maxWidth="80dp"
                         android:src="@drawable/boton_anotalo_details" />
 
                     <ImageView
@@ -105,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
-                        android:maxWidth="50dp"
+                        android:maxWidth="80dp"
                         android:src="@drawable/boton_tweet_details" />
 
                     <ImageView
@@ -119,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
-                        android:maxWidth="50dp"
+                        android:maxWidth="70dp"
                         android:src="@drawable/favorito" />
 
                     <ImageView
@@ -133,40 +144,31 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
-                        android:maxWidth="50dp"
+                        android:maxWidth="70dp"
                         android:src="@drawable/boton_organizador_details" />
                 </LinearLayout>
             </RelativeLayout>
-
+            
             <ImageView
-                android:id="@+id/iconCategoria"
-                android:layout_width="wrap_content"
+                android:id="@+id/bannerOrganizador"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="225dp"
-                android:adjustViewBounds="true"
-                android:maxWidth="55dp"
-                android:src="@drawable/musica" />
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/bannerOrganizador"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="460dp"
-            android:src="@drawable/barra_curva" />
-
-        <RelativeLayout
+                android:src="@drawable/barra_curva" 
+                android:layout_below="@id/divisorCabecera"
+                android:layout_marginTop="55dp"/>
+            
+            <RelativeLayout
             android:id="@+id/contenedorOrganizador"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/details_header_layout" >
+            android:layout_height="38dp"
+            android:layout_below="@id/divisorCabecera"
+            android:layout_marginTop="100dp"
+            android:background="#fff">
 
             <LinearLayout
                 android:id="@+id/contenedorOrg"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
@@ -176,7 +178,6 @@
                     android:id="@+id/organizadorTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
                     android:text="@string/defaultOrganizador"
                     android:textColor="#A8A2A2"
                     android:textSize="18sp"
@@ -186,18 +187,17 @@
                     android:id="@+id/nombreOrgTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="25dp"
                     android:text="@string/nombreOrganizador"
                     android:textColor="#A8A2A2"
-                    android:textSize="18sp"
-                    android:textStyle="normal" />
+                    android:textSize="17sp"
+                    android:textStyle="normal"
+                    android:paddingLeft="5dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/contenedorFechaOrg"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp" >
@@ -207,28 +207,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
-                    android:layout_marginTop="25dp"
                     android:adjustViewBounds="true"
-                    android:maxWidth="28dp"
+                    android:maxWidth="20dp"
                     android:src="@drawable/ic_fecha" />
 
                 <TextView
                     android:id="@+id/detallesFecha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
                     android:text="@string/defaultFecha"
                     android:textColor="#A8A2A2"
-                    android:textSize="16sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
                     android:paddingLeft="3dp"
                     android:text="@string/defaultHrs"
                     android:textColor="#A8A2A2"
-                    android:textSize="19sp" />
+                    android:textSize="17sp" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -239,79 +236,6 @@
             android:layout_below="@id/contenedorOrganizador"
             android:src="@drawable/separador" />
 
-        <!--
-        LinearLayout
-            android:id="@+id/layoutShare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/details_header_layout"
-            android:layout_alignRight="@id/details_header_layout"
-            android:layout_marginBottom="3dp"
-            android:layout_marginRight="3dp"
-            android:background="#DDFFFFFF"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <RelativeLayout
-                android:id="@+id/botonRetweetEvent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/iconRetweetFavorito"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:adjustViewBounds="true"
-                    android:maxWidth="18dp"
-                    android:src="@drawable/ic_action_refresh" />
-
-                <TextView
-                    android:id="@+id/textRetweetCounter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/iconRetweetFavorito"
-                    android:paddingLeft="5dp"
-                    android:text="@string/defaultCounter"
-                    android:textColor="#AAA" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="15dp"
-                android:layout_height="1dp" />
-
-            <RelativeLayout
-                android:id="@+id/botonFavEvent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/iconFavFavorito"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:adjustViewBounds="true"
-                    android:maxWidth="18dp"
-                    android:src="@drawable/ic_action_important" />
-
-                <TextView
-                    android:id="@+id/textFavCounter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/iconFavFavorito"
-                    android:paddingLeft="5dp"
-                    android:text="@string/defaultCounter"
-                    android:textColor="#AAA" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="10dp"
-                android:layout_height="1dp" />
-        </LinearLayout
-        -->
-
         <TextView
             android:id="@+id/detallesDescripcion"
             android:layout_width="match_parent"
@@ -320,7 +244,8 @@
             android:padding="10dp"
             android:text="@string/defaultDescripcionEvento"
             android:textColor="#575757"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:background="#fff" />
 
         <ImageView
             android:id="@+id/separador4"
@@ -354,7 +279,7 @@
                 android:paddingLeft="34dp"
                 android:text="@string/defaultTelefono"
                 android:textColor="#A8A2A2"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -362,10 +287,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:paddingRight="35dp"
+                android:paddingRight="40dp"
                 android:text="@string/tituloFuente"
                 android:textColor="#A8A2A2"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -374,7 +299,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:adjustViewBounds="true"
-                android:maxWidth="38dp"
+                android:maxWidth="40dp"
                 android:paddingRight="15dp"
                 android:src="@drawable/ic_fuente" />
         </RelativeLayout>
@@ -412,7 +337,7 @@
                 android:paddingLeft="35dp"
                 android:text="@string/defaultBoleto"
                 android:textColor="#A8A2A2"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -452,6 +377,7 @@
                     android:text="@string/defaultPrecio"
                     android:textColor="#A8A2A2"
                     android:textSize="17sp" />
+
             </LinearLayout>
         </LinearLayout>
 
@@ -480,7 +406,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/detallesLugar"
             android:orientation="horizontal"
-            android:paddingBottom="4dp"
             android:paddingLeft="10dp" >
 
             <TextView
@@ -491,21 +416,21 @@
                 android:lines="2"
                 android:text="@string/defaultDireccion"
                 android:textColor="#575757"
-                android:textSize="16sp" />
+                android:textSize="17sp" />
 
             <RelativeLayout
                 android:id="@+id/contenedorUbicacion"
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight=".5" >
+                android:layout_weight=".5"
+                android:layout_height="fill_parent">
 
-                <LinearLayout
+                <LinearLayout                    
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
                     android:orientation="horizontal"
-                    android:paddingRight="15dp" >
+                    android:layout_alignParentBottom="true" 
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="15dp">
 
                     <ImageView
                         android:id="@+id/iconoUbicacion"
@@ -525,6 +450,7 @@
                         android:textColor="#A8A2A2"
                         android:textSize="15sp"
                         android:textStyle="bold" />
+
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -541,17 +467,18 @@
          class="com.google.android.gms.maps.SupportMapFragment"/>
         -->
 
+
         <RelativeLayout
             android:id="@+id/capaMapa"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="300dp"
-            android:layout_below="@id/contenedorDIrUbicacion"
-            android:layout_marginTop="5dp" >
+            android:layout_below="@id/contenedorDIrUbicacion">
 
             <ImageView
                 android:id="@+id/imgMapa"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </RelativeLayout>
 
         <View
@@ -559,5 +486,11 @@
             android:layout_height="5dp"
             android:layout_below="@id/capaMapa" />
     </RelativeLayout>
+            
+        </RelativeLayout>
+        
+        
+
+        
 
 </ScrollView>
