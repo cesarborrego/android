@@ -1,5 +1,7 @@
 package sferea.todo2day.Helpers;
 
+import java.util.ArrayList;
+
 import sferea.todo2day.R;
 import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.config.DataBaseSQLiteManager;
@@ -37,72 +39,73 @@ public class ReadTableDB {
 		return respuesta;
 	}
 
-	public void readTable_FillList() {
+	public ArrayList<EventoObjeto> fillEventListFromDB() {
+		ArrayList<EventoObjeto> lista = null;
 		Cursor cursor = dataBaseSQLiteManagerEvents.cargarTablas();
-		String descripcion;
+
 		try {
 			if (cursor.moveToFirst()) {
-				Page_TimeLine.listaEventos.clear();
+				
+				lista = new ArrayList<EventoObjeto>();
+
 				do {
-					if(cursor.getString(cursor.getColumnIndex("DESCRIPCION"))==null){
-						descripcion = "No disponible";
-					}else{
-						descripcion = cursor.getString(cursor.getColumnIndex("DESCRIPCION"));
-					}
-					Page_TimeLine.listaEventos
-							.add(new EventoObjeto(
-									cursor.getString(cursor
-											.getColumnIndex("TITULO_EVENTO")),
-									cursor.getString(cursor
-											.getColumnIndex("CATEGORIA")),
-									cursor.getString(cursor
-													.getColumnIndex("CATEGORIA_ID")),
-									cursor.getString(cursor
-											.getColumnIndex("FECHA")),
-									descripcion,
-									cursor.getString(cursor
-											.getColumnIndex("FUENTE")),
-									cursor.getString(cursor
-											.getColumnIndex("LUGAR")),
-									cursor.getString(cursor
-											.getColumnIndex("DIRECCION")),
-									cursor.getString(cursor
-											.getColumnIndex("TELEFONO")),
-									Double.parseDouble(cursor.getString(cursor
-											.getColumnIndex("LATITUD"))),
-									Double.parseDouble(cursor.getString(cursor
-											.getColumnIndex("LONGITUD"))),
-									cursor.getString(cursor
-											.getColumnIndex("DISTANCIA")),
-									cursor.getString(cursor
-											.getColumnIndex("BOLETO")),
-									cursor.getString(cursor
-											.getColumnIndex("PRECIO")),
-									Integer.parseInt(cursor.getString(cursor
-											.getColumnIndex("POSICION"))),
-									cursor.getString(cursor
-											.getColumnIndex("INDEX_OF_EVENT")),
-									Integer.parseInt(cursor.getString(cursor
-											.getColumnIndex("FECHA_UNIX"))),
-									cursor.getString(cursor
-											.getColumnIndex("URL_IMAGEN_EVENTO")),
-									R.drawable.ic_small_antros));				
+					
+					lista.add(getEventoObjetoFromDB(cursor));
+					
 				} while (cursor.moveToNext());
+				
+				ListUtil.sortListByDate(lista);
 			}
 		} finally {
 			cursor.close();
 			Log.d("Lista Eventos", "Lista cargada desde DB!");
 			dataBaseSQLiteManagerEvents.cerrarDB();
 		}
+		
+		return lista;
 	}
 	
-	public void readFavoritesTable() {
+	
+	private EventoObjeto getEventoObjetoFromDB(Cursor cursor){
+		EventoObjeto evento = new EventoObjeto();
+		evento.setIdOfEvent(cursor.getString(cursor.getColumnIndex("EVENTO_ID")));
+		evento.setDescripcion(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
+		evento.setNombreEvento(cursor.getString(cursor.getColumnIndex("TITULO_EVENTO")));
+		evento.setCategoriaEvento(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
+		evento.setCategoriaIDEvento(cursor.getString(cursor.getColumnIndex("CATEGORIA_ID")));
+		evento.setFechaEvento(DateUtil.dateTransform(cursor.getString(cursor.getColumnIndex("FECHA"))));
+		evento.setFuente(cursor.getString(cursor.getColumnIndex("FUENTE")));
+		evento.setLugarEvento(cursor.getString(cursor.getColumnIndex("LUGAR")));
+		evento.setDireccion(cursor.getString(cursor.getColumnIndex("DIRECCION")));
+		evento.setTelefono(cursor.getString(cursor.getColumnIndex("TELEFONO")));
+		evento.setLatEvento(Double.parseDouble(cursor.getString(cursor.getColumnIndex("LATITUD"))));
+		evento.setLonEvento(Double.parseDouble(cursor.getString(cursor.getColumnIndex("LONGITUD"))));
+		evento.setDistancia(cursor.getString(cursor.getColumnIndex("DISTANCIA")));
+		evento.setBoleto(cursor.getString(cursor.getColumnIndex("BOLETO")));
+		evento.setPrecio(cursor.getString(cursor.getColumnIndex("PRECIO")));
+		evento.setPosicion(Integer.parseInt(cursor.getString(cursor.getColumnIndex("POSICION"))));
+		evento.setIndexEvento(Integer.parseInt(cursor.getString(cursor.getColumnIndex("INDEX_OF_EVENT"))));
+		evento.setFechaUnix(Integer.parseInt(cursor.getString(cursor.getColumnIndex("FECHA_UNIX"))));
+		evento.setUrlImagen(cursor.getString(cursor.getColumnIndex("URL_IMAGEN_EVENTO")));
+		evento.setIsNewEvent(Integer.parseInt(cursor.getString(cursor.getColumnIndex("IS_NEW"))));
+		evento.setImagenCategoria(R.drawable.ic_small_antros);
+		
+		return evento;
+	}
+	
+	public ArrayList<String> fillFavoriteListFromDB() {
+		ArrayList<String> favoritos = new ArrayList<String>();
 		Cursor cursor = dataBaseSQLiteManagerFavorites.cargarTablas();
 		try {
+			
 			if (cursor.moveToFirst()) {
+				
 				do{
-					Page_TimeLine.favorites.add(cursor.getString(cursor.getColumnIndex("INDEX_OF_EVENT")));
+					
+					favoritos.add(cursor.getString(cursor.getColumnIndex("INDEX_OF_EVENT")));
+				
 				}while(cursor.moveToNext());
+				
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -110,6 +113,8 @@ public class ReadTableDB {
 			cursor.close();
 			dataBaseSQLiteManagerFavorites.cerrarDB();
 		}
+		
+		return favoritos;
 	}
 	
 	public int readTable() {

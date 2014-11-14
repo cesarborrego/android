@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import sferea.todo2day.Helpers.CheckInternetConnection;
 import sferea.todo2day.Helpers.JsonHelper;
+import sferea.todo2day.Helpers.JsonParserHelper;
 import sferea.todo2day.Helpers.ReadTableDB;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import android.app.Activity;
@@ -63,7 +64,7 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 
-		jsonHelper = new JsonHelper(getApplicationContext(), this);
+		jsonHelper = new JsonHelper(getApplicationContext());
 		sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 				getApplicationContext());
 		readTableDB = new ReadTableDB(getApplicationContext());
@@ -128,7 +129,9 @@ public class SplashActivity extends Activity {
 
 			@Override
 			protected Void doInBackground(String... params) {
-				jsonHelper.connectionMongo_Json(params[0]);
+				String result = jsonHelper.connectionMongo_Json(params[0]);
+				JsonParserHelper helper = new JsonParserHelper(Application.getInstance());
+				helper.addEventsToDB(result);
 				return null;
 			}
 
@@ -146,7 +149,7 @@ public class SplashActivity extends Activity {
 				super.onCancelled();
 			};
 
-		}.execute("http://yapidev.sferea.com/?latitud=" + latOrigin + ""
+		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + ""
 				+ "&longitud=" + lonOrigin + "" + "&radio="
 				+ SplashActivity.distanciaEvento + "" + "&categoria="
 				+ categorias + "" + "&numEventos=0&idEvento=0&fecha=0");

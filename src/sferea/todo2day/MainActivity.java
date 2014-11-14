@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sferea.todo2day.Helpers.JsonHelper;
+import sferea.todo2day.Helpers.JsonParserHelper;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterSettings;
 import sferea.todo2day.adapters.DrawerItemRow;
@@ -74,6 +75,7 @@ public class MainActivity extends ActionBarActivity {
 	double lonOrigin =-99.186726;
 	SharedPreferencesHelperFinal sharedPreferencesHelperFinal;
 	JsonHelper jsonHelper;
+	JsonParserHelper jsonParser;
 	DataBaseSQLiteManagerEvents dataBaseSQLiteManagerEvents;	
 //	double latOrigin;
 //	double lonOrigin;
@@ -90,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
 		
 		listViewDrawer = (ListView)findViewById(R.id.listViewDrawer);
 		drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-		
+		jsonParser = new JsonParserHelper(Application.getInstance());
 		
 		View header = getLayoutInflater().inflate(R.layout.drawer_header, null);
 		listViewDrawer.addHeaderView(header);
@@ -360,7 +362,7 @@ public class MainActivity extends ActionBarActivity {
 	        pDialog.setMax(100);
 	        
 	        sharedPreferencesHelperFinal = new SharedPreferencesHelperFinal(getApplicationContext());
-	        jsonHelper = new JsonHelper(getApplicationContext(), this);
+	        jsonHelper = new JsonHelper(getApplicationContext());
 	        dataBaseSQLiteManagerEvents = new DataBaseSQLiteManagerEvents(getApplicationContext());
 		
 	    	new AsyncTask<String, Void, Void>(){
@@ -373,7 +375,8 @@ public class MainActivity extends ActionBarActivity {
 				@Override
 				protected Void doInBackground(String... params) {
 					Log.d("Mongo", params[0]);
-					jsonHelper.connectionMongo_Json(params[0]);
+					String result = jsonHelper.connectionMongo_Json(params[0]);
+					jsonParser.addEventsToDB(result);
 					return null;
 				}
 				

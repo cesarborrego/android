@@ -17,16 +17,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#FFF">
+            android:background="#F78326">
             		    
 		    <TextView 
 		        android:id="@+id/title_Timeline"
 		        android:layout_width="wrap_content"
 		        android:layout_height="match_parent"
 				android:layout_centerInParent="true"
-		        android:textColor="#424242"
 		        android:gravity="center_vertical"
 		        android:text="Cerca de ti"
+		        android:textColor="#424242"
 		        android:textAppearance="?android:attr/textAppearanceMedium" />
 		    
 		    <View 
@@ -35,7 +35,7 @@
 		        android:layout_alignParentBottom="true"
 		        android:layout_height="2dp"
 		        android:visibility="invisible"
-		        android:background="#F78326"/>
+		        android:background="#FFF"/>
             
         </RelativeLayout>
         
@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#FFF">
+            android:background="#F78326">
 		    
 		    <TextView 
 		        android:id="@+id/title_Favorites"
@@ -62,7 +62,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="2dp"
 		        android:visibility="invisible"
-		        android:background="#F78326"/>
+		        android:background="#FFF"/>
             
         </RelativeLayout>
         

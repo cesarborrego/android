@@ -1,15 +1,16 @@
 package sferea.todo2day.Helpers;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtil {
-	java.text.DateFormat formatoDelTexto ;
-	String formatoJson;
-	String formatoFinal;
 	public DateUtil(){}
 	
-	public String dateTransform(String date){
+	public static String dateTransform(String date){
+		DateFormat formatoDelTexto ;
+		String formatoJson = "";
+		String formatoFinal = "";
 		
 		if (!date.equals("No disponible")) {
 			try {

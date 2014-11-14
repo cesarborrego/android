@@ -12,27 +12,45 @@ import android.os.Parcelable;
  * 
  * @author maw
  */
-public class EventoObjeto implements Parcelable{
-	
-	String nombreEvento; String categoriaEvento; String fechaEvento; String horaEvento;
+public class EventoObjeto implements Parcelable {
+
+	String nombreEvento;
+	String categoriaEvento;
+	String fechaEvento;
+	String horaEvento;
 	String urlImgEvento;
 	String categoriaIDEvento;
-	String lugarEvento; double latEvento; double lonEvento;
-	String distancia; Bitmap imagenEvento; int imagenCategoria;
-	
-	//Nuevos campos para el nuevo constructor
-	String descripcion, fuente, direccion, telefono, boleto, precio;
+	String lugarEvento;
+	double latEvento;
+	double lonEvento;
+	String distancia;
+	Bitmap imagenEvento;
+	int imagenCategoria;
+
+	// Nuevos campos para el nuevo constructor
+	String descripcion;
+	String fuente;
+	String direccion;
+	String telefono;
+	String boleto;
+	String precio;
 	int posicion;
-	String indexOfEvent;
+	String idOfEvent;
 	int fechaUnix;
-	
-	public EventoObjeto(){
-		
+	int indexOfEvent;
+	int isNewEvent;
+
+	public EventoObjeto() {
+
 	}
-	
-	public EventoObjeto(String nombreEvento, String catEvento, String catIDEvento, String fechaEvento, String descripcionEvento, String fuenteEvento, String LugarEvento, 
-			String direccionEvento, String telefonoEvento, double lat, double lon, String dist, String boletoEvento, String precio, int posicion, 
-			String indexOfEvent, int fechaUnix, String urlImgEvento, int imagenCategoria){
+
+	public EventoObjeto(String nombreEvento, String catEvento,
+			String catIDEvento, String fechaEvento, String descripcionEvento,
+			String fuenteEvento, String LugarEvento, String direccionEvento,
+			String telefonoEvento, double lat, double lon, String dist,
+			String boletoEvento, String precio, int posicion, String idOfEvent,
+			int fechaUnix, String urlImgEvento, int imagenCategoria,
+			int indexEvento) {
 		setNombreEvento(nombreEvento);
 		setCategoriaEvento(catEvento);
 		setCategoriaIDEvento(catIDEvento);
@@ -47,69 +65,161 @@ public class EventoObjeto implements Parcelable{
 		setLatEvento(lat);
 		setLonEvento(lon);
 		setPosicion(posicion);
-		setIndexOfEvent(indexOfEvent);
+		setIdOfEvent(idOfEvent);
 		setFechaUnix(fechaUnix);
 		setUrlImagen(urlImgEvento);
 		setPrecio(precio);
 		setImagenCategoria(imagenCategoria);
+		setIndexEvento(indexEvento);
 	}
 
-	
-	
-	/** Setter & getters*/
-	public String getNombreEvento() { return nombreEvento; } 
-	
-	public void setNombreEvento(String nombreEvento) { 
+	/** Setter & getters */
+	public String getNombreEvento() {
+		return nombreEvento;
+	}
+
+	public void setNombreEvento(String nombreEvento) {
 		this.nombreEvento = nombreEvento;
 	}
 
-	public String getFechaEvento() { return fechaEvento; } 
-	public void setFechaEvento(String fechaEvento) { this.fechaEvento = fechaEvento; }
+	public int getIsNewEvent() {
+		return isNewEvent;
+	}
 
-	public String getLugarEvento() { return lugarEvento; } 
-	public void setLugarEvento(String lugarEvento) { this.lugarEvento = lugarEvento; }
+	public void setIsNewEvent(int isNewEvent) {
+		this.isNewEvent = isNewEvent;
+	}
 
-	public String getDistancia() {return distancia;}
-	public void setDistancia(String distancia) {this.distancia = distancia;}
-	
+	public int getIndexEvento() {
+		return indexOfEvent;
+	}
 
-	public void setLatLonEvento(double lat, double lon){ this.latEvento = lat; this.lonEvento = lon; } 
-	public double[] getLatLonEvento(){ return new double[]{latEvento,lonEvento}; }
-	
-	public Bitmap getImagenEvento() { return imagenEvento; }
-	public void setImagenEvento(Bitmap imagenEvento) { this.imagenEvento = imagenEvento; }
-	
-	public String getCategoriaEvento() {return categoriaEvento;}
-	public void setCategoriaEvento(String categoriaEvento) {this.categoriaEvento = categoriaEvento;}
-	
-	public String getCategoriaIDEvento() {return categoriaIDEvento;}
-	public void setCategoriaIDEvento(String categoriaIDEvento) {this.categoriaIDEvento = categoriaIDEvento;}
+	public void setIndexEvento(int indexEvento) {
+		this.indexOfEvent = indexEvento;
+	}
 
-	public String getHoraEvento() { return horaEvento; }
-	public void setHoraEvento(String horaEvento) { this.horaEvento = horaEvento; }		
-	
-	/**Nuevos Setter and Getters**/
-	public double getLatEvento() {return latEvento;}
-	public void setLatEvento(double latEvento) {this.latEvento = latEvento;}
+	public String getFechaEvento() {
+		return fechaEvento;
+	}
 
-	public double getLonEvento() {return lonEvento;}
-	public void setLonEvento(double lonEvento) {this.lonEvento = lonEvento;}
+	public void setFechaEvento(String fechaEvento) {
+		this.fechaEvento = fechaEvento;
+	}
 
-	public String getDescripcion() {return descripcion;}
-	public void setDescripcion(String descripcion) {this.descripcion = descripcion;}
+	public String getLugarEvento() {
+		return lugarEvento;
+	}
 
-	public String getFuente() {return fuente;}
-	public void setFuente(String fuente) {this.fuente = fuente;}
+	public void setLugarEvento(String lugarEvento) {
+		this.lugarEvento = lugarEvento;
+	}
 
-	public String getDireccion() {return direccion;}
-	public void setDireccion(String direccion) {this.direccion = direccion;}
+	public String getDistancia() {
+		return distancia;
+	}
 
-	public String getTelefono() {return telefono;}
-	public void setTelefono(String telefono) {this.telefono = telefono;}
+	public void setDistancia(String distancia) {
+		this.distancia = distancia;
+	}
 
-	public String getBoleto() {return boleto;}
-	public void setBoleto(String boleto) {this.boleto = boleto;}	
-	
+	public void setLatLonEvento(double lat, double lon) {
+		this.latEvento = lat;
+		this.lonEvento = lon;
+	}
+
+	public double[] getLatLonEvento() {
+		return new double[] { latEvento, lonEvento };
+	}
+
+	public Bitmap getImagenEvento() {
+		return imagenEvento;
+	}
+
+	public void setImagenEvento(Bitmap imagenEvento) {
+		this.imagenEvento = imagenEvento;
+	}
+
+	public String getCategoriaEvento() {
+		return categoriaEvento;
+	}
+
+	public void setCategoriaEvento(String categoriaEvento) {
+		this.categoriaEvento = categoriaEvento;
+	}
+
+	public String getCategoriaIDEvento() {
+		return categoriaIDEvento;
+	}
+
+	public void setCategoriaIDEvento(String categoriaIDEvento) {
+		this.categoriaIDEvento = categoriaIDEvento;
+	}
+
+	public String getHoraEvento() {
+		return horaEvento;
+	}
+
+	public void setHoraEvento(String horaEvento) {
+		this.horaEvento = horaEvento;
+	}
+
+	/** Nuevos Setter and Getters **/
+	public double getLatEvento() {
+		return latEvento;
+	}
+
+	public void setLatEvento(double latEvento) {
+		this.latEvento = latEvento;
+	}
+
+	public double getLonEvento() {
+		return lonEvento;
+	}
+
+	public void setLonEvento(double lonEvento) {
+		this.lonEvento = lonEvento;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public String getFuente() {
+		return fuente;
+	}
+
+	public void setFuente(String fuente) {
+		this.fuente = fuente;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getBoleto() {
+		return boleto;
+	}
+
+	public void setBoleto(String boleto) {
+		this.boleto = boleto;
+	}
+
 	public int getPosicion() {
 		return posicion;
 	}
@@ -118,12 +228,12 @@ public class EventoObjeto implements Parcelable{
 		this.posicion = posicion;
 	}
 
-	public String getIndexOfEvent() {
-		return indexOfEvent;
+	public String getIdOfEvent() {
+		return idOfEvent;
 	}
 
-	public void setIndexOfEvent(String indexOfEvent) {
-		this.indexOfEvent = indexOfEvent;
+	public void setIdOfEvent(String indexOfEvent) {
+		this.idOfEvent = indexOfEvent;
 	}
 
 	public int getFechaUnix() {
@@ -133,7 +243,7 @@ public class EventoObjeto implements Parcelable{
 	public void setFechaUnix(int fechaUnix) {
 		this.fechaUnix = fechaUnix;
 	}
-	
+
 	public String getUrlImagen() {
 		return urlImgEvento;
 	}
@@ -141,7 +251,7 @@ public class EventoObjeto implements Parcelable{
 	public void setUrlImagen(String urlImg) {
 		this.urlImgEvento = urlImg;
 	}
-	
+
 	public int getImagenCategoria() {
 		return imagenCategoria;
 	}
@@ -161,7 +271,7 @@ public class EventoObjeto implements Parcelable{
 	/**
 	 * Parcelable object
 	 */
-	
+
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -184,26 +294,29 @@ public class EventoObjeto implements Parcelable{
 		dest.writeDouble(latEvento);
 		dest.writeDouble(lonEvento);
 		dest.writeInt(posicion);
-		dest.writeString(indexOfEvent);
+		dest.writeString(idOfEvent);
 		dest.writeInt(fechaUnix);
 		dest.writeString(urlImgEvento);
 		dest.writeString(precio);
 		dest.writeInt(imagenCategoria);
-		
+		dest.writeInt(indexOfEvent);
+		dest.writeInt(isNewEvent);
+
 	}
-	
+
 	/** Static field used to regenerate object, individually or as arrays */
 	public static final Parcelable.Creator<EventoObjeto> CREATOR = new Parcelable.Creator<EventoObjeto>() {
 		public EventoObjeto createFromParcel(Parcel pc) {
 			return new EventoObjeto(pc);
 		}
+
 		public EventoObjeto[] newArray(int size) {
 			return new EventoObjeto[size];
 		}
 	};
-	
+
 	public EventoObjeto(Parcel pc) {
-		
+
 		setNombreEvento(pc.readString());
 		setCategoriaEvento(pc.readString());
 		setCategoriaIDEvento(pc.readString());
@@ -218,11 +331,13 @@ public class EventoObjeto implements Parcelable{
 		setLatEvento(pc.readDouble());
 		setLonEvento(pc.readDouble());
 		setPosicion(pc.readInt());
-		setIndexOfEvent(pc.readString());
+		setIdOfEvent(pc.readString());
 		setFechaUnix(pc.readInt());
 		setUrlImagen(pc.readString());
 		setPrecio(pc.readString());
 		setImagenCategoria(pc.readInt());
+		setIndexEvento(pc.readInt());
+		setIsNewEvent(pc.readInt());
 	}
-	
+
 }

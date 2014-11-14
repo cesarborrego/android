@@ -1,11 +1,8 @@
 package sferea.todo2day.adapters;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
-import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.DataBaseSQLiteManager;
@@ -22,9 +19,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -37,10 +31,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -60,49 +52,56 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 	String enTweet;
 	
 	public ArrayAdapterEvents(Context context, int resource,
-			int textViewResourceId, ArrayList<EventoObjeto> objects) {
+			int textViewResourceId, ArrayList<EventoObjeto> objects, ImageLoader imageloader, DisplayImageOptions options) {
 		super(context, resource, textViewResourceId, objects);
 		this.thisContext = context;
-		imageloader = ImageUtil.getImageLoader();
-		options = ImageUtil.getOptionsImageLoader();
+		this.imageloader = imageloader;
+		this.options = options;
 		
 	}
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		final ViewHolder viewHolder;
-		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(
-					R.layout.row_event_smartphone, null);
+		View row = convertView;
+		ViewHolder viewHolder;
+		
+		if (row == null) {
+			row = LayoutInflater.from(getContext()).inflate(
+					R.layout.row_event_smartphone, parent, false);
 			viewHolder = new ViewHolder();
-			viewHolder.categoriaEvento = (TextView) convertView
+			viewHolder.categoriaEvento = (TextView) row
 					.findViewById(R.id.categoriaFavorito);
-			viewHolder.nombreEvento = (TextView) convertView
+			viewHolder.nombreEvento = (TextView) row
 					.findViewById(R.id.nombreFavorito);
-			viewHolder.fechaEvento = (TextView) convertView
+			viewHolder.fechaEvento = (TextView) row
 					.findViewById(R.id.fechaFavorito);
-			viewHolder.distanciaEvento = (TextView) convertView
+			viewHolder.distanciaEvento = (TextView) row
 					.findViewById(R.id.distanciaFavorito);
-			viewHolder.thumbEvento = (ImageView) convertView
+			viewHolder.thumbEvento = (ImageView) row
 					.findViewById(R.id.thumbnailFavorite);
-			viewHolder.iconCategoria = (ImageView) convertView
+			viewHolder.iconCategoria = (ImageView) row
 					.findViewById(R.id.iconCategoriaFavorito);
-			viewHolder.iconFavorito = (ImageView) convertView
+			viewHolder.iconFavorito = (ImageView) row
 					.findViewById(R.id.iconFavFavorito);
-			viewHolder.iconRetweet = (ImageView) convertView
+			viewHolder.iconRetweet = (ImageView) row
 					.findViewById(R.id.iconRetweetFavorito);
+			viewHolder.iconNewEvent = (ImageView) row
+					.findViewById(R.id.iconNuevoEvento);
 
-			convertView.setTag(viewHolder);
+			row.setTag(viewHolder);
 		} else {
-			viewHolder = (ViewHolder) convertView.getTag();
+			viewHolder = (ViewHolder) row.getTag();
 		}
 
-		inicioTweet = convertView.getResources().getString(R.string.cadenaTweet_inicio);
-		enTweet = convertView.getResources().getString(R.string.cadenaTweet_en);
+		inicioTweet = row.getResources().getString(R.string.cadenaTweet_inicio);
+		enTweet = row.getResources().getString(R.string.cadenaTweet_en);
+		viewHolder.thumbEvento.setImageResource(R.drawable.event_placeholder);
+		viewHolder.iconFavorito.setImageResource(R.drawable.ic_favorito);
+		viewHolder.iconNewEvent.setVisibility(View.GONE);
 		setIconCategoria(position, viewHolder);
 
 		setInfoAndListenersInEvent(viewHolder, position);
-		return convertView;
+		return row;
 	}
 
 	/**
@@ -128,27 +127,22 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		// Asignamos al view las variables intermedias
 		eventView.nombreEvento.setText(getItem(position).getNombreEvento());
 		eventView.categoriaEvento.setText(getItem(position).getCategoriaEvento());
-		eventView.fechaEvento.setText(getItem(position).getFechaEvento());
+		eventView.fechaEvento.setText(getItem(position).getFechaEvento() + " hrs.");
 		// eventView.lugarEvento.setText(lugarEvento);
-		eventView.distanciaEvento.setText("a " + getItem(position).getDistancia().toLowerCase());
+		eventView.distanciaEvento.setText("a " + getItem(position).getDistancia().toLowerCase() + ".");
 
 		if (!getItem(position).getUrlImagen().equals("No disponible")) {
 			imageloader.displayImage(getItem(position).getUrlImagen(), eventView.thumbEvento, options);
 		}
-
-		// dependiendo de los resultados prendemos o apagamos las estrellas de
-		// favoritos
-/*		Cursor cursor = managerDBFavorites.queryEventByIndex(getItem(position)
-				.getIndexOfEvent());
-
-		if (cursor.getCount() > 0) {
-			eventView.iconFavorito
-					.setImageResource(R.drawable.ic_favorito_encendido);
-		} else {
-			eventView.iconFavorito.setImageResource(R.drawable.ic_favorito);
-		}*/
 		
-		if(Page_TimeLine.favorites.contains(getItem(position).getIndexOfEvent())){
+		if(getItem(position).getIsNewEvent() == 1){
+			eventView.iconNewEvent.setVisibility(View.VISIBLE);
+		}
+		else{
+			eventView.iconNewEvent.setVisibility(View.GONE);
+		}
+
+		if(Page_TimeLine.listaFavoritos.contains(getItem(position).getIdOfEvent())){
 			eventView.iconFavorito
 			.setImageResource(R.drawable.ic_favorito_encendido);
 		}
@@ -331,22 +325,15 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 					Log.d(null,
 							"Posicion en el array " + String.valueOf(position));
 
-					/*Cursor cursor = managerDBFavorites
-							.queryEventByIndex(getItem(position)
-									.getIndexOfEvent());
-
-					if (cursor.getCount() > 0) {
-						eventView.iconFavorito
-								.setImageResource(R.drawable.ic_favorito);*/
 										
-					if(Page_TimeLine.favorites.contains(getItem(position).getIndexOfEvent())){
+					if(Page_TimeLine.listaFavoritos.contains(getItem(position).getIdOfEvent())){
 							eventView.iconFavorito
 							.setImageResource(R.drawable.ic_favorito);
 						
-							Page_TimeLine.favorites.remove(getItem(position).getIndexOfEvent());
+							Page_TimeLine.listaFavoritos.remove(getItem(position).getIdOfEvent());
 									
 						managerDBFavorites.eliminar(String.valueOf(getItem(
-								position).getIndexOfEvent()));
+								position).getIdOfEvent()));
 
 						Log.d(null, "Se elimino registro "
 								+ getItem(position).getNombreEvento());
@@ -355,7 +342,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 						eventView.iconFavorito
 								.setImageResource(R.drawable.ic_favorito_encendido);
 						
-						Page_TimeLine.favorites.add(getItem(position).getIndexOfEvent());
+						Page_TimeLine.listaFavoritos.add(getItem(position).getIdOfEvent());
 
 						managerDBFavorites
 								.insertar(getItem(position).getNombreEvento(),
@@ -373,7 +360,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 										String.valueOf(getItem(position).getLonEvento()),
 										getItem(position).getUrlImagen(),
 										String.valueOf(position), 
-										String.valueOf(getItem(position).getIndexOfEvent()),
+										String.valueOf(getItem(position).getIdOfEvent()),
 										String.valueOf(getItem(position).getFechaUnix()));
 						Log.d(null, "Registro Insertado en DB");
 					}
@@ -559,5 +546,6 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		TextView distanciaEvento;
 		ImageView iconFavorito;
 		ImageView iconRetweet;
+		ImageView iconNewEvent;
 	}
 }

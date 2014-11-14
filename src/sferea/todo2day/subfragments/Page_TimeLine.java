@@ -1,21 +1,21 @@
 package sferea.todo2day.subfragments;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
+import sferea.todo2day.Application;
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.SplashActivity;
 import sferea.todo2day.Helpers.CheckInternetConnection;
+import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.Helpers.JsonHelper;
+import sferea.todo2day.Helpers.JsonParserHelper;
 import sferea.todo2day.Helpers.ReadTableDB;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterEvents;
 import sferea.todo2day.adapters.EventoObjeto;
 import sferea.todo2day.config.LocationHelper;
 import sferea.todo2day.tasks.AddMoreEventsTask;
-import sferea.todo2day.tasks.AddMoreTaskListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -40,14 +40,20 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTouchListener, OnScrollListener {
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
+
+public class Page_TimeLine extends Fragment implements OnTouchListener,
+		OnScrollListener {
 
 	public static ArrayList<EventoObjeto> listaEventos;
-	public static ArrayList<String> favorites;
+	public static ArrayList<String> listaFavoritos;
 	public static ArrayAdapterEvents arrayAdapterEvents;
+	public static boolean eventsLoaded = false;
 	ListView listView_Eventos;
-	boolean allowRefresh = false;
-	boolean refresh = false;
+	public static boolean refresh = false;
+	boolean loadingMore = false;
 
 	boolean headerAdded = false;
 	float startY;
@@ -86,7 +92,10 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	int totalItemCount = 0;
 
 	JsonHelper jsonHelper;
-	
+	JsonParserHelper jsonParser;
+	ReadTableDB reader;
+	ImageLoader imageloader;
+	DisplayImageOptions options;
 	SwipeRefreshLayout swipeLayout;
 
 	// bandera tomara el valor que retorna @parseFirstJson_AddDB(json) para que
@@ -100,7 +109,7 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	CheckInternetConnection checkInternetConnection;
 	ProgressBar progressFooter;
 	TextView footerNoInternet, footerNoInternetClic;
-	
+
 	AddMoreEventsTask task;
 
 	public Page_TimeLine() {
@@ -111,8 +120,10 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 		super.onCreate(savedInstanceState);
 		checkInternetConnection = new CheckInternetConnection(getActivity()
 				.getApplicationContext(), getActivity());
-		jsonHelper = new JsonHelper(getActivity().getApplicationContext(),
-				getActivity());
+		jsonHelper = new JsonHelper(Application.getInstance());
+		jsonParser = new JsonParserHelper(Application.getInstance());
+		imageloader = ImageUtil.getImageLoader();
+		options = ImageUtil.getOptionsImageLoader();
 	}
 
 	@Override
@@ -127,43 +138,45 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 		// Infla el view del footer
 		footerView = LayoutInflater.from(getActivity()).inflate(
 				R.layout.listview_footer, null);
-		
-		 
-	    swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-	    swipeLayout.setOnRefreshListener(new OnRefreshListener() {
-			
+
+		swipeLayout = (SwipeRefreshLayout) view
+				.findViewById(R.id.swipe_container);
+		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+
 			@Override
 			public void onRefresh() {
-				
+				refresh = true;
 				refreshTimeLine();
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-	    swipeLayout.setColorSchemeColors(
-	    		Color.RED, Color.GREEN, Color.CYAN);
-	    
-		// Crea un nuevo arraylist de eventos
+		swipeLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.CYAN);
+
 		listaEventos = new ArrayList<EventoObjeto>();
+		listaFavoritos = new ArrayList<String>();
+
+		ReadTableDB reader = new ReadTableDB(Application.getInstance());
+
+		listaEventos = reader.fillEventListFromDB();
+		listaFavoritos = reader.fillFavoriteListFromDB();
+
 		// Obtiene la vista del listView
 		listView_Eventos = ((ListView) view.findViewById(R.id.listviewEventos));
 
-		progressFooter = ((ProgressBar) footerView.findViewById(R.id.progressBarFooter));
-		
-		footerNoInternet = (TextView) footerView.findViewById(R.id.textoFooterNOInternet);
-		
-		footerNoInternetClic = (TextView) footerView.findViewById(R.id.textoFooterNOInternetClic);
-		
-		favorites = new ArrayList<String>();
-		
-		readTableEvents_fillListEvent();
-		
-		ReadTableDB readTableDB = new ReadTableDB(getActivity().getApplicationContext());
-		
-		readTableDB.readFavoritesTable();
+		progressFooter = ((ProgressBar) footerView
+				.findViewById(R.id.progressBarFooter));
+
+		footerNoInternet = (TextView) footerView
+				.findViewById(R.id.textoFooterNOInternet);
+
+		footerNoInternetClic = (TextView) footerView
+				.findViewById(R.id.textoFooterNOInternetClic);
 
 		// Crea el arrayAdapter de eventos
-		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(),R.layout.row_event_responsive, R.id.listviewEventos,listaEventos);
+		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(),
+				R.layout.row_event_responsive, R.id.listviewEventos,
+				listaEventos, imageloader, options);
 
 		// Agrega el header
 		listView_Eventos.addHeaderView(headerView);
@@ -173,15 +186,21 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 
 		// Asigna el arrayAdapter al listview
 		listView_Eventos.setAdapter(arrayAdapterEvents);
+
+		numeroEventos = arrayAdapterEvents.getCount();
 		
+		PauseOnScrollListener listener = new PauseOnScrollListener(imageloader, true, true);
+
+		listView_Eventos.setOnScrollListener(listener);
 		listView_Eventos.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				
-				EventoObjeto evento = (EventoObjeto)parent.getItemAtPosition(position);
-				
+
+				EventoObjeto evento = (EventoObjeto) parent
+						.getItemAtPosition(position);
+
 				Bundle bundle = new Bundle();
 				bundle.putParcelable("Event", evento);
 				Intent intent = new Intent(getActivity(), DetailActivity.class);
@@ -189,40 +208,108 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 				getActivity().startActivity(intent);
 				eventoActivo = true;
 				favoritoActivo = false;
-				
+
 			}
 		});
 
 		listView_Eventos.setOnScrollListener(this);
 		listView_Eventos.setOnTouchListener(this);
-		
+
 		return view;
 	}
 
-	public void readTableEvents_fillListEvent() {
-		
-		ReadTableDB readTableDB = new ReadTableDB(getActivity().getApplicationContext());
-		readTableDB.readTable_FillList();
+	public void readTableEvents_fillListFavorites() {
+		new AsyncTask<Void, Void, ArrayList<EventoObjeto>>() {
+
+			@Override
+			protected void onPreExecute() {
+				// TODO El dialog de cargar
+			}
+
+			protected ArrayList<EventoObjeto> doInBackground(Void... params) {
+				ReadTableDB reader = new ReadTableDB(Application.getInstance());
+				// Crea un nuevo arraylist de eventos
+
+				listaFavoritos = reader.fillFavoriteListFromDB();
+				return reader.fillEventListFromDB();
+			}
+
+			@Override
+			protected void onPostExecute(ArrayList<EventoObjeto> result) {
+				super.onPostExecute(result);
+				arrayAdapterEvents.clear();
+				listaEventos.clear();
+				listaEventos.addAll(result);
+				arrayAdapterEvents.notifyDataSetChanged();
+				numeroEventos = arrayAdapterEvents.getCount();
+			}
+
+		}.execute();
 	}
 
 	public void addMoreEvents(final double lat, final double lon) {
-		
-		if(task == null){
+
+		if (loadingMore) {
 
 			progressFooter.setVisibility(View.VISIBLE);
-			
+
 			footerNoInternet.setVisibility(View.GONE);
 			footerNoInternetClic.setVisibility(View.GONE);
-			
+
 			SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 					getActivity().getApplicationContext());
 
-			task = new AddMoreEventsTask(getActivity(), this);
-			task.execute("http://yapi.sferea.com/?latitud=" + latOrigin
-					+ "&longitud=" + lonOrigin + "" + "&radio=10" + "&categoria="
-					+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
-					+ "&numEventos=0" + "&idEvento=" + indexEvent + "" + "&fecha="
-					+ fechaUnix + "");
+			new AsyncTask<String, Void, Boolean>() {
+				@Override
+				protected Boolean doInBackground(String... params) {
+					boolean result = false;
+
+					if (!isCancelled()) {
+						JsonHelper helper = new JsonHelper(
+								Application.getInstance());
+						String json = helper.connectionMongo_Json(params[0]);
+
+						if (json == "")
+							return result;
+
+						result = jsonParser.addEventsToDB(json);
+
+					}
+					return result;
+				}
+
+				@Override
+				protected void onPostExecute(Boolean params) {
+
+					if (params) {
+						reader = new ReadTableDB(getActivity()
+								.getApplicationContext());
+						if (reader.readTable() == arrayAdapterEvents.getCount()) {
+							((TextView) footerView
+									.findViewById(R.id.textoFooter))
+									.setVisibility(View.VISIBLE);
+							progressFooter.setVisibility(View.GONE);
+						}
+						
+						listaEventos.clear();
+						listaEventos.addAll(reader.fillEventListFromDB());
+						arrayAdapterEvents.notifyDataSetChanged();
+						numeroEventos = arrayAdapterEvents.getCount();
+
+					} else {
+						((TextView) footerView.findViewById(R.id.textoFooter))
+								.setVisibility(View.VISIBLE);
+					}
+
+					progressFooter.setVisibility(View.GONE);
+					loadingMore = false;
+				}
+			}.execute("http://yapi.sferea.com/?latitud=" + latOrigin
+					+ "&longitud=" + lonOrigin + "" + "&radio=10"
+					+ "&categoria="
+					+ sharedPreferencesHelper.obtieneCategoriasPreferences()
+					+ "" + "&numEventos=0" + "&idEvento=" + indexEvent + ""
+					+ "&fecha=" + fechaUnix + "");
 		}
 	}
 
@@ -231,28 +318,35 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 				getActivity().getApplicationContext());
 		new AsyncTask<String, Void, Void>() {
 
+			ArrayList<EventoObjeto> lista = null;
+
 			@Override
 			protected void onPreExecute() {
 				// TODO El dialog de cargar
-				super.onPreExecute();
-				
 			}
 
 			protected Void doInBackground(String... params) {
-				jsonHelper.connectionMongo_Json(params[0]);
+				String result = jsonHelper.connectionMongo_Json(params[0]);
+				jsonParser.addEventsToDB(result);
+				reader = new ReadTableDB(Application.getInstance());
+				lista = reader.fillEventListFromDB();
+
 				return null;
 			}
 
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
-				ReadTableDB readTableDB = new ReadTableDB(getActivity().getApplicationContext());
-				readTableDB.readTable_FillList();
-				arrayAdapterEvents.notifyDataSetChanged();
+				listaEventos.clear();
+				arrayAdapterEvents.clear();
+				listaEventos.addAll(lista);
+				listView_Eventos.setAdapter(arrayAdapterEvents);
+				refresh = false;
 				swipeLayout.setRefreshing(false);
+				numeroEventos = arrayAdapterEvents.getCount();
 			}
 
-		}.execute("http://yapidev.sferea.com/?latitud=" + latOrigin + ""
+		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + ""
 				+ "&longitud=" + lonOrigin + "" + "&radio="
 				+ SplashActivity.distanciaEvento + "" + "&categoria="
 				+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
@@ -261,7 +355,7 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 
 	static {
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-		.permitAll().build();
+				.permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 	}
 
@@ -272,64 +366,50 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 		System.gc();
 	}
 
-	public void onTaskCompleted(Object result){	
-		
-		if(getActivity()!=null){
-			ReadTableDB readTableDB = new ReadTableDB(getActivity().getApplicationContext());
-			if ((Boolean)result) {
-				
-				if(readTableDB.readTable()==arrayAdapterEvents.getCount()){
-					((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
-					progressFooter.setVisibility(View.GONE);
-				}
-				
-				arrayAdapterEvents.clear();
-				readTableDB.readTable_FillList();
-				arrayAdapterEvents.notifyDataSetChanged();
-				
-			} else {
-				((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
-			}
-			progressFooter.setVisibility(View.GONE);
-			task = null;
-		}
-	}
-
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-		
+
 		Page_TimeLine.this.totalItemCount = totalItemCount;
 		if (((firstVisibleItem + visibleItemCount) == totalItemCount)
-				& listView_Eventos.getFirstVisiblePosition() > 0) {
-			if (listView_Eventos.getLastVisiblePosition() == listView_Eventos.getAdapter().getCount() - 1
-					&& listView_Eventos.getChildAt(listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos.getHeight()) {
+				&& listView_Eventos.getFirstVisiblePosition() > 0) {
+			if (listView_Eventos.getLastVisiblePosition() == listView_Eventos
+					.getAdapter().getCount() - 1
+					&& listView_Eventos.getChildAt(
+							listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos
+							.getHeight()) {
 				Log.d(null, "Final");
 				if (checkInternetConnection.isConnectedToInternet()) {
+					loadingMore = true;
 					addMoreEvents(latOrigin, lonOrigin);
 					footerNoInternet.setVisibility(View.GONE);
 					footerNoInternetClic.setVisibility(View.GONE);
-					((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
+					((TextView) footerView.findViewById(R.id.textoFooter))
+							.setVisibility(View.GONE);
 				} else {
 					footerNoInternet.setVisibility(View.GONE);
 					footerNoInternetClic.setVisibility(View.VISIBLE);
-					((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
-					footerNoInternetClic.setOnClickListener(new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							if(checkInternetConnection.isConnectedToInternet()){
-								footerNoInternetClic.setVisibility(View.GONE);
-								addMoreEvents(latOrigin, lonOrigin);
-							}
-						}
-					});
+					((TextView) footerView.findViewById(R.id.textoFooter))
+							.setVisibility(View.GONE);
+					footerNoInternetClic
+							.setOnClickListener(new OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									if (checkInternetConnection
+											.isConnectedToInternet()) {
+										footerNoInternetClic
+												.setVisibility(View.GONE);
+										addMoreEvents(latOrigin, lonOrigin);
+									}
+								}
+							});
 				}
 			}
 		}
@@ -337,62 +417,71 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		
+
 		float y = event.getY();
 
 		switch (event.getAction()) {
 
-			case MotionEvent.ACTION_MOVE: {
-				
-				if(y<startY){
-					if (checkInternetConnection.isConnectedToInternet()){
-						if(listView_Eventos.getFirstVisiblePosition() == 0){
-							((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.VISIBLE);
-						}
-						
+		case MotionEvent.ACTION_MOVE: {
+
+			if (y < startY) {
+				if (checkInternetConnection.isConnectedToInternet()) {
+					if (listView_Eventos.getFirstVisiblePosition() == 0) {
+						((TextView) footerView.findViewById(R.id.textoFooter))
+								.setVisibility(View.VISIBLE);
+					}
+
+				} else {
+					if (listView_Eventos.getFirstVisiblePosition() == 0) {
+						footerNoInternet.setVisibility(View.VISIBLE);
+						footerNoInternetClic.setVisibility(View.GONE);
+						((TextView) footerView.findViewById(R.id.textoFooter))
+								.setVisibility(View.GONE);
 					} else {
-						if(listView_Eventos.getFirstVisiblePosition() == 0){
-							footerNoInternet.setVisibility(View.VISIBLE);
-							footerNoInternetClic.setVisibility(View.GONE);
-							((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
-						}else{
-							footerNoInternet.setVisibility(View.GONE);
-							footerNoInternetClic.setVisibility(View.VISIBLE);
-							((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
+						footerNoInternet.setVisibility(View.GONE);
+						footerNoInternetClic.setVisibility(View.VISIBLE);
+						((TextView) footerView.findViewById(R.id.textoFooter))
+								.setVisibility(View.GONE);
+					}
+
+				}
+			}
+			break;
+		}
+
+		case MotionEvent.ACTION_UP: {
+			//
+			if (startY > y1) {
+				View v1 = listView_Eventos.getChildAt(listView_Eventos
+						.getAdapter().getCount() - 1);
+
+				if (v1 != null) {
+					if (v1.getBottom() <= listView_Eventos.getHeight()) {
+						if (checkInternetConnection.isConnectedToInternet()) {
+							((TextView) footerView
+									.findViewById(R.id.textoFooter))
+									.setVisibility(View.GONE);
+
+						} else {
+							((TextView) footerView
+									.findViewById(R.id.textoFooterNOInternet))
+									.setVisibility(View.GONE);
 						}
-						
 					}
 				}
-				break;
 			}
-	
-			case MotionEvent.ACTION_UP: {
-				//
-				if (startY > y1) {
-					View v1 = listView_Eventos.getChildAt(listView_Eventos.getAdapter().getCount() - 1);
-	
-					if (v1 != null) {
-						if (v1.getBottom() <= listView_Eventos.getHeight()) {
-							if (checkInternetConnection.isConnectedToInternet()){
-								((TextView) footerView.findViewById(R.id.textoFooter)).setVisibility(View.GONE);
-								
-							} else {
-								((TextView) footerView.findViewById(R.id.textoFooterNOInternet)).setVisibility(View.GONE);
-							}							
-						}
-					}
-				}
-	
-				Log.d("FirstVisiblePosition",String.valueOf(listView_Eventos.getFirstVisiblePosition()));
-				
-				break;
-			}
-	
-			case MotionEvent.ACTION_DOWN: {
-				y1 = event.getY();
-				
-				break;
-			}
+
+			Log.d("FirstVisiblePosition",
+					String.valueOf(listView_Eventos.getFirstVisiblePosition()));
+
+			break;
+		}
+
+		case MotionEvent.ACTION_DOWN: {
+			y1 = event.getY();
+
+			break;
+		}
 		}
 		return false;
 	}

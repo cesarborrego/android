@@ -47,7 +47,7 @@ public class SubF_Events extends Fragment {
 		textoFavorites = ((TextView)view.findViewById(R.id.title_Favorites));
 		
 		selectorTimeline.setVisibility(View.VISIBLE);
-		textoTimeline.setTextColor(Color.parseColor("#F78326"));
+		textoTimeline.setTextColor(Color.WHITE);
 		
 		((RelativeLayout)view.findViewById(R.id.botonTimeline)).setOnClickListener(new OnClickListener() {
 			@Override
@@ -82,20 +82,20 @@ public class SubF_Events extends Fragment {
 					selectorTimeline.setVisibility(View.VISIBLE);
 					selectorFavorites.setVisibility(View.INVISIBLE);
 					
-					textoTimeline.setTextColor(Color.parseColor("#F78326"));
+					textoTimeline.setTextColor(Color.WHITE);
 					textoTimeline.setTypeface(null,Typeface.BOLD);
 					
-					textoFavorites.setTextColor(Color.parseColor("#424242"));
+					textoFavorites.setTextColor(Color.GRAY);
 					textoFavorites.setTypeface(null,Typeface.NORMAL);
 					
 				}else if (arg0==FAVORITOS){
 					selectorTimeline.setVisibility(View.INVISIBLE);
 					selectorFavorites.setVisibility(View.VISIBLE);
 					
-					textoFavorites.setTextColor(Color.parseColor("#F78326"));
+					textoFavorites.setTextColor(Color.WHITE);
 					textoFavorites.setTypeface(null,Typeface.BOLD);
 					
-					textoTimeline.setTextColor(Color.parseColor("#424242"));
+					textoTimeline.setTextColor(Color.parseColor("GRAY"));
 					textoTimeline.setTypeface(null,Typeface.NORMAL);
 					refreshFavoritesFragment();
 				}

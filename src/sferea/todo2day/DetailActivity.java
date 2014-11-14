@@ -132,7 +132,7 @@ public class DetailActivity extends ActionBarActivity {
 					editor.commit(); 
 				}
 				
-				cursor = managerDBFavorites.queryEventByIndex(evento.getIndexOfEvent());
+				cursor = managerDBFavorites.queryEventByIndex(evento.getIdOfEvent());
 				
 				if (cursor.getCount() > 0) {
 					btnF.setImageResource(R.drawable.favorito_encendido);
@@ -549,15 +549,15 @@ public class DetailActivity extends ActionBarActivity {
 		Cursor cursor;
 		//Validamos si entro por time_line
 		if(Page_TimeLine.eventoActivo){			
-			cursor = manager.queryEventByIndex(evento.getIndexOfEvent());
+			cursor = manager.queryEventByIndex(evento.getIdOfEvent());
 			//Entro en time_line y ahora obtenemos el estado de la estrella 
 			if(cursor.getCount() > 0){
 				//Si esta prendida solo apaga y elimina el registro
-				manager.eliminar(String.valueOf(evento.getIndexOfEvent()));
+				manager.eliminar(String.valueOf(evento.getIdOfEvent()));
 				
 				Log.d(null, "Se elimino Registro en DB "+evento.getNombreEvento());
 				
-				Page_TimeLine.favorites.remove(evento.getIndexOfEvent());
+				Page_TimeLine.listaFavoritos.remove(evento.getIdOfEvent());
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
 				
@@ -579,11 +579,11 @@ public class DetailActivity extends ActionBarActivity {
 						String.valueOf(evento.getLonEvento()),
 						evento.getUrlImagen(),
 						String.valueOf(evento.getPosicion()),
-						String.valueOf(evento.getIndexOfEvent()),
+						String.valueOf(evento.getIdOfEvent()),
 						String.valueOf(evento.getFechaUnix()));
 				Log.d(null, "Registro Insertado en DB");						
 				
-				Page_TimeLine.favorites.add(evento.getIndexOfEvent());
+				Page_TimeLine.listaFavoritos.add(evento.getIdOfEvent());
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
@@ -602,7 +602,7 @@ public class DetailActivity extends ActionBarActivity {
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
-				Page_TimeLine.favorites.remove(favoritosObjeto.getIndexOfEvent());
+				Page_TimeLine.listaFavoritos.remove(favoritosObjeto.getIndexOfEvent());
 				
 				btnF.setImageResource(R.drawable.favorito);
 			}else{
@@ -630,7 +630,7 @@ public class DetailActivity extends ActionBarActivity {
 				activaRefreshFavorites_Details = true;
 				
 				btnF.setImageResource(R.drawable.favorito_encendido);
-				Page_TimeLine.favorites.add(favoritosObjeto.getIndexOfEvent());
+				Page_TimeLine.listaFavoritos.add(favoritosObjeto.getIndexOfEvent());
 			}
 		}
 		

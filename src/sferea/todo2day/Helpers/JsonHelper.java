@@ -14,70 +14,60 @@ import android.content.Context;
 import android.util.Log;
 
 public class JsonHelper {
-	
+
 	Context thisCOntext;
-	Activity thisActivity;
-	
-	public JsonHelper(Context c, Activity a){
+
+	public JsonHelper(Context c) {
 		this.thisCOntext = c;
-		this.thisActivity = a;
-	}	
-	
-	public boolean connectionMongo_Json(String param){
-		boolean result = false;
-		if(thisActivity!=null){
-			InputStream inputStream = null;
+	}
 
-			URL url = null;
-			HttpURLConnection con = null;
+	public String connectionMongo_Json(String param) {
+		String result = "";
+		InputStream inputStream = null;
 
-			try {
-				url = new URL(param);
-				con = (HttpURLConnection) url.openConnection();
-				inputStream = con.getInputStream();
-				Log.e(null,param);
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		URL url = null;
+		HttpURLConnection con = null;
 
-			if(inputStream!=null){
-				result = readStreamPrimerJson(inputStream);
-			}								
+		try {
+			url = new URL(param);
+			con = (HttpURLConnection) url.openConnection();
+			inputStream = con.getInputStream();
+			Log.e(null, param);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
+
+		if (inputStream != null) {
+			result = readStream(inputStream);
+		}
+
 		return result;
 	}
-	
-	public boolean readStreamPrimerJson(InputStream in) {
-		boolean result = false;
-		BufferedReader reader = null;
-		ParseJson_AddDB parser = null;
-		try {
-			reader = new BufferedReader(new InputStreamReader(in));
-			String line = "";
-			while ((line = reader.readLine()) != null) {
-				
-				parser = new ParseJson_AddDB(Application.getInstance(), thisActivity);
-				result = parser.parseFirstJson_AddDB(line);
-			}
 
-			
-		} catch (IOException e) {
+	public String readStream(InputStream in) {
+		String line = "";
+		BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(in));
+		try {
+			line = bufferedReader.readLine();
+		}
+
+		catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if (reader != null) {
+			if (bufferedReader != null) {
 				try {
-					reader.close();
+					bufferedReader.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}	    		
+			}
 		}
-		
-		return result;
+
+		return line;
 	}
 }
