@@ -2,29 +2,20 @@ package sferea.todo2day.adapters;
 
 import java.util.ArrayList;
 
-import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.Helpers.ImageUtil;
-import sferea.todo2day.adapters.ArrayAdapterEvents.ViewHolder;
 import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.DataBaseSQLiteManager;
-import sferea.todo2day.subfragments.Page_Favorites;
 import sferea.todo2day.subfragments.Page_TimeLine;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

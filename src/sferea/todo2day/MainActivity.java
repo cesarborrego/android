@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sferea.todo2day.Helpers.JsonHelper;
+import sferea.todo2day.Helpers.LocationHelper;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterSettings;
 import sferea.todo2day.adapters.DrawerItemRow;
@@ -70,13 +71,12 @@ public class MainActivity extends ActionBarActivity {
 	
 	private boolean atHome = true;
 	
-	double latOrigin= 19.355582;
-	double lonOrigin =-99.186726;
 	SharedPreferencesHelperFinal sharedPreferencesHelperFinal;
 	JsonHelper jsonHelper;
 	DataBaseSQLiteManagerEvents dataBaseSQLiteManagerEvents;	
-//	double latOrigin;
-//	double lonOrigin;
+	LocationHelper locationHelper;
+	double latOrigin;
+	double lonOrigin;
 	
 	boolean isGpsActive = false;
 	boolean isWirelessActive = false;
@@ -362,6 +362,10 @@ public class MainActivity extends ActionBarActivity {
 	        sharedPreferencesHelperFinal = new SharedPreferencesHelperFinal(getApplicationContext());
 	        jsonHelper = new JsonHelper(getApplicationContext(), this);
 	        dataBaseSQLiteManagerEvents = new DataBaseSQLiteManagerEvents(getApplicationContext());
+	        locationHelper = new LocationHelper(getApplicationContext());
+			
+			latOrigin = locationHelper.getLatitude();
+			lonOrigin = locationHelper.getLongitude();
 		
 	    	new AsyncTask<String, Void, Void>(){
 	    		

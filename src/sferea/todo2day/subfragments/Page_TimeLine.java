@@ -9,11 +9,11 @@ import sferea.todo2day.R;
 import sferea.todo2day.SplashActivity;
 import sferea.todo2day.Helpers.CheckInternetConnection;
 import sferea.todo2day.Helpers.JsonHelper;
+import sferea.todo2day.Helpers.LocationHelper;
 import sferea.todo2day.Helpers.ReadTableDB;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterEvents;
 import sferea.todo2day.adapters.EventoObjeto;
-import sferea.todo2day.config.LocationHelper;
 import sferea.todo2day.tasks.AddMoreEventsTask;
 import sferea.todo2day.tasks.AddMoreTaskListener;
 import android.content.Intent;
@@ -45,6 +45,9 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	public static ArrayList<EventoObjeto> listaEventos;
 	public static ArrayList<String> favorites;
 	public static ArrayAdapterEvents arrayAdapterEvents;
+	
+	LocationHelper locationHelper;
+	
 	ListView listView_Eventos;
 	boolean allowRefresh = false;
 	boolean refresh = false;
@@ -55,8 +58,8 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	public static String activaRuta = "no";
 
 	// Debemos obtener la lat y lon correcta desde el gps
-	public static double latOrigin = 19.355582;
-	public static double lonOrigin = -99.186726;
+	public static double latOrigin;
+	public static double lonOrigin;
 
 	SharedPreferences shrpref_fav;
 
@@ -66,8 +69,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	View footerAddView;
 
 	boolean isLoading = false;
-
-	LocationHelper locationHelper;
 
 	int iContador = 0;
 	public static int numeroEventos = 0;
@@ -79,9 +80,6 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 
 	public static String fechaUnix = "";
 	public static String indexEvent = "";
-
-	boolean isGpsActive = false;
-	boolean isWirelessActive = false;
 
 	int totalItemCount = 0;
 
@@ -113,6 +111,8 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 				.getApplicationContext(), getActivity());
 		jsonHelper = new JsonHelper(getActivity().getApplicationContext(),
 				getActivity());
+		
+		locationHelper = new LocationHelper(getActivity().getApplicationContext());
 	}
 
 	@Override
@@ -216,6 +216,9 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 			
 			SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 					getActivity().getApplicationContext());
+			
+			latOrigin = locationHelper.getLatitude();
+			lonOrigin = locationHelper.getLongitude();
 
 			task = new AddMoreEventsTask(getActivity(), this);
 			task.execute("http://yapi.sferea.com/?latitud=" + latOrigin
@@ -229,6 +232,9 @@ public class Page_TimeLine extends Fragment implements AddMoreTaskListener, OnTo
 	public void refreshTimeLine() {
 		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 				getActivity().getApplicationContext());
+		latOrigin = locationHelper.getLatitude();
+		lonOrigin = locationHelper.getLongitude();
+		
 		new AsyncTask<String, Void, Void>() {
 
 			@Override
