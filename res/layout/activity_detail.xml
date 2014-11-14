@@ -8,31 +8,32 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:background="#fff" >
+        
+        <ImageView
+                android:id="@+id/imagenHeader"
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/header_catergories" />
+        
+        <ImageView
+                android:id="@+id/degradado"
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/degradado_de_imagen" />
 
         <RelativeLayout
             android:id="@+id/details_header_layout"
             android:layout_width="match_parent"
-            android:layout_height="300dp" >
-            <ImageView
-                android:id="@+id/imagenHeader"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/header_catergories" />
-            
-            <ImageView
-                android:id="@+id/degradado"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/degradado_de_imagen" />
+            android:layout_height="wrap_content" >            
             
             <ImageView
                 android:id="@+id/iconCategoria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="130dp"
                 android:adjustViewBounds="true"
                 android:maxWidth="45dp"
                 android:src="@drawable/musica" />
@@ -41,47 +42,50 @@
                 android:id="@+id/cabeceraLayOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:adjustViewBounds="true"
                 android:layout_below="@id/iconCategoria"
-                android:orientation="vertical" >
+                android:layout_centerHorizontal="true" >
 
-                <TextView
-                    android:id="@+id/detallesTitulo"
+                <LinearLayout
+                    android:id="@+id/layOutCat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="@string/defaultEventTitle"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#fff"
-                    android:textStyle="bold" />
+                    android:orientation="vertical"
+                    android:layout_centerInParent="true" >
 
-                <TextView
-                    android:id="@+id/detallesCategoria"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:text="@string/defaultCategoria"
-                    android:textColor="#fff"
-                    android:textStyle="bold" />
-                
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/detallesTitulo"
-                    android:src="@drawable/divisor_horizontal" />
+                    <TextView
+                        android:id="@+id/detallesCategoria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/defaultCategoria"
+                        android:textColor="#fff"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/detallesTitulo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/defaultEventTitle"
+                        android:gravity="center"
+                        android:textColor="#fff"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </RelativeLayout>
+            
+            <ImageView
+                android:id="@+id/divisorCabecera"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cabeceraLayOut"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/divisor_horizontal"/>
 
             <RelativeLayout
                 android:id="@+id/bannerBtns"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@id/divisorCabecera"
+                android:layout_marginTop="10dp"
                 android:paddingBottom="10dp" >
 
                 <LinearLayout
@@ -142,20 +146,21 @@
                 </LinearLayout>
             </RelativeLayout>
             
-        </RelativeLayout>
-        
-        <ImageView
+            <ImageView
                 android:id="@+id/bannerOrganizador"
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:src="@drawable/barra" 
-                android:layout_marginTop="280dp"/>
-
-        <RelativeLayout
+                android:layout_below="@id/divisorCabecera"
+                android:layout_marginTop="48dp"/>
+            
+            <RelativeLayout
             android:id="@+id/contenedorOrganizador"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/details_header_layout">
+            android:layout_height="38dp"
+            android:layout_below="@id/divisorCabecera"
+            android:layout_marginTop="65dp"
+            android:background="#fff">
 
             <LinearLayout
                 android:id="@+id/contenedorOrg"
@@ -170,7 +175,6 @@
                     android:id="@+id/organizadorTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:text="@string/defaultOrganizador"
                     android:textColor="#A8A2A2"
                     android:textSize="13sp"
@@ -230,79 +234,7 @@
             android:layout_below="@id/contenedorOrganizador"
             android:src="@drawable/separador" />
 
-        <!--
-        LinearLayout
-            android:id="@+id/layoutShare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/details_header_layout"
-            android:layout_alignRight="@id/details_header_layout"
-            android:layout_marginBottom="3dp"
-            android:layout_marginRight="3dp"
-            android:background="#DDFFFFFF"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <RelativeLayout
-                android:id="@+id/botonRetweetEvent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/iconRetweetFavorito"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:adjustViewBounds="true"
-                    android:maxWidth="18dp"
-                    android:src="@drawable/ic_action_refresh" />
-
-                <TextView
-                    android:id="@+id/textRetweetCounter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/iconRetweetFavorito"
-                    android:paddingLeft="5dp"
-                    android:text="@string/defaultCounter"
-                    android:textColor="#AAA" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="15dp"
-                android:layout_height="1dp" />
-
-            <RelativeLayout
-                android:id="@+id/botonFavEvent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/iconFavFavorito"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:adjustViewBounds="true"
-                    android:maxWidth="18dp"
-                    android:src="@drawable/ic_action_important" />
-
-                <TextView
-                    android:id="@+id/textFavCounter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/iconFavFavorito"
-                    android:paddingLeft="5dp"
-                    android:text="@string/defaultCounter"
-                    android:textColor="#AAA" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="10dp"
-                android:layout_height="1dp" />
-        </LinearLayout
-        -->
-
+        
         <TextView
             android:id="@+id/detallesDescripcion"
             android:layout_width="match_parent"
@@ -540,5 +472,11 @@
             android:layout_height="5dp"
             android:layout_below="@id/capaMapa" />
     </RelativeLayout>
+            
+        </RelativeLayout>
+        
+        
+
+        
 
 </ScrollView>
