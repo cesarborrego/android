@@ -6,21 +6,18 @@ import java.util.TimerTask;
 import sferea.todo2day.Helpers.CheckInternetConnection;
 import sferea.todo2day.Helpers.JsonHelper;
 import sferea.todo2day.Helpers.JsonParserHelper;
+import sferea.todo2day.Helpers.LocationHelper;
 import sferea.todo2day.Helpers.ReadTableDB;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
-import android.view.Menu;
 
 /**
  * Actividad que controla el tiempo de espera en el splashScreen y la accion a
@@ -30,11 +27,11 @@ import android.view.Menu;
  * @version 1.0
  * */
 public class SplashActivity extends Activity {
-	double latOrigin = 19.355582;
-	double lonOrigin = -99.186726;
+//	double latOrigin = 19.355582;
+//	double lonOrigin = -99.186726;
 
-	// double latOrigin;
-	// double lonOrigin;
+	double latOrigin;
+	double lonOrigin;
 
 	boolean isGpsActive = false;
 	boolean isWirelessActive = false;
@@ -56,6 +53,7 @@ public class SplashActivity extends Activity {
 	SharedPreferencesHelperFinal sharedPreferencesHelper;
 	ReadTableDB readTableDB;
 	CheckInternetConnection checkInternetConnection;
+	LocationHelper locationHelper;
 
 	public static boolean leeJSONCache = false;
 
@@ -72,8 +70,11 @@ public class SplashActivity extends Activity {
 				getApplicationContext(), this);
 
 		if (checkInternetConnection.isConnectedToInternet()) {
-			// gps();
-
+			locationHelper = new LocationHelper(getApplicationContext());
+			
+			latOrigin = locationHelper.getLatitude();
+			lonOrigin = locationHelper.getLongitude();
+			
 			TimerTask task = new TimerTask() {
 				@Override
 				public void run() {
@@ -98,8 +99,7 @@ public class SplashActivity extends Activity {
 			};
 
 			Timer timer = new Timer();
-			timer.schedule(task, splashDelay);// Pasado los X segundos dispara
-												// la tarea
+			timer.schedule(task, splashDelay);// Pasado los X segundos dispara la tarea
 		}
 		else{
 			
@@ -153,94 +153,6 @@ public class SplashActivity extends Activity {
 				+ "&longitud=" + lonOrigin + "" + "&radio="
 				+ SplashActivity.distanciaEvento + "" + "&categoria="
 				+ categorias + "" + "&numEventos=0&idEvento=0&fecha=0");
-	}
-
-	public void gps() {
-		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-		isGpsActive = locationManager
-				.isProviderEnabled(LocationManager.GPS_PROVIDER);
-		isWirelessActive = locationManager
-				.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-		// Verificamos que este el gps activado, si no entonces toma la
-		// ubicacion por red
-		// if(isGpsActive){
-		// Location location =
-		// locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		// latOrigin = location.getLatitude();
-		// lonOrigin = location.getLongitude();
-		// Log.d("GPS", "Latitud "+latOrigin);
-		// Log.d("GPS", "Longitud "+lonOrigin);
-		// }else{
-		// Toast.makeText(getApplicationContext(),
-		// "Yieppa funciona mejor cuando activas el GPS :)",
-		// Toast.LENGTH_LONG).show();
-		// //Asumimos que esta prendido el wireless ya que si no lo fuera, no
-		// entraría a la app
-		// if(isWirelessActive){
-		// Location location =
-		// locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-		// latOrigin = location.getLatitude();
-		// lonOrigin = location.getLongitude();
-		// Log.d("WIFI", "Latitud "+latOrigin);
-		// Log.d("WIFI", "Longitud "+lonOrigin);
-		// }
-		//
-		// // finish();
-		// }
-		// if(isWirelessActive){
-		// Location location =
-		// locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-		// latOrigin = location.getLatitude();
-		// lonOrigin = location.getLongitude();
-		// Log.d("WIFI", "Latitud "+latOrigin);
-		// Log.d("WIFI", "Longitud "+lonOrigin);
-		// }
-
-		LocationListener locationListener = new LocationListener() {
-
-			@Override
-			public void onStatusChanged(String provider, int status,
-					Bundle extras) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onProviderEnabled(String provider) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onProviderDisabled(String provider) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onLocationChanged(Location location) {
-				// Log.d("GPS", "Latitud"+location.getLatitude());
-				// Log.d("GPS", "Longitud"+location.getLongitude());
-				latOrigin = location.getLatitude();
-				lonOrigin = location.getLongitude();
-			}
-		};
-		// if(isGpsActive){
-		// locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-		// 1000, 5, locationListener);
-		// }else{
-		// if(isWirelessActive){
-		// locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-		// 1000, 5, locationListener);
-		// }
-		// }
-		if (isWirelessActive) {
-			locationManager
-					.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-							1000, 5, locationListener);
-		}
 	}
 
 	static {

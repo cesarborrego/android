@@ -10,11 +10,11 @@ import sferea.todo2day.Helpers.CheckInternetConnection;
 import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.Helpers.JsonHelper;
 import sferea.todo2day.Helpers.JsonParserHelper;
+import sferea.todo2day.Helpers.LocationHelper;
 import sferea.todo2day.Helpers.ReadTableDB;
 import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterEvents;
 import sferea.todo2day.adapters.EventoObjeto;
-import sferea.todo2day.config.LocationHelper;
 import sferea.todo2day.tasks.AddMoreEventsTask;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -51,6 +51,9 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public static ArrayList<String> listaFavoritos;
 	public static ArrayAdapterEvents arrayAdapterEvents;
 	public static boolean eventsLoaded = false;
+	
+	LocationHelper locationHelper;
+	
 	ListView listView_Eventos;
 	public static boolean refresh = false;
 	boolean loadingMore = false;
@@ -61,8 +64,8 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public static String activaRuta = "no";
 
 	// Debemos obtener la lat y lon correcta desde el gps
-	public static double latOrigin = 19.355582;
-	public static double lonOrigin = -99.186726;
+	public static double latOrigin;
+	public static double lonOrigin;
 
 	SharedPreferences shrpref_fav;
 
@@ -72,8 +75,6 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	View footerAddView;
 
 	boolean isLoading = false;
-
-	LocationHelper locationHelper;
 
 	int iContador = 0;
 	public static int numeroEventos = 0;
@@ -85,9 +86,6 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 	public static String fechaUnix = "";
 	public static String indexEvent = "";
-
-	boolean isGpsActive = false;
-	boolean isWirelessActive = false;
 
 	JsonHelper jsonHelper;
 	JsonParserHelper jsonParser;
@@ -126,6 +124,8 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		jsonParser = new JsonParserHelper(Application.getInstance());
 		imageloader = ImageUtil.getImageLoader();
 		options = ImageUtil.getOptionsImageLoader();
+		
+		locationHelper = new LocationHelper(getActivity().getApplicationContext());
 	}
 
 	@Override
@@ -253,6 +253,9 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public void addMoreEvents(final double lat, final double lon) {
 
 		progressFooter.setVisibility(View.VISIBLE);
+			
+			latOrigin = locationHelper.getLatitude();
+			lonOrigin = locationHelper.getLongitude();
 
 		footerNoInternet.setVisibility(View.GONE);
 		footerNoInternetClic.setVisibility(View.GONE);
@@ -312,6 +315,9 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public void refreshTimeLine() {
 		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 				getActivity().getApplicationContext());
+		latOrigin = locationHelper.getLatitude();
+		lonOrigin = locationHelper.getLongitude();
+		
 		new AsyncTask<String, Void, Void>() {
 
 			ArrayList<EventoObjeto> lista = null;
