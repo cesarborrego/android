@@ -565,7 +565,8 @@ public class DetailActivity extends ActionBarActivity {
 				btnF.setImageResource(R.drawable.favorito);
 			}else{
 				//Si esta apagada solo prendemos e insertamos
-				manager.insertar(evento.getNombreEvento(), 
+				manager.insertar(evento.getIdOfEvent(),
+						evento.getNombreEvento(), 
 						evento.getCategoriaEvento(),
 						evento.getCategoriaIDEvento(),
 						evento.getFechaEvento(), 
@@ -598,6 +599,7 @@ public class DetailActivity extends ActionBarActivity {
 			if(cursor.getCount() > 0){
 				//Si esta prendida solo apaga y elimina el registro
 				manager.eliminar(String.valueOf(favoritosObjeto.getIndexOfEvent()));
+				Page_Favorites.adapterFavorites.remove(favoritosObjeto);
 				
 				Log.d(null, "Se elimino Registro en DB "+favoritosObjeto.getNombreEvento());
 				
@@ -608,7 +610,9 @@ public class DetailActivity extends ActionBarActivity {
 				btnF.setImageResource(R.drawable.favorito);
 			}else{
 				//Si esta apagada solo prendemos e insertamos
-				manager.insertar(favoritosObjeto.getNombreEvento(), 
+				manager.insertar(
+						favoritosObjeto.getIdEvento(),
+						favoritosObjeto.getNombreEvento(), 
 						favoritosObjeto.getCategoriaEvento(),
 						favoritosObjeto.getCategoriaIDEvento(),
 						favoritosObjeto.getFechaEvento(), 
@@ -629,13 +633,13 @@ public class DetailActivity extends ActionBarActivity {
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
+				Page_Favorites.adapterFavorites.add(favoritosObjeto);
 				
 				btnF.setImageResource(R.drawable.favorito_encendido);
 				Page_TimeLine.listaFavoritos.add(favoritosObjeto.getIndexOfEvent());
 			}
 		}
 		
-		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 		Page_Favorites.adapterFavorites.notifyDataSetChanged();
 	}
 	

@@ -89,8 +89,6 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	boolean isGpsActive = false;
 	boolean isWirelessActive = false;
 
-	int totalItemCount = 0;
-
 	JsonHelper jsonHelper;
 	JsonParserHelper jsonParser;
 	ReadTableDB reader;
@@ -103,6 +101,10 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	// las funciones en el hilo principal UI, ya sea mandar un toast avisando
 	// que trono o si todo sale bien, llenar la lista de eventos
 	boolean bandera = false;
+	int currentFirstVisibleItem;
+	int currentVisibleItemCount;
+	int totalItemCount;
+	int currentScrollState;
 
 	float y1;
 
@@ -188,8 +190,9 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		listView_Eventos.setAdapter(arrayAdapterEvents);
 
 		numeroEventos = arrayAdapterEvents.getCount();
-		
-		PauseOnScrollListener listener = new PauseOnScrollListener(imageloader, true, true);
+
+		PauseOnScrollListener listener = new PauseOnScrollListener(imageloader,
+				true, true);
 
 		listView_Eventos.setOnScrollListener(listener);
 		listView_Eventos.setOnItemClickListener(new OnItemClickListener() {
@@ -249,68 +252,61 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 	public void addMoreEvents(final double lat, final double lon) {
 
-		if (loadingMore) {
+		progressFooter.setVisibility(View.VISIBLE);
 
-			progressFooter.setVisibility(View.VISIBLE);
+		footerNoInternet.setVisibility(View.GONE);
+		footerNoInternetClic.setVisibility(View.GONE);
 
-			footerNoInternet.setVisibility(View.GONE);
-			footerNoInternetClic.setVisibility(View.GONE);
+		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
+				getActivity().getApplicationContext());
 
-			SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
-					getActivity().getApplicationContext());
+		new AsyncTask<String, Void, Boolean>() {
+			@Override
+			protected Boolean doInBackground(String... params) {
+				boolean result = false;
+				JsonHelper helper = new JsonHelper(Application.getInstance());
+				String json = helper.connectionMongo_Json(params[0]);
 
-			new AsyncTask<String, Void, Boolean>() {
-				@Override
-				protected Boolean doInBackground(String... params) {
-					boolean result = false;
-
-					if (!isCancelled()) {
-						JsonHelper helper = new JsonHelper(
-								Application.getInstance());
-						String json = helper.connectionMongo_Json(params[0]);
-
-						if (json == "")
-							return result;
-
-						result = jsonParser.addEventsToDB(json);
-
-					}
+				if (json == "")
 					return result;
-				}
 
-				@Override
-				protected void onPostExecute(Boolean params) {
+				result = jsonParser.addEventsToDB(json);
 
-					if (params) {
-						reader = new ReadTableDB(getActivity()
-								.getApplicationContext());
-						if (reader.readTable() == arrayAdapterEvents.getCount()) {
-							((TextView) footerView
-									.findViewById(R.id.textoFooter))
-									.setVisibility(View.VISIBLE);
-							progressFooter.setVisibility(View.GONE);
-						}
-						
+				return result;
+			}
+
+			@Override
+			protected void onPostExecute(Boolean params) {
+
+				if (params) {
+					reader = new ReadTableDB(getActivity()
+							.getApplicationContext());
+					if (reader.readTable() == arrayAdapterEvents.getCount()) {
+						progressFooter.setVisibility(View.GONE);
+						((TextView) footerView.findViewById(R.id.textoFooter))
+								.setVisibility(View.VISIBLE);
+					} else {
 						listaEventos.clear();
 						listaEventos.addAll(reader.fillEventListFromDB());
 						arrayAdapterEvents.notifyDataSetChanged();
+						
 						numeroEventos = arrayAdapterEvents.getCount();
-
-					} else {
-						((TextView) footerView.findViewById(R.id.textoFooter))
-								.setVisibility(View.VISIBLE);
 					}
 
+				} else {
 					progressFooter.setVisibility(View.GONE);
-					loadingMore = false;
+					((TextView) footerView.findViewById(R.id.textoFooter))
+							.setVisibility(View.VISIBLE);
 				}
-			}.execute("http://yapi.sferea.com/?latitud=" + latOrigin
-					+ "&longitud=" + lonOrigin + "" + "&radio=10"
-					+ "&categoria="
-					+ sharedPreferencesHelper.obtieneCategoriasPreferences()
-					+ "" + "&numEventos=0" + "&idEvento=" + indexEvent + ""
-					+ "&fecha=" + fechaUnix + "");
-		}
+				
+				loadingMore = false;
+
+			}
+		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + "&longitud="
+				+ lonOrigin + "" + "&radio=10" + "&categoria="
+				+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
+				+ "&numEventos=0" + "&idEvento=" + indexEvent + "" + "&fecha="
+				+ fechaUnix + "");
 	}
 
 	public void refreshTimeLine() {
@@ -368,7 +364,8 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		// TODO Auto-generated method stub
+		this.currentScrollState = scrollState;
+		this.isScrollCompleted();
 
 	}
 
@@ -376,41 +373,42 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 
-		Page_TimeLine.this.totalItemCount = totalItemCount;
-		if (((firstVisibleItem + visibleItemCount) == totalItemCount)
-				&& listView_Eventos.getFirstVisiblePosition() > 0) {
-			if (listView_Eventos.getLastVisiblePosition() == listView_Eventos
-					.getAdapter().getCount() - 1
-					&& listView_Eventos.getChildAt(
-							listView_Eventos.getChildCount() - 1).getBottom() <= listView_Eventos
-							.getHeight()) {
-				Log.d(null, "Final");
-				if (checkInternetConnection.isConnectedToInternet()) {
+		this.totalItemCount = totalItemCount;
+		this.currentFirstVisibleItem = firstVisibleItem;
+		this.currentVisibleItemCount = visibleItemCount;
+
+	}
+
+	private void isScrollCompleted() {
+		if (this.currentScrollState == SCROLL_STATE_IDLE
+				&& ((this.currentFirstVisibleItem + this.currentVisibleItemCount) == this.totalItemCount)
+				&& this.totalItemCount != 0) {
+
+			Log.d(null, "Final");
+			if (checkInternetConnection.isConnectedToInternet()) {
+				if (!loadingMore) {
 					loadingMore = true;
 					addMoreEvents(latOrigin, lonOrigin);
 					footerNoInternet.setVisibility(View.GONE);
 					footerNoInternetClic.setVisibility(View.GONE);
 					((TextView) footerView.findViewById(R.id.textoFooter))
 							.setVisibility(View.GONE);
-				} else {
-					footerNoInternet.setVisibility(View.GONE);
-					footerNoInternetClic.setVisibility(View.VISIBLE);
-					((TextView) footerView.findViewById(R.id.textoFooter))
-							.setVisibility(View.GONE);
-					footerNoInternetClic
-							.setOnClickListener(new OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									if (checkInternetConnection
-											.isConnectedToInternet()) {
-										footerNoInternetClic
-												.setVisibility(View.GONE);
-										addMoreEvents(latOrigin, lonOrigin);
-									}
-								}
-							});
 				}
+			} else {
+				footerNoInternet.setVisibility(View.GONE);
+				footerNoInternetClic.setVisibility(View.VISIBLE);
+				((TextView) footerView.findViewById(R.id.textoFooter))
+						.setVisibility(View.GONE);
+				footerNoInternetClic.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						if (checkInternetConnection.isConnectedToInternet()) {
+							footerNoInternetClic.setVisibility(View.GONE);
+							addMoreEvents(latOrigin, lonOrigin);
+						}
+					}
+				});
 			}
 		}
 	}

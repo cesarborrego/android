@@ -76,8 +76,6 @@ public class Page_Favorites extends Fragment {
 				
 			}
 		});
-		
-		adapterFavorites.notifyDataSetChanged();
 	
 		return view;
 	}	
@@ -93,6 +91,7 @@ public class Page_Favorites extends Fragment {
 					 *Distancia Boleto 		Longitud  	Latitud*/
 					
 					listaObjectFavoritos.add(new FavoritosObjeto(
+							cursor.getString(cursor.getColumnIndex("EVENTO_ID")),
 							cursor.getString(cursor.getColumnIndex("TITULO_EVENTO")),
 							cursor.getString(cursor.getColumnIndex("CATEGORIA")),
 							cursor.getString(cursor.getColumnIndex("CATEGORIA_ID")),
@@ -116,7 +115,8 @@ public class Page_Favorites extends Fragment {
 			cursor.close();
 			manager.cerrarDB();
 		}
-	}	
+	}
+	
 	
 	public Bitmap decodBitmap(byte [] img){
 		Bitmap b=BitmapFactory.decodeByteArray(img, 0, img.length);

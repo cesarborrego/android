@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
+import sferea.todo2day.Helpers.DateUtil;
 import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.adapters.ArrayAdapterEvents.ViewHolder;
 import sferea.todo2day.config.CategoriasConfig;
@@ -38,7 +39,6 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 	ImageLoader imageloader;
 	DisplayImageOptions options;
 	
-	@SuppressWarnings("unchecked")
 	public ArrayAdapterFavorites(Activity activity, Context context, ArrayList<FavoritosObjeto> datos) {
 		super(activity,  R.layout.row_favorite_tablet, datos);
 		this.activityAdapter = activity;
@@ -47,7 +47,6 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 		this.options = ImageUtil.getOptionsImageLoader();
 	}
 
-	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
@@ -74,7 +73,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 				
 		viewHolder.nombreFavorito.setText(getItem(position).getNombreEvento());
 		viewHolder.categoriaFavorito.setText(getItem(position).getCategoriaEvento());
-		viewHolder.fechaFavorito.setText(getItem(position).getFechaEvento());
+		viewHolder.fechaFavorito.setText(DateUtil.dateTransform(getItem(position).getFechaEvento()) + " hrs.");
 		viewHolder.distanciaFavorito.setText("a " + getItem(position).getDistanciaEvento().toLowerCase());
 		
 		imageloader.displayImage(getItem(position).getUrlImagen(), viewHolder.thumbnailFavorito, options);

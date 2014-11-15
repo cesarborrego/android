@@ -65,6 +65,28 @@ public class ReadTableDB {
 		return lista;
 	}
 	
+	public void AddEventsToAdapterFromDB() {
+		Cursor cursor = dataBaseSQLiteManagerEvents.cargarTablas();
+		EventoObjeto evento;
+
+		try {
+			if (cursor.moveToFirst()) {
+
+				do {
+					
+					evento = getEventoObjetoFromDB(cursor);
+					if(Page_TimeLine.arrayAdapterEvents.getPosition(evento) != -1)
+						Page_TimeLine.arrayAdapterEvents.add(evento);
+					
+				} while (cursor.moveToNext());
+			}
+		} finally {
+			cursor.close();
+			Log.d("Lista Eventos", "Lista cargada desde DB!");
+			dataBaseSQLiteManagerEvents.cerrarDB();
+		}
+	}
+	
 	
 	private EventoObjeto getEventoObjetoFromDB(Cursor cursor){
 		EventoObjeto evento = new EventoObjeto();
@@ -73,7 +95,7 @@ public class ReadTableDB {
 		evento.setNombreEvento(cursor.getString(cursor.getColumnIndex("TITULO_EVENTO")));
 		evento.setCategoriaEvento(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
 		evento.setCategoriaIDEvento(cursor.getString(cursor.getColumnIndex("CATEGORIA_ID")));
-		evento.setFechaEvento(DateUtil.dateTransform(cursor.getString(cursor.getColumnIndex("FECHA"))));
+		evento.setFechaEvento(cursor.getString(cursor.getColumnIndex("FECHA")));
 		evento.setFuente(cursor.getString(cursor.getColumnIndex("FUENTE")));
 		evento.setLugarEvento(cursor.getString(cursor.getColumnIndex("LUGAR")));
 		evento.setDireccion(cursor.getString(cursor.getColumnIndex("DIRECCION")));

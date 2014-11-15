@@ -3,6 +3,7 @@ package sferea.todo2day.adapters;
 import java.util.ArrayList;
 
 import sferea.todo2day.R;
+import sferea.todo2day.Helpers.DateUtil;
 import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.DataBaseSQLiteManager;
@@ -127,8 +128,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		// Asignamos al view las variables intermedias
 		eventView.nombreEvento.setText(getItem(position).getNombreEvento());
 		eventView.categoriaEvento.setText(getItem(position).getCategoriaEvento());
-		eventView.fechaEvento.setText(getItem(position).getFechaEvento() + " hrs.");
-		// eventView.lugarEvento.setText(lugarEvento);
+		eventView.fechaEvento.setText(DateUtil.dateTransform(getItem(position).getFechaEvento()) + " hrs.");
 		eventView.distanciaEvento.setText("a " + getItem(position).getDistancia().toLowerCase() + ".");
 
 		if (!getItem(position).getUrlImagen().equals("No disponible")) {
@@ -345,7 +345,8 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 						Page_TimeLine.listaFavoritos.add(getItem(position).getIdOfEvent());
 
 						managerDBFavorites
-								.insertar(getItem(position).getNombreEvento(),
+								.insertar(getItem(position).getIdOfEvent(),
+										getItem(position).getNombreEvento(),
 										getItem(position).getCategoriaEvento(),
 										getItem(position).getCategoriaIDEvento(),
 										getItem(position).getFechaEvento(),

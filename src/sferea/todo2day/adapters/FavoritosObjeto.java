@@ -14,6 +14,7 @@ import android.os.Parcelable;
  */
 public class FavoritosObjeto implements Parcelable{
 	
+	String idEvento;
 	String nombreEvento; String categoriaEvento; String fechaEvento; String horaEvento; String DistanciaEvento;
 	String lugarEvento; double latEvento; double lonEvento;
 	double distancia; Bitmap imagenEvento, btnRetweet, btnFav; int imagenCategoria, iContaRet, iContaFav;
@@ -33,10 +34,11 @@ public class FavoritosObjeto implements Parcelable{
 		this.distancia = distancia;
 	}
 	
-	public FavoritosObjeto(String nombreEvento, String catEvento, String catIDEvento, String fecha_horaEvento, String descripcionEvento, 
+	public FavoritosObjeto(String idEvento, String nombreEvento, String catEvento, String catIDEvento, String fecha_horaEvento, String descripcionEvento, 
 			String fuenteEvento, String LugarEvento, 
 			String direccionEvento, String telefonoEvento, String dist, String boletoEvento, double lon, double lat,
 			String urlImagen, int posicion, String indexOfEvent, int fechaUnix){
+		setIdEvento(idEvento);
 		setNombreEvento(nombreEvento);
 		setCategoriaEvento(catEvento);
 		setCategoriaIDEvento(catIDEvento);
@@ -57,6 +59,9 @@ public class FavoritosObjeto implements Parcelable{
 	}
 
 	/** Setter & getters*/
+	public String getIdEvento() { return idEvento; } 	
+	public void setIdEvento(String idEvento) { this.idEvento = idEvento; }
+	
 	public String getNombreEvento() { return nombreEvento; } 	
 	public void setNombreEvento(String nombreEvento) { this.nombreEvento = nombreEvento; }
 
@@ -176,6 +181,7 @@ public class FavoritosObjeto implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(getIdEvento());
 		dest.writeString(getNombreEvento());
 		dest.writeString(categoriaEvento);
 		dest.writeString(fechaEvento);
@@ -209,7 +215,7 @@ public class FavoritosObjeto implements Parcelable{
 	};
 	
 	public FavoritosObjeto(Parcel pc) {
-		
+		setIdEvento(pc.readString());
 		setNombreEvento(pc.readString());
 		setCategoriaEvento(pc.readString());
 		setFechaEvento(pc.readString());
