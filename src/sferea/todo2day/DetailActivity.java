@@ -261,7 +261,7 @@ public class DetailActivity extends ActionBarActivity {
 				        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
 				        startActivity(callIntent);
 					}else{
-						Toast.makeText(getApplicationContext(), "Número telefónico no disponible", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), getResources().getString(R.string.errorTelefonoNoDisponible), Toast.LENGTH_SHORT).show();
 					}
 				}
 			});
@@ -275,7 +275,7 @@ public class DetailActivity extends ActionBarActivity {
 				        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
 				        startActivity(callIntent);
 					}else{
-						Toast.makeText(getApplicationContext(), "Número telefónico no disponible", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), getResources().getString(R.string.errorTelefonoNoDisponible), Toast.LENGTH_SHORT).show();
 					}
 				}
 			});
@@ -311,7 +311,7 @@ public class DetailActivity extends ActionBarActivity {
 						intent.putExtras(bundle);
 						startActivity(intent);
 					}else{
-						Toast.makeText(getApplicationContext(), "Verificar la conexión a Internet", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), getResources().getString(R.string.errorVerificarConexion), Toast.LENGTH_SHORT).show();
 					}
 				}
 			});		
@@ -469,7 +469,7 @@ public class DetailActivity extends ActionBarActivity {
                         return true;
                     }
            }
-        Toast.makeText(getApplicationContext(), "Verificar la conexión a internet", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getResources().getString(R.string.errorVerificarConexion), Toast.LENGTH_SHORT).show();
         return false;
      }
 	

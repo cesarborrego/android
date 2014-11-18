@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">yiepa!</string>
-    <!--string name="titleColors">Todo<b><font color="#FF7A0D">2</font></b>Day</string-->
+    <!-- string name="titleColors">Todo<b><font color="#FF7A0D">2</font></b>Day</string -->
     <string name="titleColors">yiepa!<b><font color="#FF7A0D"></font></b></string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_main">MainActivity</string>
@@ -26,7 +26,7 @@
         <item>Tecnología</item>
         <item>Verde</item>
     </string-array>
-    
+
     <string name="antrosYBares">Antros y Bares</string>
     <string name="cineYTeatro">Cine y Teatro</string>
     <string name="cultura">Cultura</string>
@@ -40,7 +40,6 @@
     <string name="tecnologia">Tecnología</string>
     <string name="verdeYResponsabilidadSocial">Verde</string>
     <string name="Otros">Otros</string>
-
     <string name="distancia">Distancia</string>
     <string name="que_distancia">¿Distancia de qué?</string>
     <string name="kmDistancia">5km</string>
@@ -83,6 +82,13 @@
     <string name="cadenaTweet_en">en</string>
     <string name="tweetMuyLargo">Tweet muy Largo!</string>
     <string name="title_activity_map">MapActivity</string>
-    <string name="NoInternetToastMessage">"Verificar la conexión a internet."</string>
+    <string name="NoInternetToastMessage">Verificar la conexión a internet.</string>
+    <string name="errorUbicacion">No se puede obtener la ubicación.</string>
+    <string name="gpsDesactivado">El GPS está desactivado, ¿ir a configuración del dispositivo?</string>
+    <string name="alertGpsTitle">GPS</string>
+    <string name="btnTextAceptar">Aceptar</string>
+    <string name="btnTextCancelar">Cancelar</string>
+    <string name="errorVerificarConexion">Verificar la conexión a internet.</string>
+    <string name="errorTelefonoNoDisponible">Número teléfonico no disponible.</string>
 
 </resources>

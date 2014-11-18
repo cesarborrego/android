@@ -1,5 +1,6 @@
 package sferea.todo2day.helpers;
 
+import sferea.todo2day.R;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -63,7 +64,7 @@ public class LocationHelper extends Service implements LocationListener{
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
  
             if (!isGPSEnabled && !isNetworkEnabled) {
-            	Toast.makeText(mContext, "No se puede obtener ubicación", Toast.LENGTH_LONG).show();
+            	Toast.makeText(mContext, getResources().getString(R.string.errorUbicacion), Toast.LENGTH_LONG).show();
                 // no network provider is enabled
             } else {
                 this.canGetLocation = true;
@@ -146,16 +147,16 @@ public class LocationHelper extends Service implements LocationListener{
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
       
         // Setting Dialog Title
-        alertDialog.setTitle("GPS");
+        alertDialog.setTitle(R.string.alertGpsTitle);
   
         // Setting Dialog Message
-        alertDialog.setMessage("GPS no est?? Habilitado. ??Deseas activarlo en tu configuraci??n?");
+        alertDialog.setMessage(getResources().getString(R.string.gpsDesactivado));
   
         // Setting Icon to Dialog
         //alertDialog.setIcon(R.drawable.delete);
   
         // On pressing Settings button
-        alertDialog.setPositiveButton("Activar", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.btnTextAceptar, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 mContext.startActivity(intent);
@@ -163,7 +164,7 @@ public class LocationHelper extends Service implements LocationListener{
         });
   
         // on pressing cancel button
-        alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(R.string.btnTextCancelar, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             dialog.cancel();
             }
