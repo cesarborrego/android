@@ -380,6 +380,7 @@ public class MainActivity extends ActionBarActivity {
 				protected Void doInBackground(String... params) {
 					Log.d("Mongo", params[0]);
 					String result = jsonHelper.connectionMongo_Json(params[0]);
+					jsonParser = new JsonParserHelper(Application.getInstance());
 					jsonParser.addEventsToDB(result);
 					return null;
 				}

@@ -144,7 +144,7 @@ public class DataBaseSQLiteManager {
 	public void modificarValoresDB(String eventoId, String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
-			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, int isFavorite, String fechaUnix){	
+			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
 		//db.update(table, values, whereClause, whereArgs)
 		db.update(DB_NAME, generarContentValues(eventoId, tituloEvento, categoriEvento, categoriIDEvento, fechaEvento, descripcionEvento,
 				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, distanciaEvento, 

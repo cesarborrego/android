@@ -25,6 +25,7 @@ import android.graphics.drawable.ColorDrawable;
 public class SubF_Events extends Fragment {
 	
 	private ViewPager viewPager;
+	private PagerAdapterEvents pagerAdapter;
 	public static final int TIMELINE = 0;
 	public static final int FAVORITOS = 1;
 	
@@ -49,10 +50,14 @@ public class SubF_Events extends Fragment {
 		selectorTimeline.setVisibility(View.VISIBLE);
 		textoTimeline.setTextColor(Color.WHITE);
 		
+		pagerAdapter = new PagerAdapterEvents(getChildFragmentManager());
+		
 		((RelativeLayout)view.findViewById(R.id.botonTimeline)).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				viewPager.setCurrentItem(TIMELINE,true);
+				pagerAdapter.notifyDataSetChanged();
+
 			}
 		});
 		
@@ -60,6 +65,7 @@ public class SubF_Events extends Fragment {
 			@Override
 			public void onClick(View v) {
 				viewPager.setCurrentItem(FAVORITOS,true);
+				pagerAdapter.notifyDataSetChanged();
 			}
 		});
 		
@@ -72,7 +78,7 @@ public class SubF_Events extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		
 		viewPager = (ViewPager)getView().findViewById(R.id.viewPagerEvents);
-		viewPager.setAdapter(new PagerAdapterEvents(getChildFragmentManager()));
+		viewPager.setAdapter(pagerAdapter);
 		viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 			
@@ -88,6 +94,9 @@ public class SubF_Events extends Fragment {
 					textoFavorites.setTextColor(Color.GRAY);
 					textoFavorites.setTypeface(null,Typeface.NORMAL);
 					
+					pagerAdapter.notifyDataSetChanged();
+					viewPager.setCurrentItem(0);
+					
 				}else if (arg0==FAVORITOS){
 					selectorTimeline.setVisibility(View.INVISIBLE);
 					selectorFavorites.setVisibility(View.VISIBLE);
@@ -97,7 +106,9 @@ public class SubF_Events extends Fragment {
 					
 					textoTimeline.setTextColor(Color.parseColor("GRAY"));
 					textoTimeline.setTypeface(null,Typeface.NORMAL);
-					refreshFavoritesFragment();
+					
+					pagerAdapter.notifyDataSetChanged();
+					viewPager.setCurrentItem(1);
 				}
 			}
 			
@@ -153,13 +164,21 @@ public class SubF_Events extends Fragment {
 		super.onStop();
 	}
 	
-	private void refreshFavoritesFragment(){
+	private void refreshFavoritesFragment(int id){
 		 //inicializamos la varible
 		 Fragment fragment = null;
-		 fragment = new Page_Favorites();
+		 
+		 switch(id){
+		 case TIMELINE :
+			 fragment = new Page_TimeLine();
+			 break;
+		 case FAVORITOS:
+			 fragment = new Page_Favorites();
+			 
+		 }
 
 		 if(fragment!=null){
-			 FragmentManager fragmentManager = ((FragmentActivity)getActivity()).getSupportFragmentManager();
+			 FragmentManager fragmentManager = getChildFragmentManager();
 			 fragmentManager.beginTransaction().replace(R.id.content_Favorites, fragment).commit();
 		 }		 
 	 }

@@ -72,7 +72,7 @@ public class EventParser {
 		evento.setLugarEvento("Av. Viaducto Rio de la Piedad y Rio Churubusco S/N, Granjas Mexico, 08400 Ciudad de Mexico, D.F.");
 		evento.setTelefono(json.getString(KEY_PHONE));
 		evento.setBoleto(json.getString(KEY_TICKET_TYPE));
-		evento.setPrecio(json.getString(KEY_PRICE));
+		evento.setPrecio(json.optString(KEY_PRICE, "No disponible"));
 		evento.setDistancia(json.getString(KEY_DISTANCE));
 		evento.setLatEvento(json.getInt(KEY_LATITUDE));
 		evento.setLonEvento(json.getInt(KEY_LONGITUDE));

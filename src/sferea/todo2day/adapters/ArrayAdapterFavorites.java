@@ -78,7 +78,6 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 	private void deleteFavorites(final int position){
 		DataBaseSQLiteManager managerDB = new DataBaseSQLiteManager(this.getContext());
 		managerDB.eliminar(getItem(position).getIndexOfEvent());
-		Page_TimeLine.listaFavoritos.remove(getItem(position).getIndexOfEvent());
 		this.remove(getItem(position));
 	}
 

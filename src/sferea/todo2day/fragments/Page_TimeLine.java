@@ -14,6 +14,7 @@ import sferea.todo2day.helpers.JsonParserHelper;
 import sferea.todo2day.helpers.LocationHelper;
 import sferea.todo2day.helpers.ReadTableDB;
 import sferea.todo2day.helpers.SharedPreferencesHelperFinal;
+import sferea.todo2day.listeners.UpdateableFragmentListener;
 import sferea.todo2day.utils.ImageUtil;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -44,7 +45,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 public class Page_TimeLine extends Fragment implements OnTouchListener,
-		OnScrollListener {
+		OnScrollListener, UpdateableFragmentListener {
 
 	public static ArrayList<EventoObjeto> listaEventos;
 	public static ArrayList<String> listaFavoritos;
@@ -216,8 +217,9 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		// TODO Auto-generated method stub
 		
 		reader = new ReadTableDB(Application.getInstance());
-
+		
 		listaEventos = reader.fillEventListFromDB();
+		
 		listaFavoritos = reader.fillFavoriteListFromDB();
 		
 		arrayAdapterEvents.clear();
@@ -289,7 +291,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 			}
 		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + "&longitud="
-				+ lonOrigin + "" + "&radio=10" + "&categoria="
+				+ lonOrigin + "" + "&radio=" + SplashActivity.distanciaEvento + "&categoria="
 				+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
 				+ "&numEventos=0" + "&idEvento=" + indexEvent + "" + "&fecha="
 				+ fechaUnix + "");
@@ -471,6 +473,13 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		}
 		}
 		return false;
+	}
+
+	@Override
+	public void onUpdated() {
+		reader = new ReadTableDB(Application.getInstance());
+		listaFavoritos = reader.fillFavoriteListFromDB();
+		arrayAdapterEvents.notifyDataSetChanged();
 	}
 
 }
