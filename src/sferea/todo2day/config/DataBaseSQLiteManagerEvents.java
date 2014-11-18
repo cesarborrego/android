@@ -1,6 +1,6 @@
 package sferea.todo2day.config;
 
-import sferea.todo2day.adapters.EventoObjeto;
+import sferea.todo2day.beans.EventoObjeto;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -126,11 +126,11 @@ public class DataBaseSQLiteManagerEvents {
 	
 	public void eliminarAllItems(){
 		Log.d("DB EVENTS", "Delete from events;");
-		db.execSQL("Delete from events;");
+		db.execSQL("DELETE FROM EVENTS;");
 	}
 	
 	public void eliminarTabla(){
-		db.execSQL("Drop table events;");
+		db.execSQL("DROP TABLE EVENTS;");
 	}
 	
 	public void crearTabla(){

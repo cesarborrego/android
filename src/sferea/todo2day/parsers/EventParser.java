@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import sferea.todo2day.Helpers.DateUtil;
-import sferea.todo2day.adapters.EventoObjeto;
+import sferea.todo2day.beans.EventoObjeto;
+import sferea.todo2day.utils.DateUtil;
 
 public class EventParser {
 	private static final String KEY_NUMBER_ITEMS = "numberItems";

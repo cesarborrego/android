@@ -12,17 +12,17 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import sferea.todo2day.Helpers.CheckInternetConnection;
-import sferea.todo2day.Helpers.ImageUtil;
 import sferea.todo2day.adapters.ArrayAdapterFavorites;
-import sferea.todo2day.adapters.EventoObjeto;
-import sferea.todo2day.adapters.FavoritosObjeto;
+import sferea.todo2day.beans.EventoObjeto;
+import sferea.todo2day.beans.FavoritosObjeto;
 import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.DataBaseSQLiteManager;
 import sferea.todo2day.config.SharedPreferencesHelper;
-import sferea.todo2day.subfragments.Page_Favorites;
-import sferea.todo2day.subfragments.Page_TimeLine;
+import sferea.todo2day.fragments.Page_Favorites;
+import sferea.todo2day.fragments.Page_TimeLine;
+import sferea.todo2day.helpers.CheckInternetConnection;
+import sferea.todo2day.utils.ImageUtil;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -557,9 +557,7 @@ public class DetailActivity extends ActionBarActivity {
 				manager.eliminar(String.valueOf(evento.getIdOfEvent()));
 				
 				Log.d(null, "Se elimino Registro en DB "+evento.getNombreEvento());
-				
-				Page_TimeLine.listaFavoritos.remove(evento.getIdOfEvent());
-				//Activamos que se refresque favoritos
+								//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
 				
 				btnF.setImageResource(R.drawable.favorito);
@@ -584,9 +582,7 @@ public class DetailActivity extends ActionBarActivity {
 						String.valueOf(evento.getIdOfEvent()),
 						String.valueOf(evento.getFechaUnix()));
 				Log.d(null, "Registro Insertado en DB");						
-				
-				Page_TimeLine.listaFavoritos.add(evento.getIdOfEvent());
-				
+								
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
 				
@@ -599,14 +595,11 @@ public class DetailActivity extends ActionBarActivity {
 			if(cursor.getCount() > 0){
 				//Si esta prendida solo apaga y elimina el registro
 				manager.eliminar(String.valueOf(favoritosObjeto.getIndexOfEvent()));
-				Page_Favorites.adapterFavorites.remove(favoritosObjeto);
 				
 				Log.d(null, "Se elimino Registro en DB "+favoritosObjeto.getNombreEvento());
 				
 				//Activamos que se refresque favoritos
-				activaRefreshFavorites_Details = true;
-				Page_TimeLine.listaFavoritos.remove(favoritosObjeto.getIndexOfEvent());
-				
+				activaRefreshFavorites_Details = true;				
 				btnF.setImageResource(R.drawable.favorito);
 			}else{
 				//Si esta apagada solo prendemos e insertamos
@@ -633,10 +626,7 @@ public class DetailActivity extends ActionBarActivity {
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
-				Page_Favorites.adapterFavorites.add(favoritosObjeto);
-				
 				btnF.setImageResource(R.drawable.favorito_encendido);
-				Page_TimeLine.listaFavoritos.add(favoritosObjeto.getIndexOfEvent());
 			}
 		}
 		

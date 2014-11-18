@@ -1,10 +1,11 @@
-package sferea.todo2day.Helpers;
+package sferea.todo2day.helpers;
 
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.GpsStatus.Listener;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -150,7 +151,7 @@ public class LocationHelper extends Service implements LocationListener{
         alertDialog.setTitle("GPS");
   
         // Setting Dialog Message
-        alertDialog.setMessage("GPS no está Habilitado. ¿Deseas activarlo en tu configuración?");
+        alertDialog.setMessage("GPS no est?? Habilitado. ??Deseas activarlo en tu configuraci??n?");
   
         // Setting Icon to Dialog
         //alertDialog.setIcon(R.drawable.delete);

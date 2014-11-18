@@ -1,4 +1,4 @@
-package sferea.todo2day.adapters;
+package sferea.todo2day.beans;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;

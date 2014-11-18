@@ -1,4 +1,4 @@
-package sferea.todo2day.subfragments;
+package sferea.todo2day.fragments;
 
 import sferea.todo2day.R;
 import android.content.Context;
@@ -27,7 +27,7 @@ public class SubF_Categories extends Fragment {
 	ImageView antros, cultura, cine, deportes, negocios, peques, gastronomia, musica, salud, sociales, tecnologia, verde, other;
 	
 	
-	//Jugar� un poco con los n�meros pares y primos para saber cuando activar o desactivar la img de cada categor�a
+	//Jugar??? un poco con los n???meros pares y primos para saber cuando activar o desactivar la img de cada categor???a
 	int iAntro=1;
 	int iCultura=1;
 	int iCine=1;
@@ -131,7 +131,7 @@ public class SubF_Categories extends Fragment {
 				iPeques = 2;
 			}
 			
-			//Gatronom�a
+			//Gatronom???a
 			gastronomiaLayout = (LinearLayout) v.findViewById(R.id.botonCategoriaGatronomia);
 			gastronomia = (ImageView)v.findViewById(R.id.gastronomiaImgId);	 
 			if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 20", null))){
@@ -142,7 +142,7 @@ public class SubF_Categories extends Fragment {
 				iGastronomia = 2;
 			}
 			
-			//M�sica
+			//M???sica
 			musicaLayOut = (LinearLayout) v.findViewById(R.id.botonCategoriaMusica);
 			musica = (ImageView)v.findViewById(R.id.musicaImgId);	
 			if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 21", null))){
@@ -176,7 +176,7 @@ public class SubF_Categories extends Fragment {
 				iSociales = 2;
 			}
 			
-			//Tecnolog�a
+			//Tecnolog???a
 			tecnologiaLayOut = (LinearLayout) v.findViewById(R.id.botonCategoriaTecnologia);
 			tecnologia = (ImageView)v.findViewById(R.id.tecnologiaImgId);	    
 			if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 31", null))){

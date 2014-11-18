@@ -1,4 +1,4 @@
-package sferea.todo2day.Helpers;
+package sferea.todo2day.helpers;
 
 import sferea.todo2day.R;
 import android.app.Activity;

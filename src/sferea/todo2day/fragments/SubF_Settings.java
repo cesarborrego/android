@@ -1,4 +1,4 @@
-package sferea.todo2day.subfragments;
+package sferea.todo2day.fragments;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -93,9 +93,9 @@ public class SubF_Settings extends Fragment {
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setMessage("Puedes obtener tu ubicación de manera automatica por medio del GPS " +
-						"o si lo prefieres, puedes ubicarte desde otra posición, por ejemplo, la casa de un amigo, escuela, etc.")
-//				        .setTitle("Atenci�n!!")
+				builder.setMessage("Puedes obtener tu ubicaci??n de manera automatica por medio del GPS " +
+						"o si lo prefieres, puedes ubicarte desde otra posici??n, por ejemplo, la casa de un amigo, escuela, etc.")
+//				        .setTitle("Atenci???n!!")
 				        .setCancelable(false)
 				        .setNeutralButton("Aceptar",
 				                new DialogInterface.OnClickListener() {
@@ -113,8 +113,8 @@ public class SubF_Settings extends Fragment {
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setMessage("Aumenta el radio de búsqueda de eventos respecto a tu posición. ¡Pruébalo!")
-				//				        .setTitle("Atenci�n!!")
+				builder.setMessage("Aumenta el radio de b??squeda de eventos respecto a tu posici??n. ??Pru??balo!")
+				//				        .setTitle("Atenci???n!!")
 				.setCancelable(false)
 				.setNeutralButton("Aceptar",
 						new DialogInterface.OnClickListener() {
@@ -132,8 +132,8 @@ public class SubF_Settings extends Fragment {
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setMessage("Logueate con tu cuenta de Twitter y comparte con todos tus amigos los eventos que más te gusten!")
-				//		        .setTitle("Atenci�n!!")
+				builder.setMessage("Logueate con tu cuenta de Twitter y comparte con todos tus amigos los eventos que m??s te gusten!")
+				//		        .setTitle("Atenci???n!!")
 				.setCancelable(false)
 				.setNeutralButton("Aceptar",
 						new DialogInterface.OnClickListener() {

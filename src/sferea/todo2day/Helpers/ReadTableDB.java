@@ -1,12 +1,13 @@
-package sferea.todo2day.Helpers;
+package sferea.todo2day.helpers;
 
 import java.util.ArrayList;
 
 import sferea.todo2day.R;
-import sferea.todo2day.adapters.EventoObjeto;
+import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.config.DataBaseSQLiteManager;
 import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
-import sferea.todo2day.subfragments.Page_TimeLine;
+import sferea.todo2day.fragments.Page_TimeLine;
+import sferea.todo2day.utils.ListUtil;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -139,7 +140,7 @@ public class ReadTableDB {
 		return favoritos;
 	}
 	
-	public int readTable() {
+	public int getEventsDBCount() {
 		Cursor cursor = dataBaseSQLiteManagerEvents.cargarTablas();
 		return cursor.getCount();
 	}

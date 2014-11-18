@@ -1,13 +1,13 @@
-package sferea.todo2day.Helpers;
+package sferea.todo2day.utils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-import sferea.todo2day.adapters.EventoObjeto;
+import sferea.todo2day.beans.EventoObjeto;
+
 
 public class ListUtil {
 	public static void sortListByDate(ArrayList<EventoObjeto> eventos) {
@@ -26,7 +26,7 @@ public class ListUtil {
 
 					result = d1.compareTo(d2);
 
-				} catch (ParseException e) {
+				} catch (java.text.ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -35,3 +35,4 @@ public class ListUtil {
 		});
 	}
 }
+

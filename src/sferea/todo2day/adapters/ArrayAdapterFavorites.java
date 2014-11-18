@@ -1,15 +1,13 @@
 package sferea.todo2day.adapters;
 
-import java.util.ArrayList;
-
 import sferea.todo2day.R;
-import sferea.todo2day.Helpers.DateUtil;
-import sferea.todo2day.Helpers.ImageUtil;
+import sferea.todo2day.beans.EventoObjeto;
+import sferea.todo2day.beans.FavoritosObjeto;
 import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.DataBaseSQLiteManager;
-import sferea.todo2day.subfragments.Page_TimeLine;
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import sferea.todo2day.fragments.Page_TimeLine;
+import sferea.todo2day.utils.DateUtil;
+import sferea.todo2day.utils.ImageUtil;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,17 +21,12 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
-	Context contex;
-	Activity activityAdapter;
-	FavoritosObjeto [] favoritesObjeto;	
 	EventoObjeto eventoObjeto;
 	ImageLoader imageloader;
 	DisplayImageOptions options;
 	
-	public ArrayAdapterFavorites(Activity activity, Context context, ArrayList<FavoritosObjeto> datos) {
-		super(activity,  R.layout.row_favorite_tablet, datos);
-		this.activityAdapter = activity;
-		this.contex = context;
+	public ArrayAdapterFavorites(Context context) {
+		super(context, 0);
 		this.imageloader = ImageUtil.getImageLoader();
 		this.options = ImageUtil.getOptionsImageLoader();
 	}
@@ -83,12 +76,10 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 	
 	
 	private void deleteFavorites(final int position){
-		DataBaseSQLiteManager managerDB = new DataBaseSQLiteManager(activityAdapter.getApplicationContext());
+		DataBaseSQLiteManager managerDB = new DataBaseSQLiteManager(this.getContext());
 		managerDB.eliminar(getItem(position).getIndexOfEvent());
 		Page_TimeLine.listaFavoritos.remove(getItem(position).getIndexOfEvent());
 		this.remove(getItem(position));
-		this.notifyDataSetChanged();
-		Page_TimeLine.arrayAdapterEvents.notifyDataSetChanged();
 	}
 
 	

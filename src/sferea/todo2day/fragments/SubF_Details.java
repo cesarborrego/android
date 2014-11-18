@@ -1,4 +1,4 @@
-package sferea.todo2day.subfragments;
+package sferea.todo2day.fragments;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

@@ -3,12 +3,13 @@ package sferea.todo2day;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import sferea.todo2day.Helpers.CheckInternetConnection;
-import sferea.todo2day.Helpers.JsonHelper;
-import sferea.todo2day.Helpers.JsonParserHelper;
-import sferea.todo2day.Helpers.LocationHelper;
-import sferea.todo2day.Helpers.ReadTableDB;
-import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
+import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
+import sferea.todo2day.helpers.CheckInternetConnection;
+import sferea.todo2day.helpers.JsonHelper;
+import sferea.todo2day.helpers.JsonParserHelper;
+import sferea.todo2day.helpers.LocationHelper;
+import sferea.todo2day.helpers.ReadTableDB;
+import sferea.todo2day.helpers.SharedPreferencesHelperFinal;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -27,8 +28,6 @@ import android.util.Log;
  * @version 1.0
  * */
 public class SplashActivity extends Activity {
-//	double latOrigin = 19.355582;
-//	double lonOrigin = -99.186726;
 
 	double latOrigin;
 	double lonOrigin;
@@ -42,6 +41,8 @@ public class SplashActivity extends Activity {
 
 	boolean creaArchivoShared = true;
 	SharedPreferences prefsCategorias;
+	ReadTableDB reader;
+	DataBaseSQLiteManagerEvents eventsSqlManager;
 
 	/**
 	 * contiene la cantidad de tiempo en milisegundos que se mostrara la imagen
@@ -90,11 +91,10 @@ public class SplashActivity extends Activity {
 
 					if (creaArchivoShared) {
 						sharedPreferencesHelper.creaArchivoShared();
-						downloadJSON(latOrigin, lonOrigin);
 					} else {
 						sharedPreferencesHelper.obtieneCategoriasPreferences();
-						downloadJSON(latOrigin, lonOrigin);
 					}
+					downloadJSON(latOrigin, lonOrigin);
 				}
 			};
 
@@ -121,14 +121,19 @@ public class SplashActivity extends Activity {
 	public void downloadJSON(final double lat, final double lon) {
 		Log.d(null, "Comienza la descarga del JSON...");
 
+		reader = new ReadTableDB(this);
+		eventsSqlManager = new DataBaseSQLiteManagerEvents(this);
+		
 		new AsyncTask<String, Void, Void>() {
-
-			protected void onPreExecute() {
-
-			};
 
 			@Override
 			protected Void doInBackground(String... params) {
+				if(reader.getEventsDBCount() > 0){
+					
+					eventsSqlManager.eliminarAllItems();
+					eventsSqlManager.cerrarDB();
+				}
+				
 				String result = jsonHelper.connectionMongo_Json(params[0]);
 				JsonParserHelper helper = new JsonParserHelper(Application.getInstance());
 				helper.addEventsToDB(result);

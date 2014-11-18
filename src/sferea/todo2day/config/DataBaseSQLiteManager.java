@@ -133,7 +133,7 @@ public class DataBaseSQLiteManager {
 				" EVENTO_ID TEXT NOT NULL, TITULO_EVENTO TEXT NOT NULL, CATEGORIA TEXT NOT NULL, CATEGORIA_ID TEXT NOT NULL, FECHA TEXT NOT NULL," +
 				" DESCRIPCION TEXT NOT NULL, FUENTE TEXT, LUGAR TEXT NOT NULL, DIRECCION TEXT," +
 				" TELEFONO TEXT, BOLETO TEXT, DISTANCIA TEXT, LATITUD TEXT NOT NULL, LONGITUD TEXT NOT NULL," +
-				" URL_IMAGEN_EVENTO TEXT, POSICION INTEGER, INDEX_OF_EVENT TEXT NOT NULL, FECHA_UNIX TEXT NOT NULL);");
+				" URL_IMAGEN_EVENTO TEXT, POSICION INTEGER, INDEX_OF_EVENT TEXT NOT NULL,FECHA_UNIX TEXT NOT NULL);");
 	}
 	
 	public void eliminarMultiple(String tituloEvento, String tituloEvento2){
@@ -144,7 +144,7 @@ public class DataBaseSQLiteManager {
 	public void modificarValoresDB(String eventoId, String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
-			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
+			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, int isFavorite, String fechaUnix){	
 		//db.update(table, values, whereClause, whereArgs)
 		db.update(DB_NAME, generarContentValues(eventoId, tituloEvento, categoriEvento, categoriIDEvento, fechaEvento, descripcionEvento,
 				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, distanciaEvento, 

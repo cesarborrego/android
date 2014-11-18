@@ -1,12 +1,10 @@
-package sferea.todo2day.Helpers;
+package sferea.todo2day.utils;
 
 import java.io.File;
 
 import sferea.todo2day.Application;
 import sferea.todo2day.R;
-
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

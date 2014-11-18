@@ -1,4 +1,4 @@
-package sferea.todo2day.Helpers;
+package sferea.todo2day.helpers;
 
 import java.io.BufferedReader;
 import java.io.IOException;

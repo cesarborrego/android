@@ -1,4 +1,4 @@
-package sferea.todo2day.subfragments;
+package sferea.todo2day.fragments;
 
 import sferea.todo2day.R;
 import sferea.todo2day.adapters.PagerAdapterEvents;

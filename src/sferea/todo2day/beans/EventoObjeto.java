@@ -1,4 +1,4 @@
-package sferea.todo2day.adapters;
+package sferea.todo2day.beans;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;
@@ -26,8 +26,6 @@ public class EventoObjeto implements Parcelable {
 	String distancia;
 	Bitmap imagenEvento;
 	int imagenCategoria;
-
-	// Nuevos campos para el nuevo constructor
 	String descripcion;
 	String fuente;
 	String direccion;

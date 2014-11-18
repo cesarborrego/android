@@ -3,13 +3,14 @@ package sferea.todo2day.adapters;
 import java.util.ArrayList;
 
 import sferea.todo2day.R;
-import sferea.todo2day.Helpers.DateUtil;
+import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.DataBaseSQLiteManager;
 import sferea.todo2day.config.SharedPreferencesHelper;
-import sferea.todo2day.subfragments.Page_TimeLine;
-import sferea.todo2day.subfragments.SubF_Events;
+import sferea.todo2day.fragments.Page_TimeLine;
+import sferea.todo2day.fragments.SubF_Events;
+import sferea.todo2day.utils.DateUtil;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -52,9 +53,8 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 	String inicioTweet;
 	String enTweet;
 	
-	public ArrayAdapterEvents(Context context, int resource,
-			int textViewResourceId, ArrayList<EventoObjeto> objects, ImageLoader imageloader, DisplayImageOptions options) {
-		super(context, resource, textViewResourceId, objects);
+	public ArrayAdapterEvents(Context context, ImageLoader imageloader, DisplayImageOptions options) {
+		super(context, 0);
 		this.thisContext = context;
 		this.imageloader = imageloader;
 		this.options = options;

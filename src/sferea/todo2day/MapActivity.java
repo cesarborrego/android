@@ -3,8 +3,6 @@ package sferea.todo2day;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -15,12 +13,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import sferea.todo2day.adapters.EventoObjeto;
-import sferea.todo2day.subfragments.Page_TimeLine;
-import android.app.AlertDialog;
+import sferea.todo2day.beans.EventoObjeto;
+import sferea.todo2day.fragments.Page_TimeLine;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -88,7 +83,7 @@ public class MapActivity extends ActionBarActivity {
         		//Creamos marcador para que indique la posicion
         		final Marker marcadorOrigen = mMap.addMarker(new MarkerOptions()
 		        .position(new LatLng(Page_TimeLine.latOrigin, Page_TimeLine.lonOrigin))
-		        .title("Tu posición"));
+		        .title("Tu posici��n"));
         		marcadorOrigen.showInfoWindow();
         		
         		Toast.makeText(getApplicationContext(), "Presiona sobre el nuevo lugar", Toast.LENGTH_LONG).show();
@@ -127,7 +122,7 @@ public class MapActivity extends ActionBarActivity {
 	
 	/*private void alertMap(final LatLng point, final String lat, final String lon){
 		AlertDialog.Builder alertbuiBuilder = new AlertDialog.Builder(getApplicationContext());
-		alertbuiBuilder.setMessage("�Deseas que este sea el punto de inicio?")
+		alertbuiBuilder.setMessage("���Deseas que este sea el punto de inicio?")
 		.setCancelable(false)
 		.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {			
 			@Override

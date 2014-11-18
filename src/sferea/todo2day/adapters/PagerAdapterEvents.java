@@ -1,7 +1,7 @@
 package sferea.todo2day.adapters;
 
-import sferea.todo2day.subfragments.Page_Favorites;
-import sferea.todo2day.subfragments.Page_TimeLine;
+import sferea.todo2day.fragments.Page_Favorites;
+import sferea.todo2day.fragments.Page_TimeLine;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

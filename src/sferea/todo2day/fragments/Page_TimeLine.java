@@ -1,4 +1,4 @@
-package sferea.todo2day.subfragments;
+package sferea.todo2day.fragments;
 
 import java.util.ArrayList;
 
@@ -6,16 +6,15 @@ import sferea.todo2day.Application;
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.SplashActivity;
-import sferea.todo2day.Helpers.CheckInternetConnection;
-import sferea.todo2day.Helpers.ImageUtil;
-import sferea.todo2day.Helpers.JsonHelper;
-import sferea.todo2day.Helpers.JsonParserHelper;
-import sferea.todo2day.Helpers.LocationHelper;
-import sferea.todo2day.Helpers.ReadTableDB;
-import sferea.todo2day.Helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.adapters.ArrayAdapterEvents;
-import sferea.todo2day.adapters.EventoObjeto;
-import sferea.todo2day.tasks.AddMoreEventsTask;
+import sferea.todo2day.beans.EventoObjeto;
+import sferea.todo2day.helpers.CheckInternetConnection;
+import sferea.todo2day.helpers.JsonHelper;
+import sferea.todo2day.helpers.JsonParserHelper;
+import sferea.todo2day.helpers.LocationHelper;
+import sferea.todo2day.helpers.ReadTableDB;
+import sferea.todo2day.helpers.SharedPreferencesHelperFinal;
+import sferea.todo2day.utils.ImageUtil;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -110,8 +109,6 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	ProgressBar progressFooter;
 	TextView footerNoInternet, footerNoInternetClic;
 
-	AddMoreEventsTask task;
-
 	public Page_TimeLine() {
 	}
 
@@ -121,12 +118,16 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		checkInternetConnection = new CheckInternetConnection(getActivity()
 				.getApplicationContext(), getActivity());
 		jsonHelper = new JsonHelper(Application.getInstance());
-		jsonParser = new JsonParserHelper(Application.getInstance());
 		imageloader = ImageUtil.getImageLoader();
 		options = ImageUtil.getOptionsImageLoader();
 		
 		locationHelper = new LocationHelper(getActivity().getApplicationContext());
+		listaEventos = new ArrayList<EventoObjeto>();
+		listaFavoritos = new ArrayList<String>();
+	
 	}
+	
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -153,15 +154,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 			}
 		});
-		swipeLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.CYAN);
-
-		listaEventos = new ArrayList<EventoObjeto>();
-		listaFavoritos = new ArrayList<String>();
-
-		ReadTableDB reader = new ReadTableDB(Application.getInstance());
-
-		listaEventos = reader.fillEventListFromDB();
-		listaFavoritos = reader.fillFavoriteListFromDB();
+		swipeLayout.setColorSchemeColors(Color.rgb(255, 140, 0));
 
 		// Obtiene la vista del listView
 		listView_Eventos = ((ListView) view.findViewById(R.id.listviewEventos));
@@ -176,9 +169,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 				.findViewById(R.id.textoFooterNOInternetClic);
 
 		// Crea el arrayAdapter de eventos
-		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(),
-				R.layout.row_event_responsive, R.id.listviewEventos,
-				listaEventos, imageloader, options);
+		arrayAdapterEvents = new ArrayAdapterEvents(getActivity(), imageloader, options);
 
 		// Agrega el header
 		listView_Eventos.addHeaderView(headerView);
@@ -187,10 +178,9 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		listView_Eventos.addFooterView(footerView);
 
 		// Asigna el arrayAdapter al listview
+		
 		listView_Eventos.setAdapter(arrayAdapterEvents);
-
-		numeroEventos = arrayAdapterEvents.getCount();
-
+		
 		PauseOnScrollListener listener = new PauseOnScrollListener(imageloader,
 				true, true);
 
@@ -220,35 +210,26 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 		return view;
 	}
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		
+		reader = new ReadTableDB(Application.getInstance());
 
-	public void readTableEvents_fillListFavorites() {
-		new AsyncTask<Void, Void, ArrayList<EventoObjeto>>() {
-
-			@Override
-			protected void onPreExecute() {
-				// TODO El dialog de cargar
-			}
-
-			protected ArrayList<EventoObjeto> doInBackground(Void... params) {
-				ReadTableDB reader = new ReadTableDB(Application.getInstance());
-				// Crea un nuevo arraylist de eventos
-
-				listaFavoritos = reader.fillFavoriteListFromDB();
-				return reader.fillEventListFromDB();
-			}
-
-			@Override
-			protected void onPostExecute(ArrayList<EventoObjeto> result) {
-				super.onPostExecute(result);
-				arrayAdapterEvents.clear();
-				listaEventos.clear();
-				listaEventos.addAll(result);
-				arrayAdapterEvents.notifyDataSetChanged();
-				numeroEventos = arrayAdapterEvents.getCount();
-			}
-
-		}.execute();
+		listaEventos = reader.fillEventListFromDB();
+		listaFavoritos = reader.fillFavoriteListFromDB();
+		
+		arrayAdapterEvents.clear();
+		
+		arrayAdapterEvents.addAll(listaEventos);
+		
+		arrayAdapterEvents.notifyDataSetChanged();
+		
+		numeroEventos = arrayAdapterEvents.getCount();
+		super.onResume();
 	}
+
 
 	public void addMoreEvents(final double lat, final double lon) {
 
@@ -262,6 +243,8 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
 				getActivity().getApplicationContext());
+		
+		jsonParser = new JsonParserHelper(getActivity());
 
 		new AsyncTask<String, Void, Boolean>() {
 			@Override
@@ -284,13 +267,13 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 				if (params) {
 					reader = new ReadTableDB(getActivity()
 							.getApplicationContext());
-					if (reader.readTable() == arrayAdapterEvents.getCount()) {
+					if (reader.getEventsDBCount() == arrayAdapterEvents.getCount()) {
 						progressFooter.setVisibility(View.GONE);
 						((TextView) footerView.findViewById(R.id.textoFooter))
 								.setVisibility(View.VISIBLE);
 					} else {
-						listaEventos.clear();
-						listaEventos.addAll(reader.fillEventListFromDB());
+						arrayAdapterEvents.clear();
+						arrayAdapterEvents.addAll(reader.fillEventListFromDB());
 						arrayAdapterEvents.notifyDataSetChanged();
 						
 						numeroEventos = arrayAdapterEvents.getCount();
@@ -329,6 +312,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 			protected Void doInBackground(String... params) {
 				String result = jsonHelper.connectionMongo_Json(params[0]);
+				jsonParser = new JsonParserHelper(Application.getInstance());
 				jsonParser.addEventsToDB(result);
 				reader = new ReadTableDB(Application.getInstance());
 				lista = reader.fillEventListFromDB();
@@ -339,10 +323,9 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
-				listaEventos.clear();
 				arrayAdapterEvents.clear();
-				listaEventos.addAll(lista);
-				listView_Eventos.setAdapter(arrayAdapterEvents);
+				arrayAdapterEvents.addAll(lista);
+				arrayAdapterEvents.notifyDataSetChanged();
 				refresh = false;
 				swipeLayout.setRefreshing(false);
 				numeroEventos = arrayAdapterEvents.getCount();

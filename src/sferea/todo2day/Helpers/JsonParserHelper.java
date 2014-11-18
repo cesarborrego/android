@@ -1,4 +1,4 @@
-package sferea.todo2day.Helpers;
+package sferea.todo2day.helpers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,10 +9,11 @@ import java.util.Date;
 
 import org.json.JSONException;
 
-import sferea.todo2day.adapters.EventoObjeto;
+import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
+import sferea.todo2day.fragments.Page_TimeLine;
 import sferea.todo2day.parsers.EventParser;
-import sferea.todo2day.subfragments.Page_TimeLine;
+import sferea.todo2day.utils.DateUtil;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -102,6 +103,9 @@ public class JsonParserHelper {
 				// Si hay error en el parse retorna false
 				respuesta = false;
 				e.printStackTrace();
+			}
+			finally{
+				dataBaseSQLiteManagerEvents.cerrarDB();
 			}
 
 		}
