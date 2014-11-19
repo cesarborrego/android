@@ -12,6 +12,7 @@ import android.os.Parcelable;
  * 
  * @author maw
  */
+
 public class FavoritosObjeto implements Parcelable{
 	
 	String idEvento;

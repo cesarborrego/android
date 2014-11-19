@@ -28,6 +28,4 @@ public class BoletoObjeto implements Serializable {
 		this.precio = precio;
 	}
 	
-	
-	
 }

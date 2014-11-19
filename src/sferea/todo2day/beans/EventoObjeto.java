@@ -12,6 +12,7 @@ import android.os.Parcelable;
  * 
  * @author maw
  */
+
 public class EventoObjeto implements Parcelable {
 
 	String nombreEvento;
