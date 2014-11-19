@@ -1,11 +1,6 @@
 package sferea.todo2day.helpers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 
 import org.json.JSONException;
 
@@ -14,7 +9,6 @@ import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
 import sferea.todo2day.fragments.Page_TimeLine;
 import sferea.todo2day.parsers.EventParser;
 import sferea.todo2day.utils.DateUtil;
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 

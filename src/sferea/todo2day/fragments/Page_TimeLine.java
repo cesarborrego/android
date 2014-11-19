@@ -222,11 +222,14 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		
 		listaFavoritos = reader.fillFavoriteListFromDB();
 		
-		arrayAdapterEvents.clear();
+		if(listaEventos != null)
+		{
+			arrayAdapterEvents.clear();
 		
-		arrayAdapterEvents.addAll(listaEventos);
-		
-		arrayAdapterEvents.notifyDataSetChanged();
+			arrayAdapterEvents.addAll(listaEventos);
+			
+			arrayAdapterEvents.notifyDataSetChanged();
+		}
 		
 		numeroEventos = arrayAdapterEvents.getCount();
 		super.onResume();
