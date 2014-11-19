@@ -12,7 +12,6 @@ import android.os.Parcelable;
  * 
  * @author maw
  */
-
 public class EventoObjeto implements Parcelable {
 
 	String nombreEvento;
@@ -31,13 +30,12 @@ public class EventoObjeto implements Parcelable {
 	String fuente;
 	String direccion;
 	String telefono;
-	String boleto;
-	String precio;
 	int posicion;
 	String idOfEvent;
 	int fechaUnix;
 	int indexOfEvent;
 	int isNewEvent;
+	TipoBoletoObjeto tipoBoleto;
 
 	public EventoObjeto() {
 
@@ -47,8 +45,8 @@ public class EventoObjeto implements Parcelable {
 			String catIDEvento, String fechaEvento, String descripcionEvento,
 			String fuenteEvento, String LugarEvento, String direccionEvento,
 			String telefonoEvento, double lat, double lon, String dist,
-			String boletoEvento, String precio, int posicion, String idOfEvent,
-			int fechaUnix, String urlImgEvento, int imagenCategoria,
+			int posicion, String idOfEvent,
+			int fechaUnix, String urlImgEvento, int imagenCategoria, TipoBoletoObjeto boletos,
 			int indexEvento) {
 		setNombreEvento(nombreEvento);
 		setCategoriaEvento(catEvento);
@@ -59,7 +57,6 @@ public class EventoObjeto implements Parcelable {
 		setLugarEvento(LugarEvento);
 		setDireccion(direccionEvento);
 		setTelefono(telefonoEvento);
-		setBoleto(boletoEvento);
 		setDistancia(dist);
 		setLatEvento(lat);
 		setLonEvento(lon);
@@ -67,9 +64,9 @@ public class EventoObjeto implements Parcelable {
 		setIdOfEvent(idOfEvent);
 		setFechaUnix(fechaUnix);
 		setUrlImagen(urlImgEvento);
-		setPrecio(precio);
 		setImagenCategoria(imagenCategoria);
 		setIndexEvento(indexEvento);
+		setTipoBoleto(boletos);
 	}
 
 	/** Setter & getters */
@@ -211,14 +208,6 @@ public class EventoObjeto implements Parcelable {
 		this.telefono = telefono;
 	}
 
-	public String getBoleto() {
-		return boleto;
-	}
-
-	public void setBoleto(String boleto) {
-		this.boleto = boleto;
-	}
-
 	public int getPosicion() {
 		return posicion;
 	}
@@ -259,12 +248,12 @@ public class EventoObjeto implements Parcelable {
 		this.imagenCategoria = imagenCategoria;
 	}
 
-	public String getPrecio() {
-		return precio;
+	public TipoBoletoObjeto getTipoBoleto() {
+		return tipoBoleto;
 	}
 
-	public void setPrecio(String precio) {
-		this.precio = precio;
+	public void setTipoBoleto(TipoBoletoObjeto tipoBoleto) {
+		this.tipoBoleto = tipoBoleto;
 	}
 
 	/**
@@ -289,17 +278,16 @@ public class EventoObjeto implements Parcelable {
 		dest.writeString(fuente);
 		dest.writeString(direccion);
 		dest.writeString(telefono);
-		dest.writeString(boleto);
 		dest.writeDouble(latEvento);
 		dest.writeDouble(lonEvento);
 		dest.writeInt(posicion);
 		dest.writeString(idOfEvent);
 		dest.writeInt(fechaUnix);
 		dest.writeString(urlImgEvento);
-		dest.writeString(precio);
 		dest.writeInt(imagenCategoria);
 		dest.writeInt(indexOfEvent);
 		dest.writeInt(isNewEvent);
+		dest.writeSerializable(tipoBoleto);
 
 	}
 
@@ -326,17 +314,16 @@ public class EventoObjeto implements Parcelable {
 		setFuente(pc.readString());
 		setDireccion(pc.readString());
 		setTelefono(pc.readString());
-		setBoleto(pc.readString());
 		setLatEvento(pc.readDouble());
 		setLonEvento(pc.readDouble());
 		setPosicion(pc.readInt());
 		setIdOfEvent(pc.readString());
 		setFechaUnix(pc.readInt());
 		setUrlImagen(pc.readString());
-		setPrecio(pc.readString());
 		setImagenCategoria(pc.readInt());
 		setIndexEvento(pc.readInt());
 		setIsNewEvent(pc.readInt());
+		setTipoBoleto((TipoBoletoObjeto) pc.readSerializable());
 	}
 
 }
