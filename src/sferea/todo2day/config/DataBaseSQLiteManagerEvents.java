@@ -20,8 +20,7 @@ public class DataBaseSQLiteManagerEvents {
 	public static final String LUGAR = "LUGAR";
 	public static final String DIRECCION = "DIRECCION";
 	public static final String TELEFONO = "TELEFONO";
-	public static final String BOLETO = "BOLETO";
-	public static final String PRECIO = "PRECIO";
+	public static final String BOLETO_ID = "BOLETO_ID";
 	public static final String DISTANCIA = "DISTANCIA";
 	public static final String LATITUD = "LATITUD";
 	public static final String LONGITUD = "LONGITUD";
@@ -44,8 +43,7 @@ public class DataBaseSQLiteManagerEvents {
 			" "+LUGAR+" text not null, " +
 			" "+DIRECCION+" text," +
 			" "+TELEFONO+" text, " +
-			" "+BOLETO+" text, " +
-			" "+PRECIO+" text, " +
+			" "+BOLETO_ID+" text not null, " +
 			" "+DISTANCIA+" text," +
 			" "+LATITUD+" text not null, " +
 			" "+LONGITUD+" text not null, " +
@@ -67,7 +65,7 @@ public class DataBaseSQLiteManagerEvents {
 	public ContentValues generarContentValues (String idEvento, String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String distanciaEvento, String latitudEvento, 
-			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix, String isNew){	
+			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix, String isNew, String boletoId){	
 		ContentValues valoresDB = new ContentValues();
 		valoresDB.put(EVENTO_ID, idEvento);
 		valoresDB.put(TITULO_EVENTO, tituloEvento);
@@ -87,6 +85,7 @@ public class DataBaseSQLiteManagerEvents {
 		valoresDB.put(INDEX_OF_EVENT, indexOfEvent);
 		valoresDB.put(FECHA_UNIX, fechaUnix);
 		valoresDB.put(IS_NEW, isNew);
+		valoresDB.put(BOLETO_ID, boletoId);
 		return valoresDB;
 		
 	}
@@ -113,7 +112,8 @@ public class DataBaseSQLiteManagerEvents {
 						String.valueOf(evento.getPosicion()), 
 						String.valueOf(evento.getIndexEvento()), 
 						String.valueOf(evento.getFechaUnix()),
-						String.valueOf(evento.getIsNewEvent())));		
+						String.valueOf(evento.getIsNewEvent()),
+						String.valueOf(evento.getTipoBoleto().getId())));		
 	}
 	
 	public void eliminar(String indexOfEvent){
@@ -161,7 +161,8 @@ public class DataBaseSQLiteManagerEvents {
 						String.valueOf(evento.getPosicion()), 
 						String.valueOf(evento.getIndexEvento()), 
 						String.valueOf(evento.getFechaUnix()),
-						String.valueOf(evento.getIsNewEvent())), 
+						String.valueOf(evento.getIsNewEvent()),
+						String.valueOf(evento.getTipoBoleto().getId())),	
 						EVENTO_ID+"=?", 
 				new String[]{evento.getIdOfEvent()});
 	}

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import org.json.JSONException;
 
 import sferea.todo2day.beans.EventoObjeto;
+import sferea.todo2day.beans.TipoBoletoObjeto;
 import sferea.todo2day.config.DataBaseSQLiteManagerEvents;
+import sferea.todo2day.config.DataBaseSQLiteManagerTickets;
 import sferea.todo2day.fragments.Page_TimeLine;
 import sferea.todo2day.parsers.EventParser;
 import sferea.todo2day.utils.DateUtil;
@@ -22,6 +24,7 @@ public class JsonParserHelper {
 
 	Context thisContext;
 	DataBaseSQLiteManagerEvents dataBaseSQLiteManagerEvents;
+	DataBaseSQLiteManagerTickets dataBaseSQLiteManagerTickets;
 	DateUtil dateUtil;
 	ReadTableDB readTableDB;
 
@@ -30,6 +33,7 @@ public class JsonParserHelper {
 		dateUtil = new DateUtil();
 		dataBaseSQLiteManagerEvents = new DataBaseSQLiteManagerEvents(
 				thisContext);
+		dataBaseSQLiteManagerTickets = new DataBaseSQLiteManagerTickets(thisContext);
 		readTableDB = new ReadTableDB(thisContext);
 	}
 
@@ -66,6 +70,14 @@ public class JsonParserHelper {
 
 						dataBaseSQLiteManagerEvents.insertar(listaEventos
 								.get(i));
+						
+						for(int j=0; j<listaEventos.get(i).getTipoBoleto().getListaBoletos().size(); j++){
+							
+							dataBaseSQLiteManagerTickets.insertar(listaEventos.get(i).getIdOfEvent(), 
+									listaEventos.get(i).getTipoBoleto().getListaBoletos().get(j));
+						}
+						
+						
 
 						Log.d("SQLite", "Se inserto registro con ID "
 								+ listaEventos.get(i).getIdOfEvent() + "\n"
