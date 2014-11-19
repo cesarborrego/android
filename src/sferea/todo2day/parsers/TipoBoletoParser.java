@@ -48,8 +48,8 @@ public class TipoBoletoParser {
 	private static BoletoObjeto parseJSONBoleto(JSONObject objeto) throws JSONException{
 		BoletoObjeto boleto = new BoletoObjeto();
 		boleto.setTipo(objeto.getString(KEY_TICKET_TYPE));
-		boleto.setPrecio(objeto.getDouble(KEY_PRICE));
-		boleto.setCantidad(objeto.getInt(KEY_QUANTITY));
+		boleto.setPrecio(objeto.getString(KEY_PRICE));
+		boleto.setCantidad(objeto.getString(KEY_QUANTITY));
 		
 		return boleto;
 	}
