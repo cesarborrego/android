@@ -80,7 +80,7 @@ public class DataBaseSQLiteManager {
 //			String longitudEvento){
 	public ContentValues generarContentValues (String eventId, String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
-			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
+			String telefonoEvento, String distanciaEvento, String latitudEvento, 
 			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
 		ContentValues valoresDB = new ContentValues();
 		valoresDB.put(EVENTO_ID, eventId);
@@ -93,7 +93,6 @@ public class DataBaseSQLiteManager {
 		valoresDB.put(LUGAR, lugarEvento);
 		valoresDB.put(DIRECCION, direccionEvento);
 		valoresDB.put(TELEFONO, telefonoEvento);
-		valoresDB.put(BOLETO, boletoEvento);
 		valoresDB.put(DISTANCIA, distanciaEvento);
 		valoresDB.put(LATITUD, latitudEvento);
 		valoresDB.put(LONGITUD, longitudEvento);
@@ -107,11 +106,11 @@ public class DataBaseSQLiteManager {
 	
 	public void insertar(String eventId, String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
-			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
+			String telefonoEvento, String distanciaEvento, String latitudEvento, 
 			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
 		//db.insert(table, nullColumnHack, values)		
 		db.insert(DB_NAME, null, generarContentValues(eventId, tituloEvento, categoriEvento, categoriIDEvento, fechaEvento, descripcionEvento, 
-				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, distanciaEvento, latitudEvento, longitudEvento,
+				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, distanciaEvento, latitudEvento, longitudEvento,
 				urlImagen, posicion, indexOfEvent, fechaUnix));		
 	}
 	
@@ -147,7 +146,7 @@ public class DataBaseSQLiteManager {
 			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
 		//db.update(table, values, whereClause, whereArgs)
 		db.update(DB_NAME, generarContentValues(eventoId, tituloEvento, categoriEvento, categoriIDEvento, fechaEvento, descripcionEvento,
-				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, boletoEvento, distanciaEvento, 
+				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, distanciaEvento, 
 				latitudEvento, longitudEvento, urlImagen, posicion, indexOfEvent, fechaUnix), INDEX_OF_EVENT+"=?", new String[]{indexOfEvent});
 	}
 		

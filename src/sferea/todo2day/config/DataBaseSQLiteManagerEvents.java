@@ -66,7 +66,7 @@ public class DataBaseSQLiteManagerEvents {
 
 	public ContentValues generarContentValues (String idEvento, String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
-			String telefonoEvento, String boletoEvento, String precioEvento, String distanciaEvento, String latitudEvento, 
+			String telefonoEvento, String distanciaEvento, String latitudEvento, 
 			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix, String isNew){	
 		ContentValues valoresDB = new ContentValues();
 		valoresDB.put(EVENTO_ID, idEvento);
@@ -79,8 +79,6 @@ public class DataBaseSQLiteManagerEvents {
 		valoresDB.put(LUGAR, lugarEvento);
 		valoresDB.put(DIRECCION, direccionEvento);
 		valoresDB.put(TELEFONO, telefonoEvento);
-		valoresDB.put(BOLETO, boletoEvento);
-		valoresDB.put(PRECIO, precioEvento);
 		valoresDB.put(DISTANCIA, distanciaEvento);
 		valoresDB.put(LATITUD, latitudEvento);
 		valoresDB.put(LONGITUD, longitudEvento);
@@ -108,8 +106,6 @@ public class DataBaseSQLiteManagerEvents {
 						evento.getLugarEvento(), 
 						evento.getDireccion(), 
 						evento.getTelefono(), 
-						evento.getBoleto(), 
-						evento.getPrecio(), 
 						evento.getDistancia(), 
 						String.valueOf(evento.getLatEvento()), 
 						String.valueOf(evento.getLonEvento()),
@@ -158,8 +154,6 @@ public class DataBaseSQLiteManagerEvents {
 						evento.getLugarEvento(), 
 						evento.getDireccion(), 
 						evento.getTelefono(), 
-						evento.getBoleto(), 
-						evento.getPrecio(),
 						evento.getDistancia(), 
 						String.valueOf(evento.getLatEvento()), 
 						String.valueOf(evento.getLonEvento()), 
