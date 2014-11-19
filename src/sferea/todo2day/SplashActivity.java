@@ -151,7 +151,7 @@ public class SplashActivity extends Activity {
 				super.onCancelled();
 			};
 
-		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + ""
+		}.execute("http://yapidev.sferea.com/?latitud=" + latOrigin + ""
 				+ "&longitud=" + lonOrigin + "" + "&radio="
 				+ SplashActivity.distanciaEvento + "" + "&categoria="
 				+ categorias + "" + "&numEventos=0&idEvento=0&fecha=0");

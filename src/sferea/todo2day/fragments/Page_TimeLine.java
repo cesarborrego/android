@@ -293,7 +293,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 				loadingMore = false;
 
 			}
-		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + "&longitud="
+		}.execute("http://yapidev.sferea.com/?latitud=" + latOrigin + "&longitud="
 				+ lonOrigin + "" + "&radio=" + SplashActivity.distanciaEvento + "&categoria="
 				+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
 				+ "&numEventos=0" + "&idEvento=" + indexEvent + "" + "&fecha="
@@ -336,7 +336,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 				numeroEventos = arrayAdapterEvents.getCount();
 			}
 
-		}.execute("http://yapi.sferea.com/?latitud=" + latOrigin + ""
+		}.execute("http://yapidev.sferea.com/?latitud=" + latOrigin + ""
 				+ "&longitud=" + lonOrigin + "" + "&radio="
 				+ SplashActivity.distanciaEvento + "" + "&categoria="
 				+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
