@@ -3,14 +3,12 @@ package sferea.todo2day.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import sferea.todo2day.Application;
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.adapters.ArrayAdapterFavorites;
 import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.beans.FavoritosObjeto;
 import sferea.todo2day.config.DataBaseSQLiteManager;
-import sferea.todo2day.helpers.ReadTableDB;
 import sferea.todo2day.listeners.UpdateableFragmentListener;
 import android.content.Intent;
 import android.content.SharedPreferences;

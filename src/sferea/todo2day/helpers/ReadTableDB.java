@@ -104,8 +104,6 @@ public class ReadTableDB {
 		evento.setLatEvento(Double.parseDouble(cursor.getString(cursor.getColumnIndex("LATITUD"))));
 		evento.setLonEvento(Double.parseDouble(cursor.getString(cursor.getColumnIndex("LONGITUD"))));
 		evento.setDistancia(cursor.getString(cursor.getColumnIndex("DISTANCIA")));
-		evento.setBoleto(cursor.getString(cursor.getColumnIndex("BOLETO")));
-		evento.setPrecio(cursor.getString(cursor.getColumnIndex("PRECIO")));
 		evento.setPosicion(Integer.parseInt(cursor.getString(cursor.getColumnIndex("POSICION"))));
 		evento.setIndexEvento(Integer.parseInt(cursor.getString(cursor.getColumnIndex("INDEX_OF_EVENT"))));
 		evento.setFechaUnix(Integer.parseInt(cursor.getString(cursor.getColumnIndex("FECHA_UNIX"))));

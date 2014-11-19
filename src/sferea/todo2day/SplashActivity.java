@@ -69,6 +69,12 @@ public class SplashActivity extends Activity {
 		readTableDB = new ReadTableDB(getApplicationContext());
 		checkInternetConnection = new CheckInternetConnection(
 				getApplicationContext(), this);
+		
+		readTableDB = new ReadTableDB(this);
+		
+		if(readTableDB.getEventsDBCount() > 0){
+			
+		}
 
 		if (checkInternetConnection.isConnectedToInternet()) {
 			locationHelper = new LocationHelper(getApplicationContext());
@@ -103,17 +109,8 @@ public class SplashActivity extends Activity {
 		}
 		else{
 			
-			new Handler().postDelayed(new Runnable(){
-	            @Override 
-	            public void run() { 
-	                /* Create an Intent that will start the Menu-Activity. */ 
-	            	Intent mainIntent = new Intent().setClass(SplashActivity.this,
-	    					MainActivity.class);
-	    			startActivity(mainIntent);
-	    			finish();
-	            } 
-	        }, splashDelay);
-
+			
+			showMainActivity();
 			
 		}
 	}
@@ -158,6 +155,19 @@ public class SplashActivity extends Activity {
 				+ "&longitud=" + lonOrigin + "" + "&radio="
 				+ SplashActivity.distanciaEvento + "" + "&categoria="
 				+ categorias + "" + "&numEventos=0&idEvento=0&fecha=0");
+	}
+	
+	private void showMainActivity() {
+		new Handler().postDelayed(new Runnable(){
+            @Override 
+            public void run() { 
+                /* Create an Intent that will start the Menu-Activity. */ 
+            	Intent mainIntent = new Intent().setClass(SplashActivity.this,
+    					MainActivity.class);
+    			startActivity(mainIntent);
+    			finish();
+            } 
+        }, splashDelay);
 	}
 
 	static {

@@ -355,7 +355,6 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 										getItem(position).getLugarEvento(),
 										getItem(position).getDireccion(),
 										getItem(position).getTelefono(),
-										getItem(position).getBoleto(), 
 										String.valueOf(getItem(position).getDistancia()),
 										String.valueOf(getItem(position).getLatEvento()), 
 										String.valueOf(getItem(position).getLonEvento()),

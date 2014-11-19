@@ -608,7 +608,6 @@ public class DetailActivity extends ActionBarActivity {
 						favoritosObjeto.getLugarEvento(), 
 						favoritosObjeto.getDireccion(), 
 						favoritosObjeto.getTelefono(), 
-						favoritosObjeto.getBoleto(), 
 						String.valueOf(favoritosObjeto.getDistanciaEvento()), 
 						String.valueOf(favoritosObjeto.getLatEvento()), 
 						String.valueOf(favoritosObjeto.getLonEvento()),
