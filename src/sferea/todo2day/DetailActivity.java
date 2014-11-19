@@ -149,8 +149,6 @@ public class DetailActivity extends ActionBarActivity {
 //				((TextView)findViewById(R.id.detallesFuente)).setText(evento.getFuente());
 				((TextView)findViewById(R.id.detallesDireccion)).setText(evento.getDireccion());
 				((TextView)findViewById(R.id.detallesTelefono)).setText(evento.getTelefono());
-				((TextView)findViewById(R.id.tipoBoleto)).setText(evento.getBoleto());
-				((TextView)findViewById(R.id.precioBoleto)).setText(evento.getPrecio());
 				((TextView)findViewById(R.id.detallesDistancia)).setText("a "+String.valueOf(evento.getDistancia()));
 				tel = (TextView)findViewById(R.id.detallesTelefono);
 				tel.setText(evento.getTelefono());
@@ -570,7 +568,6 @@ public class DetailActivity extends ActionBarActivity {
 						evento.getLugarEvento(), 
 						evento.getDireccion(), 
 						evento.getTelefono(), 
-						evento.getBoleto(), 
 						String.valueOf(evento.getDistancia()), 
 						String.valueOf(evento.getLatEvento()), 
 						String.valueOf(evento.getLonEvento()),
