@@ -1,6 +1,8 @@
 package sferea.todo2day.beans;
 
-public class BoletoObjeto {
+import java.io.Serializable;
+
+public class BoletoObjeto implements Serializable {
 	private String tipo;
 	private int cantidad;
 	private double precio;
