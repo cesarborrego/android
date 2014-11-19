@@ -8,8 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import sferea.todo2day.Application;
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
