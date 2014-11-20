@@ -270,8 +270,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 			protected void onPostExecute(Boolean params) {
 
 				if (params) {
-					reader = new ReadTableDB(getActivity()
-							.getApplicationContext());
+					reader = new ReadTableDB(getActivity());
 					if (reader.getEventsDBCount() == arrayAdapterEvents.getCount()) {
 						progressFooter.setVisibility(View.GONE);
 						((TextView) footerView.findViewById(R.id.textoFooter))
