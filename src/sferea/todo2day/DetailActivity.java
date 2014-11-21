@@ -22,6 +22,7 @@ import sferea.todo2day.fragments.Page_Favorites;
 import sferea.todo2day.fragments.Page_TimeLine;
 import sferea.todo2day.helpers.CheckInternetConnection;
 import sferea.todo2day.helpers.ReadTableDB;
+import sferea.todo2day.utils.DateUtil;
 import sferea.todo2day.utils.ImageUtil;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -82,6 +83,8 @@ public class DetailActivity extends ActionBarActivity {
 	DisplayImageOptions options;
 	String tweetString;
 	
+	DateUtil dateUtil;
+	
 	
 	CheckInternetConnection checkInternetConnection;
 	
@@ -113,7 +116,7 @@ public class DetailActivity extends ActionBarActivity {
 		
 		manager = new DataBaseSQLiteManagerFavorites(getApplicationContext());
 		readTableDB = new ReadTableDB(getApplicationContext());
-		
+		dateUtil = new DateUtil();
 		DataBaseSQLiteManagerFavorites managerDBFavorites = new DataBaseSQLiteManagerFavorites(
 				getApplicationContext());
 		
@@ -146,7 +149,7 @@ public class DetailActivity extends ActionBarActivity {
 				imageloader.displayImage(evento.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
 				imagenCategoria(evento.getCategoriaIDEvento());
 				((TextView)findViewById(R.id.detallesCategoria)).setText(evento.getCategoriaEvento());
-				((TextView)findViewById(R.id.detallesFecha)).setText(evento.getFechaEvento());
+				((TextView)findViewById(R.id.detallesFecha)).setText(dateUtil.dateTransform(evento.getFechaEvento()));
 				((TextView)findViewById(R.id.detallesLugar)).setText(evento.getLugarEvento());
 				((TextView)findViewById(R.id.detallesDescripcion)).setText(evento.getDescripcion());
 				
@@ -216,7 +219,7 @@ public class DetailActivity extends ActionBarActivity {
 				imageloader.displayImage(favoritosObjeto.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
 				imagenCategoria(favoritosObjeto.getCategoriaIDEvento());
 				((TextView)findViewById(R.id.detallesCategoria)).setText(favoritosObjeto.getCategoriaEvento());
-				((TextView)findViewById(R.id.detallesFecha)).setText(favoritosObjeto.getFechaEvento());
+				((TextView)findViewById(R.id.detallesFecha)).setText(dateUtil.dateTransform(favoritosObjeto.getFechaEvento()));
 				((TextView)findViewById(R.id.detallesLugar)).setText(favoritosObjeto.getLugarEvento());
 				((TextView)findViewById(R.id.detallesDescripcion)).setText(favoritosObjeto.getDescripcion());
 				
