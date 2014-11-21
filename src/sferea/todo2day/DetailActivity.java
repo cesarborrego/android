@@ -230,7 +230,6 @@ public class DetailActivity extends ActionBarActivity {
 //				((TextView)findViewById(R.id.detallesFuente)).setText(favoritosObjeto.getFuente());
 				((TextView)findViewById(R.id.detallesDireccion)).setText(favoritosObjeto.getDireccion());
 				((TextView)findViewById(R.id.detallesTelefono)).setText(favoritosObjeto.getTelefono());
-				((TextView)findViewById(R.id.etiquetaBoletos)).setText(favoritosObjeto.getBoleto());
 				((TextView)findViewById(R.id.detallesDistancia)).setText("a "+String.valueOf(favoritosObjeto.getDistanciaEvento()));
 				tel = (TextView)findViewById(R.id.detallesTelefono);
 				tel.setText(favoritosObjeto.getTelefono());
@@ -574,25 +573,25 @@ public class DetailActivity extends ActionBarActivity {
 				btnF.setImageResource(R.drawable.favorito);
 			}else{
 				//Si esta apagada solo prendemos e insertamos
-//				manager.insertar(evento.getIdOfEvent(),
-//						evento.getNombreEvento(), 
-//						evento.getCategoriaEvento(),
-//						evento.getCategoriaIDEvento(),
-//						evento.getFechaEvento(), 
-//						evento.getDescripcion(), 
-//						evento.getFuente(), 
-//						evento.getLugarEvento(), 
-//						evento.getDireccion(), 
-//						evento.getTelefono(), 
-//						String.valueOf(evento.getDistancia()), 
-//						String.valueOf(evento.getLatEvento()), 
-//						String.valueOf(evento.getLonEvento()),
-//						evento.getUrlImagen(),
-//						String.valueOf(evento.getPosicion()),
-//						String.valueOf(evento.getIdOfEvent()),
-//						String.valueOf(evento.getFechaUnix()),
-//						String.valueOf(evento.getTipoBoleto().getId()));
-//				Log.d(null, "Registro Insertado en DB");						
+				manager.insertar(evento.getIdOfEvent(),
+						evento.getNombreEvento(), 
+						evento.getCategoriaEvento(),
+						evento.getCategoriaIDEvento(),
+						evento.getFechaEvento(), 
+						evento.getDescripcion(), 
+						evento.getFuente(), 
+						evento.getLugarEvento(), 
+						evento.getDireccion(), 
+						evento.getTelefono(), 
+						String.valueOf(evento.getDistancia()), 
+						String.valueOf(evento.getLatEvento()), 
+						String.valueOf(evento.getLonEvento()),
+						evento.getUrlImagen(),
+						String.valueOf(evento.getPosicion()),
+						String.valueOf(evento.getIdOfEvent()),
+						String.valueOf(evento.getFechaUnix()),
+						String.valueOf(evento.getTipoBoleto().getId()));
+				Log.d(null, "Registro Insertado en DB");						
 								
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
@@ -614,26 +613,26 @@ public class DetailActivity extends ActionBarActivity {
 				btnF.setImageResource(R.drawable.favorito);
 			}else{
 				//Si esta apagada solo prendemos e insertamos
-//				manager.insertar(
-//						favoritosObjeto.getIdEvento(),
-//						favoritosObjeto.getNombreEvento(), 
-//						favoritosObjeto.getCategoriaEvento(),
-//						favoritosObjeto.getCategoriaIDEvento(),
-//						favoritosObjeto.getFechaEvento(), 
-//						favoritosObjeto.getDescripcion(), 
-//						favoritosObjeto.getFuente(), 
-//						favoritosObjeto.getLugarEvento(), 
-//						favoritosObjeto.getDireccion(), 
-//						favoritosObjeto.getTelefono(), 
-//						favoritosObjeto.getBoleto(), 
-//						String.valueOf(favoritosObjeto.getDistanciaEvento()), 
-//						String.valueOf(favoritosObjeto.getLatEvento()), 
-//						String.valueOf(favoritosObjeto.getLonEvento()),
-//						favoritosObjeto.getUrlImagen(),
-//						String.valueOf(favoritosObjeto.getPosicion()),
-//						String.valueOf(favoritosObjeto.getIndexOfEvent()),
-//						String.valueOf(favoritosObjeto.getFechaUnix()));
-//				Log.d(null, "Registro Insertado en DB");						
+				manager.insertar(
+						favoritosObjeto.getIdEvento(),
+						favoritosObjeto.getNombreEvento(), 
+						favoritosObjeto.getCategoriaEvento(),
+						favoritosObjeto.getCategoriaIDEvento(),
+						favoritosObjeto.getFechaEvento(), 
+						favoritosObjeto.getDescripcion(), 
+						favoritosObjeto.getFuente(), 
+						favoritosObjeto.getLugarEvento(), 
+						favoritosObjeto.getDireccion(), 
+						favoritosObjeto.getTelefono(), 
+						String.valueOf(favoritosObjeto.getDistanciaEvento()), 
+						String.valueOf(favoritosObjeto.getLatEvento()), 
+						String.valueOf(favoritosObjeto.getLonEvento()),
+						favoritosObjeto.getUrlImagen(),
+						String.valueOf(favoritosObjeto.getPosicion()),
+						String.valueOf(favoritosObjeto.getIndexOfEvent()),
+						String.valueOf(favoritosObjeto.getFechaUnix()),
+						String.valueOf(favoritosObjeto.getTipoBoletoObjeto().getId()));
+				Log.d(null, "Registro Insertado en DB");						
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;

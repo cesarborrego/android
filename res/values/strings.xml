@@ -9,8 +9,8 @@
     <string name="eventos">Eventos</string>
     <string name="categorias">Categorías</string>
     <string name="ajustes">Ajustes</string>
-    <string name="categorias_titulo1">Elige las categorías de tu elección</string>
-    <string name="categorias_texto">Toca en las categorías que más te gusten para que recibas los eventos más próximos a ti relacionados a esa categoría y disfruta de miles de espectaculos y eventos de tu elección</string>
+    <string name="categorias_titulo1">Elige tus categorías favoritas</string>
+    <string name="categorias_texto">Activa las categorías que más te gusten y visualiza únicamente los eventos que realmente te interesan.</string>
 
     <string-array name="categorias">
         <item>Antros y Bares</item>
@@ -31,7 +31,7 @@
     <string name="cineYTeatro">Cine y Teatro</string>
     <string name="cultura">Cultura</string>
     <string name="deportes">Deportes</string>
-    <string name="emprendedoresYNegocios">Negocios</string>
+    <string name="emprendedoresYNegocios">Emprendedores y Negocios</string>
     <string name="eventosInfantiles">Con niños</string>
     <string name="gastronomia">Gastronomía</string>
     <string name="musica">Música</string>

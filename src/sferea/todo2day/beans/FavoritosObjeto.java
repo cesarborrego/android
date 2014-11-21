@@ -129,9 +129,6 @@ public class FavoritosObjeto implements Parcelable{
 
 	public String getTelefono() {return telefono;}
 	public void setTelefono(String telefono) {this.telefono = telefono;}
-
-	public String getBoleto() {return boleto;}
-	public void setBoleto(String boleto) {this.boleto = boleto;}	
 	
 	public Bitmap getBtnRetweet() {return btnRetweet;}
 	public void setBtnRetweet(Bitmap btnRetweet) {this.btnRetweet = btnRetweet;}
@@ -208,7 +205,6 @@ public class FavoritosObjeto implements Parcelable{
 		dest.writeString(fuente);
 		dest.writeString(direccion);
 		dest.writeString(telefono);
-		dest.writeString(boleto);
 		dest.writeDouble(latEvento);
 		dest.writeDouble(lonEvento);
 		dest.writeInt(posicion);
@@ -243,7 +239,6 @@ public class FavoritosObjeto implements Parcelable{
 		setFuente(pc.readString());
 		setDireccion(pc.readString());
 		setTelefono(pc.readString());
-		setBoleto(pc.readString());
 		setLatEvento(pc.readDouble());
 		setLonEvento(pc.readDouble());
 		setPosicion(pc.readInt());

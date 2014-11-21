@@ -9,19 +9,18 @@
     android:background="#FFF"
     android:orientation="vertical" >
 
-    
-    <TextView 
+    <TextView
         android:id="@+id/titleContentCategories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#626262"
-	    android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge" 
-        android:text="@string/categorias_titulo1"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/categorias_titulo1"
+        android:textColor="#626262"
+        android:textSize="27sp" />
     
     <TextView
         android:id="@+id/textContentCategories"
@@ -32,11 +31,11 @@
         android:paddingRight="10dp"
         android:text="@string/categorias_texto"
         android:textColor="#A8A2A2"
-        android:textSize="13sp" />
+        android:textSize="17sp" />
     
     <View 
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="3dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="16dp"
@@ -53,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp">
             
             <!-- Antros y bares -->
             <LinearLayout 
@@ -72,8 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
-                    android:minHeight="96dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_antrosybares_activo" />
                 
                 <TextView 
@@ -81,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/antrosYBares"/>
                 
             </LinearLayout>
@@ -102,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_cultura_activo" />
                 
                 <TextView 
@@ -110,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/cultura"/>
                 
             </LinearLayout>
@@ -131,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_cineyteatro_activo" />
                 
                 <TextView 
@@ -139,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/cineYTeatro"/>
                 
             </LinearLayout>
@@ -169,7 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_deportes_activo" />
                 
                 <TextView 
@@ -177,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/deportes"/>
                 
             </LinearLayout>
@@ -189,6 +187,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:gravity="center">
 	            
                 <ImageView
@@ -196,16 +196,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_emprendedoresynegocios_activo" />
                 
-                <TextView
+                <TextView 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/emprendedoresYNegocios"
                     android:textColor="#AAA"
-                    android:textSize="12sp" />
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/emprendedoresYNegocios"/>
                 
             </LinearLayout>
             
@@ -225,7 +225,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_eventosinfantiles_activo" />
                 
                 <TextView 
@@ -233,7 +233,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/eventosInfantiles"/>
                 
             </LinearLayout>
@@ -263,7 +263,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_gastronomia_activo" />
                 
                 <TextView 
@@ -271,7 +271,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-					android:textAppearance="?android:attr/textAppearanceSmall"
+					android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/gastronomia"/>
                 
             </LinearLayout>
@@ -292,7 +292,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_musica_activo" />
                 
                 <TextView 
@@ -300,7 +300,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/musica"/>
                 
             </LinearLayout>
@@ -321,7 +321,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_salud_activo" />
                 
                 <TextView 
@@ -329,7 +329,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/salud"/>
                 
             </LinearLayout>
@@ -359,7 +359,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_sociales_activo" />
                 
                 <TextView 
@@ -367,7 +367,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/sociales"/>
                 
             </LinearLayout>
@@ -388,7 +388,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_tecnologia_activo" />
                 
                 <TextView 
@@ -396,7 +396,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/tecnologia"/>
                 
             </LinearLayout>
@@ -415,16 +415,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_verde_activo" />
                 
-                <TextView
+                <TextView 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#AAA"
                     android:gravity="center"
-                    android:text="@string/verdeYResponsabilidadSocial"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#AAA" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/verdeYResponsabilidadSocial"/>
                 
             </LinearLayout>
             
@@ -462,7 +462,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
+                    android:maxWidth="150dp"
                     android:src="@drawable/ic_categorias_sociales_activo" />
                 
                 <TextView 
@@ -470,7 +470,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#AAA"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/Otros"/>                
             </LinearLayout> 
             
