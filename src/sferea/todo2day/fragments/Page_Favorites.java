@@ -3,12 +3,14 @@ package sferea.todo2day.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import sferea.todo2day.Application;
 import sferea.todo2day.DetailActivity;
 import sferea.todo2day.R;
 import sferea.todo2day.adapters.ArrayAdapterFavorites;
 import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.beans.FavoritosObjeto;
-import sferea.todo2day.config.DataBaseSQLiteManager;
+import sferea.todo2day.config.DataBaseSQLiteManagerFavorites;
+import sferea.todo2day.helpers.ReadTableDB;
 import sferea.todo2day.listeners.UpdateableFragmentListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,7 +28,7 @@ public class Page_Favorites extends Fragment implements UpdateableFragmentListen
 	View view;
 
 	ListView listaFavoritos;
-	DataBaseSQLiteManager manager;
+	DataBaseSQLiteManagerFavorites manager;
 	Cursor cursor;
 	ArrayList<FavoritosObjeto> listaObjectFavoritos;
 	int iContador = 0;
@@ -36,10 +38,18 @@ public class Page_Favorites extends Fragment implements UpdateableFragmentListen
 	SharedPreferences shrpref_fav;
 	List<EventoObjeto> listaEventos;
 	FavoritosObjeto fav;
+	
+	ReadTableDB reader;
 
 	public static ArrayAdapterFavorites adapterFavorites;
 
 	public Page_Favorites() {
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
 	}
 
 	@Override
@@ -79,73 +89,15 @@ public class Page_Favorites extends Fragment implements UpdateableFragmentListen
 		return view;
 	}
 
-	public void llenarFavoritosObjeto() {
-		listaObjectFavoritos.clear();
-		
-		manager = new DataBaseSQLiteManager(getActivity()
-				.getApplicationContext());
-		cursor = manager.cargarTablas();
-		
-		try {
-			if (cursor.moveToFirst()) {
-				do {
-					/*
-					 * Titulo Categoria FechayHora DescripcionFuente Lugar
-					 * Direccion TelefonoDistancia Boleto Longitud Latitud
-					 */
-
-					listaObjectFavoritos
-							.add(new FavoritosObjeto(
-									cursor.getString(cursor
-											.getColumnIndex("EVENTO_ID")),
-									cursor.getString(cursor
-											.getColumnIndex("TITULO_EVENTO")),
-									cursor.getString(cursor
-											.getColumnIndex("CATEGORIA")),
-									cursor.getString(cursor
-											.getColumnIndex("CATEGORIA_ID")),
-									cursor.getString(cursor
-											.getColumnIndex("FECHA")),
-									cursor.getString(cursor
-											.getColumnIndex("DESCRIPCION")),
-									cursor.getString(cursor
-											.getColumnIndex("FUENTE")),
-									cursor.getString(cursor
-											.getColumnIndex("LUGAR")),
-									cursor.getString(cursor
-											.getColumnIndex("DIRECCION")),
-									cursor.getString(cursor
-											.getColumnIndex("TELEFONO")),
-									cursor.getString(cursor
-											.getColumnIndex("DISTANCIA")),
-									cursor.getString(cursor
-											.getColumnIndex("BOLETO")),
-									Double.parseDouble(cursor.getString(cursor
-											.getColumnIndex("LONGITUD"))),
-									Double.parseDouble(cursor.getString(cursor
-											.getColumnIndex("LATITUD"))),
-									cursor.getString(cursor
-											.getColumnIndex("URL_IMAGEN_EVENTO")),
-									Integer.parseInt(cursor.getString(cursor
-											.getColumnIndex("POSICION"))),
-									cursor.getString(cursor
-											.getColumnIndex("INDEX_OF_EVENT")),
-									Integer.parseInt(cursor.getString(cursor
-											.getColumnIndex("FECHA_UNIX")))));
-				} while (cursor.moveToNext());
-			}
-		} finally {
-			cursor.close();
-			manager.cerrarDB();
-		}
-	}
-
 	@Override
 	public void onResume() {
-		llenarFavoritosObjeto();
-		adapterFavorites.clear();
-		adapterFavorites.addAll(listaObjectFavoritos);
-		adapterFavorites.notifyDataSetChanged();
+		reader = new ReadTableDB(Application.getInstance());	
+		listaObjectFavoritos = reader.fillFavoritesListFromDB();
+		if(listaObjectFavoritos!=null){					
+			adapterFavorites.clear();
+			adapterFavorites.addAll(listaObjectFavoritos);
+			adapterFavorites.notifyDataSetChanged();
+		}
 		super.onResume();
 	}
 	

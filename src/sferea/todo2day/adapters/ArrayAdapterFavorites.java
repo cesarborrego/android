@@ -4,7 +4,7 @@ import sferea.todo2day.R;
 import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.beans.FavoritosObjeto;
 import sferea.todo2day.config.CategoriasConfig;
-import sferea.todo2day.config.DataBaseSQLiteManager;
+import sferea.todo2day.config.DataBaseSQLiteManagerFavorites;
 import sferea.todo2day.fragments.Page_TimeLine;
 import sferea.todo2day.utils.DateUtil;
 import sferea.todo2day.utils.ImageUtil;
@@ -76,7 +76,7 @@ public class ArrayAdapterFavorites extends ArrayAdapter<FavoritosObjeto> {
 	
 	
 	private void deleteFavorites(final int position){
-		DataBaseSQLiteManager managerDB = new DataBaseSQLiteManager(this.getContext());
+		DataBaseSQLiteManagerFavorites managerDB = new DataBaseSQLiteManagerFavorites(this.getContext());
 		managerDB.eliminar(getItem(position).getIndexOfEvent());
 		this.remove(getItem(position));
 	}

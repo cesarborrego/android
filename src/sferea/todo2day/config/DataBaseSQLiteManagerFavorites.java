@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class DataBaseSQLiteManager {
+public class DataBaseSQLiteManagerFavorites {
 	
 	public static final String DB_NAME="FAVORITES";
 	public static final String ID ="ID";
@@ -19,7 +19,7 @@ public class DataBaseSQLiteManager {
 	public static final String LUGAR = "LUGAR";
 	public static final String DIRECCION = "DIRECCION";
 	public static final String TELEFONO = "TELEFONO";
-	public static final String BOLETO = "BOLETO";
+	public static final String BOLETO_ID = "BOLETO_ID";
 	public static final String DISTANCIA = "DISTANCIA";
 	public static final String LATITUD = "LATITUD";
 	public static final String LONGITUD = "LONGITUD";
@@ -27,22 +27,6 @@ public class DataBaseSQLiteManager {
 	public static final String POSICION = "POSICION";
 	public static final String INDEX_OF_EVENT = "INDEX_OF_EVENT";
 	public static final String FECHA_UNIX = "FECHA_UNIX";
-	
-	//CREAR TABLA
-//	public static final String CREATE_TABLE = " CREATE TABLE "+DB_NAME+" " +
-//			"( "+ID+" integer primary key autoincrement," +
-//			" "+TITULO_EVENTO+" text not null," +
-//			" "+CATEGORIA+" text not null, " +
-//			" "+FECHA+" text not null, " +
-//			" "+DESCRIPCION+" text not null, " +
-//			" "+FUENTE+" text, " +
-//			" "+LUGAR+" text not null, " +
-//			" "+DIRECCION+" text," +
-//			" "+TELEFONO+" text, " +
-//			" "+BOLETO+" text, " +
-//			" "+DISTANCIA+" text," +
-//			" "+LATITUD+" text not null, " +
-//			" "+LONGITUD+" text not null);";
 	
 //	//CREAR TABLA
 	public static final String CREATE_TABLE = " CREATE TABLE "+DB_NAME+" " +
@@ -57,7 +41,7 @@ public class DataBaseSQLiteManager {
 			" "+LUGAR+" text not null, " +
 			" "+DIRECCION+" text," +
 			" "+TELEFONO+" text, " +
-			" "+BOLETO+" text, " +
+			" "+BOLETO_ID+" text not null, " +
 			" "+DISTANCIA+" text," +
 			" "+LATITUD+" text not null, " +
 			" "+LONGITUD+" text not null, " +
@@ -69,19 +53,15 @@ public class DataBaseSQLiteManager {
 	private SQLiteHelper sqLiteHelper;
 	private SQLiteDatabase db;
 	
-	public DataBaseSQLiteManager (Context context){
+	public DataBaseSQLiteManagerFavorites (Context context){
 		sqLiteHelper = new SQLiteHelper(context);
 		db = sqLiteHelper.getWritableDatabase();
 	}
 	
-//	public ContentValues generarContentValues (String tituloEvento, String categoriEvento, String fechaEvento, 
-//			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
-//			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
-//			String longitudEvento){
 	public ContentValues generarContentValues (String eventId, String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String distanciaEvento, String latitudEvento, 
-			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
+			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix, String boletoID){	
 		ContentValues valoresDB = new ContentValues();
 		valoresDB.put(EVENTO_ID, eventId);
 		valoresDB.put(TITULO_EVENTO, tituloEvento);
@@ -100,6 +80,7 @@ public class DataBaseSQLiteManager {
 		valoresDB.put(POSICION, posicion);
 		valoresDB.put(INDEX_OF_EVENT, indexOfEvent);
 		valoresDB.put(FECHA_UNIX, fechaUnix);
+		valoresDB.put(BOLETO_ID, boletoID);
 		return valoresDB;
 		
 	}
@@ -107,11 +88,11 @@ public class DataBaseSQLiteManager {
 	public void insertar(String eventId, String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String distanciaEvento, String latitudEvento, 
-			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
+			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix, String boletoID){	
 		//db.insert(table, nullColumnHack, values)		
 		db.insert(DB_NAME, null, generarContentValues(eventId, tituloEvento, categoriEvento, categoriIDEvento, fechaEvento, descripcionEvento, 
 				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, distanciaEvento, latitudEvento, longitudEvento,
-				urlImagen, posicion, indexOfEvent, fechaUnix));		
+				urlImagen, posicion, indexOfEvent, fechaUnix, boletoID));		
 	}
 	
 	public void eliminar(String indexOfEvent){
@@ -143,21 +124,18 @@ public class DataBaseSQLiteManager {
 	public void modificarValoresDB(String eventoId, String tituloEvento, String categoriEvento, String categoriIDEvento, String fechaEvento, 
 			String descripcionEvento, String fuenteEvento, String lugarEvento, String direccionEvento,
 			String telefonoEvento, String boletoEvento, String distanciaEvento, String latitudEvento, 
-			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix){	
+			String longitudEvento, String urlImagen, String posicion, String indexOfEvent, String fechaUnix, String boletoID){	
 		//db.update(table, values, whereClause, whereArgs)
 		db.update(DB_NAME, generarContentValues(eventoId, tituloEvento, categoriEvento, categoriIDEvento, fechaEvento, descripcionEvento,
 				fuenteEvento, lugarEvento, direccionEvento, telefonoEvento, distanciaEvento, 
-				latitudEvento, longitudEvento, urlImagen, posicion, indexOfEvent, fechaUnix), INDEX_OF_EVENT+"=?", new String[]{indexOfEvent});
+				latitudEvento, longitudEvento, urlImagen, posicion, indexOfEvent, fechaUnix, boletoID), INDEX_OF_EVENT+"=?", new String[]{indexOfEvent});
 	}
 		
 	public Cursor cargarTablas(){
-		String [] columnas = new String[]{ID, EVENTO_ID,TITULO_EVENTO,CATEGORIA,FECHA,DESCRIPCION,FUENTE,LUGAR,DIRECCION,TELEFONO,BOLETO,DISTANCIA,LATITUD,LONGITUD};
-		//db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
-//		return db.query(DB_NAME, columnas, null, null, null, null, TITULO_EVENTO);
 		return db.rawQuery("SELECT * FROM FAVORITES", null);
 	}
 	
-	public Cursor queryEventByIndex(String index){
+	public Cursor queryFavoriteByIndex(String index){
 		return db.rawQuery("SELECT * FROM FAVORITES WHERE INDEX_OF_EVENT = ?", new String[]{index});
 	}
 	

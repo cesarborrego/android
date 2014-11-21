@@ -16,11 +16,12 @@ import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.beans.FavoritosObjeto;
 import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.Constants_Settings;
-import sferea.todo2day.config.DataBaseSQLiteManager;
+import sferea.todo2day.config.DataBaseSQLiteManagerFavorites;
 import sferea.todo2day.config.SharedPreferencesHelper;
 import sferea.todo2day.fragments.Page_Favorites;
 import sferea.todo2day.fragments.Page_TimeLine;
 import sferea.todo2day.helpers.CheckInternetConnection;
+import sferea.todo2day.helpers.ReadTableDB;
 import sferea.todo2day.utils.ImageUtil;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -69,7 +70,8 @@ public class DetailActivity extends ActionBarActivity {
 	ArrayAdapterFavorites arrayAdapterFavorites;
 	GoogleMap mMap;
 	public static boolean activaRefreshFavorites_Details = false;
-	DataBaseSQLiteManager manager = null;
+	DataBaseSQLiteManagerFavorites manager = null;
+	ReadTableDB readTableDB;
 
 	FavoritosObjeto favoritosObjeto;
 	TextView tel;
@@ -109,9 +111,10 @@ public class DetailActivity extends ActionBarActivity {
 		btnF = (ImageView)findViewById(R.id.favoritoImgId);
 		phoneOrg = (ImageView) findViewById(R.id.organizadorImgId);
 		
-		manager = new DataBaseSQLiteManager(getApplicationContext());
+		manager = new DataBaseSQLiteManagerFavorites(getApplicationContext());
+		readTableDB = new ReadTableDB(getApplicationContext());
 		
-		DataBaseSQLiteManager managerDBFavorites = new DataBaseSQLiteManager(
+		DataBaseSQLiteManagerFavorites managerDBFavorites = new DataBaseSQLiteManagerFavorites(
 				getApplicationContext());
 		
 		Cursor cursor = null;
@@ -130,7 +133,7 @@ public class DetailActivity extends ActionBarActivity {
 					editor.commit(); 
 				}
 				
-				cursor = managerDBFavorites.queryEventByIndex(evento.getIdOfEvent());
+				cursor = managerDBFavorites.queryFavoriteByIndex(evento.getIdOfEvent());
 				
 				if (cursor.getCount() > 0) {
 					btnF.setImageResource(R.drawable.favorito_encendido);
@@ -146,6 +149,11 @@ public class DetailActivity extends ActionBarActivity {
 				((TextView)findViewById(R.id.detallesFecha)).setText(evento.getFechaEvento());
 				((TextView)findViewById(R.id.detallesLugar)).setText(evento.getLugarEvento());
 				((TextView)findViewById(R.id.detallesDescripcion)).setText(evento.getDescripcion());
+				
+				((TextView)findViewById(R.id.tipoBoleto)).setText(evento.getTipoBoleto().getListaBoletos().get(0).getTipo());
+				((TextView)findViewById(R.id.precioBoleto)).setText(String.valueOf(evento.getTipoBoleto().getListaBoletos().get(0).getPrecio()));
+				((TextView)findViewById(R.id.cantidadBoletosId)).setText(evento.getTipoBoleto().getListaBoletos().get(0).getCantidad());
+				
 //				((TextView)findViewById(R.id.detallesFuente)).setText(evento.getFuente());
 				((TextView)findViewById(R.id.detallesDireccion)).setText(evento.getDireccion());
 				((TextView)findViewById(R.id.detallesTelefono)).setText(evento.getTelefono());
@@ -196,7 +204,7 @@ public class DetailActivity extends ActionBarActivity {
 					editor.commit(); 
 				}
 				
-				cursor = managerDBFavorites.queryEventByIndex(favoritosObjeto.getIndexOfEvent());
+				cursor = managerDBFavorites.queryFavoriteByIndex(favoritosObjeto.getIndexOfEvent());
 				
 				if (cursor.getCount() > 0) {
 					btnF.setImageResource(R.drawable.favorito_encendido);
@@ -211,6 +219,11 @@ public class DetailActivity extends ActionBarActivity {
 				((TextView)findViewById(R.id.detallesFecha)).setText(favoritosObjeto.getFechaEvento());
 				((TextView)findViewById(R.id.detallesLugar)).setText(favoritosObjeto.getLugarEvento());
 				((TextView)findViewById(R.id.detallesDescripcion)).setText(favoritosObjeto.getDescripcion());
+				
+				((TextView)findViewById(R.id.tipoBoleto)).setText(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos().get(0).getTipo());
+				((TextView)findViewById(R.id.precioBoleto)).setText(String.valueOf(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos().get(0).getPrecio()));
+				((TextView)findViewById(R.id.cantidadBoletosId)).setText(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos().get(0).getCantidad());
+				
 //				((TextView)findViewById(R.id.detallesFuente)).setText(favoritosObjeto.getFuente());
 				((TextView)findViewById(R.id.detallesDireccion)).setText(favoritosObjeto.getDireccion());
 				((TextView)findViewById(R.id.detallesTelefono)).setText(favoritosObjeto.getTelefono());
@@ -545,7 +558,7 @@ public class DetailActivity extends ActionBarActivity {
 		Cursor cursor;
 		//Validamos si entro por time_line
 		if(Page_TimeLine.eventoActivo){			
-			cursor = manager.queryEventByIndex(evento.getIdOfEvent());
+			cursor = manager.queryFavoriteByIndex(evento.getIdOfEvent());
 			//Entro en time_line y ahora obtenemos el estado de la estrella 
 			if(cursor.getCount() > 0){
 				//Si esta prendida solo apaga y elimina el registro
@@ -585,7 +598,7 @@ public class DetailActivity extends ActionBarActivity {
 			}
 		} else {
 			//Entro por favoritos y ahora obtenemos el estado de la estrella 
-			cursor = manager.queryEventByIndex(favoritosObjeto.getIndexOfEvent());
+			cursor = manager.queryFavoriteByIndex(favoritosObjeto.getIndexOfEvent());
 			
 			if(cursor.getCount() > 0){
 				//Si esta prendida solo apaga y elimina el registro

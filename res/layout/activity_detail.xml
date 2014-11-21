@@ -354,7 +354,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="5dp"
-                    android:paddingLeft="15dp"
+                   	android:layout_marginLeft="35dp"
                     android:paddingTop="3dp"
                     android:text="@string/signoPesos"
                     android:textColor="#A8A2A2" />
@@ -368,6 +368,27 @@
                     android:paddingTop="3dp"
                     android:text="@string/defaultPrecio"
                     android:textColor="#A8A2A2" />
+            </LinearLayout>
+            
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                
+                <TextView
+                    android:paddingLeft="35dp" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/etiquetaCantidadBoletos"
+                    android:textColor="#A8A2A2"/>
+                
+                <TextView
+                    android:id="@+id/cantidadBoletosId" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/defaultCantidadBoletos"
+                    android:textColor="#A8A2A2"
+                    android:paddingLeft="8dp"/>
             </LinearLayout>
         </LinearLayout>
 

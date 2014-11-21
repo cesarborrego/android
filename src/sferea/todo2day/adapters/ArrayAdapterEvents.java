@@ -6,7 +6,7 @@ import sferea.todo2day.R;
 import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.Constants_Settings;
-import sferea.todo2day.config.DataBaseSQLiteManager;
+import sferea.todo2day.config.DataBaseSQLiteManagerFavorites;
 import sferea.todo2day.config.SharedPreferencesHelper;
 import sferea.todo2day.fragments.Page_TimeLine;
 import sferea.todo2day.fragments.SubF_Events;
@@ -118,7 +118,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 	 */
 	void setInfoAndListenersInEvent(ViewHolder eventView, final int position) {
 
-		DataBaseSQLiteManager managerDBFavorites = new DataBaseSQLiteManager(
+		DataBaseSQLiteManagerFavorites managerDBFavorites = new DataBaseSQLiteManagerFavorites(
 				thisContext);
 
 		/* Nuevos */
@@ -314,7 +314,7 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 	 * @param eventView
 	 */
 	private void agregarFavoritos(final ViewHolder eventView,
-			final int position, final DataBaseSQLiteManager managerDBFavorites) {
+			final int position, final DataBaseSQLiteManagerFavorites managerDBFavorites) {
 
 		eventView.iconFavorito.setOnClickListener(new OnClickListener() {
 
@@ -361,7 +361,8 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 										getItem(position).getUrlImagen(),
 										String.valueOf(position), 
 										String.valueOf(getItem(position).getIdOfEvent()),
-										String.valueOf(getItem(position).getFechaUnix()));
+										String.valueOf(getItem(position).getFechaUnix()),
+										String.valueOf(getItem(position).getTipoBoleto().getId()));
 						Log.d(null, "Registro Insertado en DB");
 					}
 				}

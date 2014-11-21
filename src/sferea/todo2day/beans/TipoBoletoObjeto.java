@@ -23,4 +23,8 @@ public class TipoBoletoObjeto implements Serializable {
 	public ArrayList<BoletoObjeto> getListaBoletos(){
 		return this.listaBoletos;
 	}
+
+	public void setListaBoletos(ArrayList<BoletoObjeto> listaBoletos) {
+		this.listaBoletos = listaBoletos;
+	}
 }
