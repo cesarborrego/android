@@ -7,14 +7,15 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android1:layout_height="wrap_content" >
+        android:layout_height="wrap_content" >
 
         <RelativeLayout
-            android1:id="@+id/relativeHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="25dp"
-            android:background="#FFF" >
+            android:id="@+id/relativeHeader"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentRight="true"
+            android:background="#FFF"
+            android:layout_marginBottom="30dp">
 
             <TextView
                 android:id="@+id/tituloSettings"
@@ -22,9 +23,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="30dp"
                 android:text="@string/tituloSettings"
-                android:textSize="20sp" />
+                android:textSize="31sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,32 +33,32 @@
                 android:layout_below="@id/tituloSettings"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:paddingBottom="15dp"
+                android:layout_centerHorizontal="true"
                 android:text="@string/descripcionSettings"
-                android:textSize="13sp" />
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android1:layout_below="@id/relativeHeader"
+            android:layout_below="@id/relativeHeader"
             android:background="#E8E8E8"
             android:orientation="vertical"
-            android:padding="10dp" >
+            android:padding="20dp" >
 
             <WebView
                 android:id="@+id/settingsWebview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone" 
-                android1:layout_marginBottom="25dp"/>
+                android:layout_marginBottom="45dp"/>
 
             <!-- DISTANCIA -->
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android1:layout_marginBottom="25dp"
+                android:layout_height="180dp"
+                android:layout_marginBottom="45dp"
                 android:background="#FFF"
                 android:orientation="vertical"
                 android:padding="15dp"
@@ -74,12 +75,12 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="@string/distancia"
-                        android:textColor="#424242"
-                        android:textSize="18sp" />
+                        android:textColor="#575757"
+                        android:textSize="30sp" />
 
                     <TextView
                         android:id="@+id/preguntaDistanciaID"
-                        android:layout_width="120dp"
+                        android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
@@ -88,8 +89,9 @@
                         android:padding="10dp"
                         android:text="@string/que_distancia"
                         android:textColor="#FFF"
-                        android:textStyle="bold"
-                        android1:textSize="11sp" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                 </RelativeLayout>
 
                 <TextView
@@ -99,14 +101,16 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/kmDistancia"
-                    android:textColor="#424242"
-                    android:textSize="13sp" />
+                    android:textColor="#A8A2A2"
+                    android:textSize="21sp" />
 
                 <SeekBar
                     android:id="@+id/seekbarDistancia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:max="4" />
+                    android:max="4"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="35dp"/>
             </LinearLayout>
 
             <!-- UBICACIÓN -->
@@ -131,8 +135,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android1:layout_marginBottom="25dp"
+                android:layout_height="180dp"
+                android:layout_marginBottom="45dp"
                 android:background="#FFF"
                 android:orientation="vertical"
                 android:padding="15dp" >
@@ -147,12 +151,12 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="@string/titUbicacion"
-                        android:textColor="#424242"
-                        android:textSize="18sp" />
+                        android:textColor="#575757"
+                        android:textSize="30sp" />
 
                     <TextView
                         android:id="@+id/pregunta_ubicacion_ID"
-                        android:layout_width="120dp"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
@@ -161,8 +165,9 @@
                         android:padding="10dp"
                         android:text="@string/donde_ubicacion"
                         android:textColor="#FFF"
-                        android:textStyle="bold"
-                        android1:textSize="11sp" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -177,8 +182,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="5dp"
                         android:text="@string/miUbicacion"
-                        android:textColor="#424242"
-                        android:textSize="12sp" />
+                        android:textColor="#A8A2A2"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/textoUbicacionDispositivo_2"
@@ -188,8 +193,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
                         android:text="@string/laUbicacion"
-                        android:textColor="#424242"
-                        android:textSize="12sp" />
+                        android:textColor="#A8A2A2"
+                        android:textSize="20sp" />
 
                     <SeekBar
                         android:id="@+id/seekbarUbicacion"
@@ -213,7 +218,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android1:layout_marginBottom="20dp" >
+                    android:layout_marginBottom="20dp" >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -221,12 +226,12 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="@string/sesion"
-                        android:textColor="#424242"
-                        android:textSize="18sp" />
+                        android:textColor="#575757"
+                        android:textSize="30sp" />
 
                     <TextView
                         android:id="@+id/pregunta_sesion_ID"
-                        android:layout_width="120dp"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
@@ -235,8 +240,9 @@
                         android:padding="10dp"
                         android:text="@string/que_sesion"
                         android:textColor="#FFF"
-                        android:textStyle="bold"
-                        android1:textSize="11sp" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                 </RelativeLayout>
 
                 <TextView
@@ -277,7 +283,8 @@
                             android:layout_height="wrap_content"
                             android:text="@string/textSesion"
                             android:textColor="#FFF"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android1:textSize="22sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
