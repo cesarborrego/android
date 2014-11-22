@@ -91,7 +91,7 @@ public class DetailActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_detail);
 		imageloader = ImageUtil.getImageLoader();
 		options = ImageUtil.getOptionsImageLoader();
-		checkInternetConnection = new CheckInternetConnection(getApplicationContext(), this);
+		checkInternetConnection = new CheckInternetConnection(this);
 				
 		ActionBar actionBar = getSupportActionBar();	//Obtiene el ActionBar para < Android 4.0
 		actionBar.setDisplayHomeAsUpEnabled(true);		//Habilitar el boton superior

@@ -46,11 +46,16 @@ public class SubF_Settings extends Fragment {
 	//private RequestToken mRequestToken = null;
 	private TwitterManager tweet_hlp;
 	
+	private static final String SHARED_PREFS_NAME = "YIEPPA_PREFERENCES";
+	
+	private SharedPreferences preferences;	
+	private SharedPreferences.Editor editorCategoriasString;
+	
 	//private int TWITTER_AUTH=1;
 	
 	public SubF_Settings(){}
 	Context contextThis;
-	
+	int distancia;
 	RelativeLayout botonIniciarSesion;
 	RelativeLayout botonCerrarSesion;
 	TextView statusSesion;
@@ -83,8 +88,8 @@ public class SubF_Settings extends Fragment {
 			
 		final SharedPreferences prefsMap = view.getContext().getSharedPreferences("map",Context.MODE_PRIVATE);
     	
-		SharedPreferences prefsCategorias = view.getContext().getSharedPreferences("Distancia",Context.MODE_PRIVATE);	
-		SharedPreferences.Editor editorCategoriasString = prefsCategorias.edit();
+		preferences = getActivity().getSharedPreferences(SHARED_PREFS_NAME,Context.MODE_PRIVATE);	
+		editorCategoriasString = preferences.edit();
 
 		checkSettings();
 		
@@ -161,28 +166,26 @@ public class SubF_Settings extends Fragment {
 			}
 		});
         
-        switch (SplashActivity.distanciaEvento) {
+        switch (distancia) {
 		case 5:
 			seekbarDistancia.setProgress(0);
-			textoDistancia.setText(""+SplashActivity.distanciaEvento+"km");
 			break;
 		case 10:
-			textoDistancia.setText(""+SplashActivity.distanciaEvento+"km");
 			seekbarDistancia.setProgress(1);
 			break;
 		case 15:
-			textoDistancia.setText(""+SplashActivity.distanciaEvento+"km");
 			seekbarDistancia.setProgress(2);
 			break;
 		case 20:
-			textoDistancia.setText(""+SplashActivity.distanciaEvento+"km");
 			seekbarDistancia.setProgress(3);
 			break;
 		case 50:
-			textoDistancia.setText(""+SplashActivity.distanciaEvento+"km");
 			seekbarDistancia.setProgress(4);
 			break;
 		}
+        
+        textoDistancia.setText(""+distancia+"km.");
+        
         seekbarDistancia.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			
 			@Override public void onStopTrackingTouch(SeekBar seekBar) {
@@ -195,38 +198,39 @@ public class SubF_Settings extends Fragment {
 					boolean fromUser) {
 				
 				Log.d(null,"progress = "+progress);
-				switch(progress){
+				
+				distancia = progress;
+				
+				switch(distancia){
 				case 0:
 					textoDistancia.setText("5km");
-					SplashActivity.distanciaEvento = 5;
+					editorCategoriasString.putInt("Distancia", 5);
 					seekbarUbicacion.setSaveEnabled(true);
-					Log.d(null, String.valueOf(SplashActivity.distanciaEvento));
 					break;
 				case 1:
 					textoDistancia.setText("10km");
-					SplashActivity.distanciaEvento = 10;
+					editorCategoriasString.putInt("Distancia", 10);
 					seekbarUbicacion.setSaveEnabled(true);
-					Log.d(null, String.valueOf(SplashActivity.distanciaEvento));
 					break;
 				case 2:
 					textoDistancia.setText("15km");
-					SplashActivity.distanciaEvento = 15;
+					editorCategoriasString.putInt("Distancia", 15);
 					seekbarUbicacion.setSaveEnabled(true);
-					Log.d(null, String.valueOf(SplashActivity.distanciaEvento));
 					break;
 				case 3:
 					textoDistancia.setText("20km");
-					SplashActivity.distanciaEvento = 20;
+					editorCategoriasString.putInt("Distancia", 20);
 					seekbarUbicacion.setSaveEnabled(true);
-					Log.d(null, String.valueOf(SplashActivity.distanciaEvento));
 					break;
 				case 4:
 					textoDistancia.setText("50km");
-					SplashActivity.distanciaEvento = 50;
+					editorCategoriasString.putInt("Distancia", 50);
 					seekbarUbicacion.setSaveEnabled(true);
-					Log.d(null, String.valueOf(SplashActivity.distanciaEvento));
 					break;
 				}
+				
+				editorCategoriasString.commit();
+				
 				//TODO Agregar rutina para cambiar kilometros
 			}
 		});
@@ -343,7 +347,7 @@ public class SubF_Settings extends Fragment {
 	
 	public void checkSettings(){
 		
-		final Context settingsContext = getActivity().getApplicationContext();
+		final Context settingsContext = getActivity();
 		
 		if(tweet_hlp==null && isConnectedToInternet(settingsContext)){
 			new AsyncTask<Void, Void, Void>() {
@@ -369,6 +373,8 @@ public class SubF_Settings extends Fragment {
 			botonCerrarSesion.setVisibility(View.GONE);
 			statusSesion.setText(settingsContext.getResources().getString(R.string.titSesion));
 		}
+		
+		distancia = preferences.getInt("Distancia", 5);
 	}	
 	
 	

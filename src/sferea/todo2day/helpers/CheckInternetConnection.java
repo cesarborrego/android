@@ -1,36 +1,16 @@
 package sferea.todo2day.helpers;
 
-import sferea.todo2day.R;
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.widget.Toast;
 
 public class CheckInternetConnection {
 	Context thisContext;
-	Activity thisActivity;
-	public CheckInternetConnection(Context c, Activity a){
+
+	public CheckInternetConnection(Context c){
 		this.thisContext = c;
-		this.thisActivity = a;
 	}
 	
-	public boolean isConnectedToInternetSplash() {
-		ConnectivityManager connectivity = (ConnectivityManager) thisContext
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		if (connectivity != null) {
-			NetworkInfo[] info = connectivity.getAllNetworkInfo();
-			if (info != null)
-				for (int i = 0; i < info.length; i++)
-					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-						return true;
-					}
-		}
-		Toast.makeText(thisContext,
-				R.string.NoInternetToastMessage, Toast.LENGTH_SHORT).show();
-		thisActivity.finish();
-		return false;
-	}
 	
 	public boolean isConnectedToInternet() {
 		ConnectivityManager connectivity = (ConnectivityManager) thisContext

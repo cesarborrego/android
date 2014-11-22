@@ -49,21 +49,19 @@ public class LocationHelper extends Service implements LocationListener{
  
     public LocationHelper(Context context) {
         this.mContext = context;
-        getLocation();
+        locationManager = (LocationManager) mContext
+                .getSystemService(LOCATION_SERVICE);
     }
     
     public Location getLocation() {
         try {
-            locationManager = (LocationManager) mContext
-                    .getSystemService(LOCATION_SERVICE);
+//            // getting GPS status
+//            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+// 
+//            // getting network status
+//            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
  
-            // getting GPS status
-            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
- 
-            // getting network status
-            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
- 
-            if (!isGPSEnabled && !isNetworkEnabled) {
+            if (!canGetLocation()) {
             	Toast.makeText(mContext, getResources().getString(R.string.errorUbicacion), Toast.LENGTH_LONG).show();
                 // no network provider is enabled
             } else {
@@ -137,41 +135,18 @@ public class LocationHelper extends Service implements LocationListener{
      * @return boolean
      * */
     public boolean canGetLocation() {
-        return this.canGetLocation;
-    }
-     
-    /**
-     * Function to show settings alert dialog
-     * */
-    public void showSettingsAlert(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-      
-        // Setting Dialog Title
-        alertDialog.setTitle(R.string.alertGpsTitle);
-  
-        // Setting Dialog Message
-        alertDialog.setMessage(getResources().getString(R.string.gpsDesactivado));
-  
-        // Setting Icon to Dialog
-        //alertDialog.setIcon(R.drawable.delete);
-  
-        // On pressing Settings button
-        alertDialog.setPositiveButton(R.string.btnTextAceptar, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                mContext.startActivity(intent);
-            }
-        });
-  
-        // on pressing cancel button
-        alertDialog.setNegativeButton(R.string.btnTextCancelar, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            dialog.cancel();
-            }
-        });
-  
-        // Showing Alert Message
-        alertDialog.show();
+    	
+    	// getting GPS status
+        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        // getting network status
+        isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        
+        if (!isGPSEnabled && !isNetworkEnabled) {
+        	return false;
+        } else {
+            return true;
+        }
     }
     
     /**

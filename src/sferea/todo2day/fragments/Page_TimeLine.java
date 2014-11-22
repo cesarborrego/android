@@ -16,13 +16,17 @@ import sferea.todo2day.helpers.ReadTableDB;
 import sferea.todo2day.helpers.SharedPreferencesHelperFinal;
 import sferea.todo2day.listeners.UpdateableFragmentListener;
 import sferea.todo2day.utils.ImageUtil;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
@@ -39,6 +43,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -51,15 +56,17 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public static ArrayList<String> listaFavoritos;
 	public static ArrayAdapterEvents arrayAdapterEvents;
 	public static boolean eventsLoaded = false;
-	
-	LocationHelper locationHelper;
-	
-	ListView listView_Eventos;
+	private static final String BROADCAST_INTENT_NAME = "actualiza_timeline";
+	private static final String SHARED_PREFS_NAME = "YIEPPA_PREFERENCES";
+	private SharedPreferences preferences;
+	private AddMoreEventsTask addMoreTask;
+	private RefreshTimeLineTask refreshTask;
+	private boolean loadingMore = false;
+	private LocationHelper locationHelper;
+	private ListView listView_Eventos;
 	public static boolean refresh = false;
-	boolean loadingMore = false;
-
-	boolean headerAdded = false;
-	float startY;
+	private boolean headerAdded = false;
+	private float startY;
 	public static String activaUbicate = "no";
 	public static String activaRuta = "no";
 
@@ -67,14 +74,14 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public static double latOrigin;
 	public static double lonOrigin;
 
-	SharedPreferences shrpref_fav;
+	private SharedPreferences shrpref_fav;
 
-	View view;
-	View headerView;
-	View footerView;
-	View footerAddView;
+	private View view;
+	private View headerView;
+	private View footerView;
+	private View footerAddView;
 
-	boolean isLoading = false;
+	private boolean isLoading = true;
 
 	int iContador = 0;
 	public static int numeroEventos = 0;
@@ -87,28 +94,41 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public static String fechaUnix = "";
 	public static String indexEvent = "";
 
-	JsonHelper jsonHelper;
-	JsonParserHelper jsonParser;
-	ReadTableDB reader;
-	ImageLoader imageloader;
-	DisplayImageOptions options;
-	SwipeRefreshLayout swipeLayout;
+	private JsonHelper jsonHelper;
+	private JsonParserHelper jsonParser;
+	private ReadTableDB reader;
+	private ImageLoader imageloader;
+	private DisplayImageOptions options;
+	private SwipeRefreshLayout swipeLayout;
 
 	// bandera tomara el valor que retorna @parseFirstJson_AddDB(json) para que
 	// dependiendo de su resultado activara
 	// las funciones en el hilo principal UI, ya sea mandar un toast avisando
 	// que trono o si todo sale bien, llenar la lista de eventos
-	boolean bandera = false;
-	int currentFirstVisibleItem;
-	int currentVisibleItemCount;
-	int totalItemCount;
-	int currentScrollState;
+	private boolean bandera = false;
+	private int currentFirstVisibleItem;
+	private int currentVisibleItemCount;
+	private int totalItemCount;
+	private int currentScrollState;
 
-	float y1;
+	private float y1;
 
 	CheckInternetConnection checkInternetConnection;
 	ProgressBar progressFooter;
 	TextView footerNoInternet, footerNoInternetClic;
+	
+	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+		 
+	    @Override 
+	    public void onReceive(Context context, Intent intent) {
+	        listaEventos = getListaEventosFromDB();
+	        fillFavoritosFromDB();
+	        
+	        if(listaEventos != null){
+	        	fillEventsAdapter(listaEventos);
+	        }
+	    } 
+	}; 
 
 	public Page_TimeLine() {
 	}
@@ -116,20 +136,17 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		checkInternetConnection = new CheckInternetConnection(getActivity()
-				.getApplicationContext(), getActivity());
-		jsonHelper = new JsonHelper(Application.getInstance());
+		checkInternetConnection = new CheckInternetConnection(getActivity());
+		jsonHelper = new JsonHelper(getActivity());
 		imageloader = ImageUtil.getImageLoader();
 		options = ImageUtil.getOptionsImageLoader();
 		
-		locationHelper = new LocationHelper(getActivity().getApplicationContext());
+		locationHelper = new LocationHelper(getActivity());
 		listaEventos = new ArrayList<EventoObjeto>();
 		listaFavoritos = new ArrayList<String>();
 	
 	}
 	
-	
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -150,6 +167,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 			@Override
 			public void onRefresh() {
 				refresh = true;
+				
 				refreshTimeLine();
 				// TODO Auto-generated method stub
 
@@ -212,134 +230,111 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		return view;
 	}
 	
+	
+	
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+			      new IntentFilter(BROADCAST_INTENT_NAME));
 		
-		reader = new ReadTableDB(Application.getInstance());
+		listaEventos = getListaEventosFromDB();
 		
-		listaEventos = reader.fillEventListFromDB();
-		
-		listaFavoritos = reader.fillFavoriteListFromDB();
+		listaFavoritos = fillFavoritosFromDB();
 		
 		if(listaEventos != null)
 		{
-			arrayAdapterEvents.clear();
-		
-			arrayAdapterEvents.addAll(listaEventos);
-			
-			arrayAdapterEvents.notifyDataSetChanged();
+			fillEventsAdapter(listaEventos);
 		}
-		
-		numeroEventos = arrayAdapterEvents.getCount();
+
 		super.onResume();
 	}
-
+	
+	@Override
+	public void onPause() {
+		super.onPause(); 
+		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+		
+		if(addMoreTask != null && addMoreTask.getStatus() == AsyncTask.Status.RUNNING){
+			addMoreTask.cancel(true);
+		}
+		
+		if(refreshTask != null && refreshTask.getStatus() == AsyncTask.Status.RUNNING){
+			refreshTask.cancel(true);
+		}
+	};
 
 	public void addMoreEvents(final double lat, final double lon) {
 
 		progressFooter.setVisibility(View.VISIBLE);
+		
+		locationHelper.getLocation();
 			
-			latOrigin = locationHelper.getLatitude();
-			lonOrigin = locationHelper.getLongitude();
+		latOrigin = locationHelper.getLatitude();
+		lonOrigin = locationHelper.getLongitude();
 
 		footerNoInternet.setVisibility(View.GONE);
 		footerNoInternetClic.setVisibility(View.GONE);
-
-		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
-				getActivity().getApplicationContext());
 		
-		jsonParser = new JsonParserHelper(getActivity());
-
-		new AsyncTask<String, Void, Boolean>() {
-			@Override
-			protected Boolean doInBackground(String... params) {
-				boolean result = false;
-				JsonHelper helper = new JsonHelper(Application.getInstance());
-				String json = helper.connectionMongo_Json(params[0]);
-
-				if (json == "")
-					return result;
-
-				result = jsonParser.addEventsToDB(json);
-
-				return result;
-			}
-
-			@Override
-			protected void onPostExecute(Boolean params) {
-
-				if (params) {
-					reader = new ReadTableDB(getActivity());
-					if (reader.getEventsDBCount() == arrayAdapterEvents.getCount()) {
-						progressFooter.setVisibility(View.GONE);
-						((TextView) footerView.findViewById(R.id.textoFooter))
-								.setVisibility(View.VISIBLE);
-					} else {
-						arrayAdapterEvents.clear();
-						arrayAdapterEvents.addAll(reader.fillEventListFromDB());
-						arrayAdapterEvents.notifyDataSetChanged();
-						
-						numeroEventos = arrayAdapterEvents.getCount();
-					}
-
-				} else {
-					progressFooter.setVisibility(View.GONE);
-					((TextView) footerView.findViewById(R.id.textoFooter))
-							.setVisibility(View.VISIBLE);
-				}
-				
-				loadingMore = false;
-
-			}
-		}.execute("http://yapidev.sferea.com/?latitud=" + latOrigin + "&longitud="
-				+ lonOrigin + "" + "&radio=" + SplashActivity.distanciaEvento + "&categoria="
-				+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
-				+ "&numEventos=0" + "&idEvento=" + indexEvent + "" + "&fecha="
-				+ fechaUnix + "");
+		addMoreTask = new AddMoreEventsTask();
+		addMoreTask.execute(getRequestUrl(latOrigin, lonOrigin, indexEvent, fechaUnix));
 	}
 
 	public void refreshTimeLine() {
-		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(
-				getActivity().getApplicationContext());
+		
+		if(!verificarConexiones()){
+			refresh = false;
+			swipeLayout.setRefreshing(false);
+			return;
+		}
+		
+		locationHelper.getLocation();
+		
 		latOrigin = locationHelper.getLatitude();
 		lonOrigin = locationHelper.getLongitude();
 		
-		new AsyncTask<String, Void, Void>() {
-
-			ArrayList<EventoObjeto> lista = null;
-
-			@Override
-			protected void onPreExecute() {
-				// TODO El dialog de cargar
-			}
-
-			protected Void doInBackground(String... params) {
-				String result = jsonHelper.connectionMongo_Json(params[0]);
-				jsonParser = new JsonParserHelper(Application.getInstance());
-				jsonParser.addEventsToDB(result);
-				reader = new ReadTableDB(Application.getInstance());
-				lista = reader.fillEventListFromDB();
-
-				return null;
-			}
-
-			@Override
-			protected void onPostExecute(Void result) {
-				super.onPostExecute(result);
-				arrayAdapterEvents.clear();
-				arrayAdapterEvents.addAll(lista);
-				arrayAdapterEvents.notifyDataSetChanged();
-				refresh = false;
-				swipeLayout.setRefreshing(false);
-				numeroEventos = arrayAdapterEvents.getCount();
-			}
-
-		}.execute("http://yapidev.sferea.com/?latitud=" + latOrigin + ""
-				+ "&longitud=" + lonOrigin + "" + "&radio="
-				+ SplashActivity.distanciaEvento + "" + "&categoria="
+		refreshTask = new RefreshTimeLineTask();
+		refreshTask.execute(getRequestUrl(latOrigin, lonOrigin, "0", "0"));
+	}
+	
+	private void fillEventsAdapter(ArrayList<EventoObjeto> eventos){
+		arrayAdapterEvents.clear();
+		arrayAdapterEvents.addAll(eventos);
+		arrayAdapterEvents.notifyDataSetChanged();
+		numeroEventos = arrayAdapterEvents.getCount();
+	}
+	
+	private ArrayList<EventoObjeto> getListaEventosFromDB(){
+		reader = new ReadTableDB(Application.getInstance());
+		return reader.fillEventListFromDB();
+	}
+	
+	private ArrayList<String> fillFavoritosFromDB(){
+		reader = new ReadTableDB(Application.getInstance());
+		return reader.fillFavoriteListFromDB();
+	}
+	
+	private boolean makeEventsRequest(String url){
+		String result = jsonHelper.connectionMongo_Json(url);
+		
+		if(result.isEmpty())
+			return false;
+		
+		jsonParser = new JsonParserHelper(Application.getInstance());
+		return jsonParser.addEventsToDB(result);
+	}
+	
+	private String getRequestUrl(double latitud, double longitud, String idEvento, String fechaUnix){
+		
+		SharedPreferencesHelperFinal sharedPreferencesHelper = new SharedPreferencesHelperFinal(getActivity());
+		preferences = getActivity().getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+		int distancia = preferences.getInt("Distancia", 5);
+		
+		return "http://yapidev.sferea.com/?latitud=" + latitud + ""
+				+ "&longitud=" + longitud + "" + "&radio="
+				+ distancia + "" + "&categoria="
 				+ sharedPreferencesHelper.obtieneCategoriasPreferences() + ""
-				+ "&numEventos=" + numeroEventos + "" + "&idEvento=0&fecha=0");
+				+ "&numEventos=" + numeroEventos + "" + "&idEvento=" + idEvento + "&fecha=" + fechaUnix;
 	}
 
 	static {
@@ -482,6 +477,80 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		reader = new ReadTableDB(Application.getInstance());
 		listaFavoritos = reader.fillFavoriteListFromDB();
 		arrayAdapterEvents.notifyDataSetChanged();
+	}
+	
+	private boolean verificarConexiones(){
+		if(!locationHelper.canGetLocation()){
+			Toast.makeText(getActivity(), R.string.errorUbicacion, Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		
+		if(!checkInternetConnection.isConnectedToInternet()) {
+			Toast.makeText(getActivity(), R.string.NoInternetToastMessage, Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private class AddMoreEventsTask extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(String... params) {
+			return makeEventsRequest(params[0]);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean params) {
+
+			if(!this.isCancelled())
+			{
+				if (params) {
+					reader = new ReadTableDB(getActivity());
+					if (reader.getEventsDBCount() == arrayAdapterEvents.getCount()) {
+						progressFooter.setVisibility(View.GONE);
+						((TextView) footerView.findViewById(R.id.textoFooter))
+								.setVisibility(View.VISIBLE);
+					} else {
+						
+						ArrayList<EventoObjeto> eventos = getListaEventosFromDB();
+						fillEventsAdapter(eventos);
+					}
+	
+				} else {
+					progressFooter.setVisibility(View.GONE);
+					((TextView) footerView.findViewById(R.id.textoFooter))
+							.setVisibility(View.VISIBLE);
+				}
+			}
+			
+			loadingMore = false;
+
+		}
+	}
+	
+	private class RefreshTimeLineTask extends AsyncTask<String, Void, Void> {
+
+		ArrayList<EventoObjeto> lista = null;
+		
+		protected Void doInBackground(String... params) {
+			makeEventsRequest(params[0]);
+			lista = getListaEventosFromDB();
+		
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			if(!this.isCancelled()){
+				if(lista != null){
+					fillEventsAdapter(lista);
+				}
+				swipeLayout.setRefreshing(false);
+			}
+			refresh = false;
+		}
+
 	}
 
 }
