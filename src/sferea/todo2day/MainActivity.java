@@ -16,7 +16,9 @@ import sferea.todo2day.helpers.CheckInternetConnection;
 import sferea.todo2day.helpers.JsonHelper;
 import sferea.todo2day.helpers.JsonParserHelper;
 import sferea.todo2day.helpers.LocationHelper;
+import sferea.todo2day.helpers.ReadTableDB;
 import sferea.todo2day.helpers.SharedPreferencesHelperFinal;
+import sferea.todo2day.utils.TypefaceSpan;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +42,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,9 +65,10 @@ public class MainActivity extends ActionBarActivity {
 	private DrawerLayout drawerLayout;
 	private ListView listViewDrawer;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private static final String BROADCAST_INTENT_NAME = "actualiza_timeline";
+	
 	private static final String SHARED_PREFS_NAME = "YIEPPA_PREFERENCES";
-
+	private static final String KEY_INTENT_EXTRA = "IsInitialLoad";
+	
 	private List<DrawerItemRow> listaSettings;
 	private ArrayAdapterSettings arrayAdapterSettings;
 
@@ -74,14 +79,20 @@ public class MainActivity extends ActionBarActivity {
 	private EventsRequestTask task;
 	private boolean atHome = true;
 	
-	SharedPreferences preferences;
-	SharedPreferencesHelperFinal sharedPreferencesHelperFinal;
-	JsonHelper jsonHelper;
-	JsonParserHelper jsonParser;
-	DataBaseSQLiteManagerEvents dataBaseSQLiteManagerEvents;
-	LocationHelper locationHelper;
-	CheckInternetConnection internetConnectionCheck;
-	ProgressDialog pDialog;
+	private SubF_Events eventsFragment;
+	private SubF_Settings settingsFragment;
+	private SubF_Categories categoriesFragment;
+	
+	private SharedPreferences preferences;
+	private SharedPreferencesHelperFinal sharedPreferencesHelperFinal;
+	private JsonHelper jsonHelper;
+	private JsonParserHelper jsonParser;
+	private DataBaseSQLiteManagerEvents dataBaseSQLiteManagerEvents;
+	private LocationHelper locationHelper;
+	private CheckInternetConnection internetConnectionCheck;
+	private ProgressDialog pDialog;
+	
+	private boolean isDataLoadedFromSplash;
 
 	double latOrigin;
 	double lonOrigin;
@@ -97,6 +108,10 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		Intent intent = getIntent();
+	    
+	    isDataLoadedFromSplash = intent.getBooleanExtra(KEY_INTENT_EXTRA, false);
 
 		listViewDrawer = (ListView) findViewById(R.id.listViewDrawer);
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -163,26 +178,8 @@ public class MainActivity extends ActionBarActivity {
 		};
 
 		drawerLayout.setDrawerListener(mDrawerToggle); // Establecer el listener
-		ActionBar actionBar = getSupportActionBar(); // Obtiene el ActionBar
-														// para <Android4.0
-		actionBar.setDisplayHomeAsUpEnabled(true); // Habilitar el boton
-													// superior
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setTitle(R.string.titleColors);
-		actionBar.setIcon(R.drawable.ic_action_go_to_today_dark);
-		actionBar.setBackgroundDrawable(new ColorDrawable(0xFFF78326));
-		int actionBarTitleId = Resources.getSystem().getIdentifier(
-				"action_bar_title", "id", "android");
-		if (actionBarTitleId > 0) {
-			TextView title = (TextView) findViewById(actionBarTitleId);
-			if (title != null) {
-				title.setTextColor(Color.WHITE);
-			}
-		}
 
-		Constants_Settings constants = new Constants_Settings();
-		SharedPreferencesHelper shrpref = new SharedPreferencesHelper(
-				constants.SHARED_PREF_NAME, this);
+		this.setActionBar();
 
 	}
 
@@ -248,6 +245,28 @@ public class MainActivity extends ActionBarActivity {
 					.setVisibility(View.VISIBLE);
 		}
 	}
+	
+	private void setActionBar(){
+		SpannableString appName = new SpannableString(getResources().getString(R.string.titleColors));
+	    appName.setSpan(new TypefaceSpan(this, "BubblegumSans-Regular.ttf"), 0, appName.length(),
+	            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		
+		ActionBar actionBar = getSupportActionBar(); // Obtiene el ActionBar
+														// para <Android4.0
+		actionBar.setDisplayHomeAsUpEnabled(true); // Habilitar el boton
+													// superior
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setTitle(appName);
+		actionBar.setBackgroundDrawable(new ColorDrawable(0xFFF78326));
+		int actionBarTitleId = Resources.getSystem().getIdentifier(
+				"action_bar_title", "id", "android");
+		if (actionBarTitleId > 0) {
+			TextView title = (TextView) findViewById(actionBarTitleId);
+			if (title != null) {
+				title.setTextColor(Color.WHITE);
+			}
+		}
+	}
 
 	/**
 	 * sustituye los fragmentos dependiendo del parametro que reciba
@@ -256,35 +275,39 @@ public class MainActivity extends ActionBarActivity {
 	 *            = eventos, categorias o ajustes
 	 */
 	private void ShowFragment(final int position) {
-
-		// inicializamos la varible
-		Fragment fragment = null;
-
 		// elegimos que opcion se escogido como parametro, entre categorias,
 		// ajustes, o timeline
 		switch (position) {
 
 		case EVENTS:
 			if (atHome) {
-				fragment = new SubF_Events();
-				makeFragmentTransaction(fragment);
+				getEventsFragment();
+				makeFragmentTransaction(eventsFragment);
 			}
-
-			downloadJSON();
+			
+			/*
+			 * Si la carga de datos no se ejecutó desde Splash.
+			 */
+			
+			if(!isDataLoadedFromSplash) {
+				downloadJSON();
+			}
+			
+			isDataLoadedFromSplash = false;
 
 			break;
 
 		case CATEGORIES:
-			fragment = new SubF_Categories();
 			atHome = false;
-			makeFragmentTransaction(fragment);
+			getCategoriesFragment();
+			makeFragmentTransaction(categoriesFragment);
 			cancelEventTask();
 			break;
 
 		case SETTINGS:
-			fragment = new SubF_Settings();
 			atHome = false;
-			makeFragmentTransaction(fragment);
+			getSettingsFragment();
+			makeFragmentTransaction(settingsFragment);
 			cancelEventTask();
 			break;
 		}
@@ -389,6 +412,8 @@ public class MainActivity extends ActionBarActivity {
 		jsonHelper = new JsonHelper(this);
 		dataBaseSQLiteManagerEvents = new DataBaseSQLiteManagerEvents(this);
 		locationHelper = new LocationHelper(this);
+		ReadTableDB reader = new ReadTableDB(Application.getInstance());
+		
 		int distancia = preferences.getInt("Distancia", 5);
 		
 		if (!locationHelper.canGetLocation()) {
@@ -438,10 +463,23 @@ public class MainActivity extends ActionBarActivity {
 			pDialog.setMax(100);
 		}
 	}
-
-	private void sendMessage() {
-		Intent intent = new Intent(BROADCAST_INTENT_NAME);
-		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+	
+	private void getEventsFragment(){
+		if(eventsFragment == null) {
+			eventsFragment = new SubF_Events();
+		}
+	}
+	
+	private void getSettingsFragment(){
+		if(settingsFragment == null) {
+			settingsFragment = new SubF_Settings();
+		}
+	}
+	
+	private void getCategoriesFragment(){
+		if(categoriesFragment == null) {
+			categoriesFragment = new SubF_Categories();
+		}
 	}
 
 	static {
@@ -469,17 +507,22 @@ public class MainActivity extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(Void result) {
 			if (!this.isCancelled()) {
+				
+				getEventsFragment();
+				
 				if (pDialog != null && pDialog.isShowing()) {
 					pDialog.dismiss();
-
 				}
 				
 				if(!atHome){
-					makeFragmentTransaction(new SubF_Events());
+					makeFragmentTransaction(eventsFragment);
 					atHome = true;
 				}
 				
-				sendMessage();
+				else{
+					eventsFragment.updateTimelineFragment();
+				}
+				
 			}
 
 		};

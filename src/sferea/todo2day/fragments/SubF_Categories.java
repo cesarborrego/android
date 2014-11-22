@@ -16,11 +16,9 @@ import android.widget.LinearLayout;
 
 public class SubF_Categories extends Fragment {
 	
+	private static final String SHARED_PREFS_NAME = "YIEPPA_PREFERENCES";
 	SharedPreferences sharedPreferences;
-	SharedPreferences.Editor editorCategoriasBoolean;
-	
-	SharedPreferences sharedPreferencesString;
-	SharedPreferences.Editor editorCategoriasString;
+	SharedPreferences.Editor editor;
 
 	LinearLayout antrosBaresLayOut,culturaLayOut,cineTeatroLayOut,deportesLayOut,negociosLayOut,ninnosLayOut,
 	gastronomiaLayout,musicaLayOut,saludLayOut,socialesLayOut,tecnologiaLayOut,verdeLayOut, otherLayOut;
@@ -55,11 +53,8 @@ public class SubF_Categories extends Fragment {
 		if(v != null){
 			
 			//Leeremos el archivo de share que contiene las categorias
-			sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("CategoriasBoolean", Context.MODE_PRIVATE);
-			editorCategoriasBoolean = sharedPreferences.edit();
-			
-			sharedPreferencesString = getActivity().getApplicationContext().getSharedPreferences("Categorias", Context.MODE_PRIVATE);
-			editorCategoriasString = sharedPreferencesString.edit();
+			sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+			editor = sharedPreferences.edit();
 			
 			//Validamos que categorias estan prendidas y apagadas
 			//Antros y Bares
@@ -217,15 +212,15 @@ public class SubF_Categories extends Fragment {
 				public void onClick(View v) {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 00", null))){
 						antros.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_antrosybares_inactivo));
-						editorCategoriasBoolean.putString("Activa_Categoria 00", String.valueOf(false));
-						editorCategoriasString.putString("Categories 0", "a");
+						editor.putString("Activa_Categoria 00", String.valueOf(false));
+						editor.putString("Categories 0", "a");
 					} else {
 						antros.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_antrosybares_activo));
-						editorCategoriasBoolean.putString("Activa_Categoria 00", String.valueOf(true));
-						editorCategoriasString.putString("Categories 0", "");
+						editor.putString("Activa_Categoria 00", String.valueOf(true));
+						editor.putString("Categories 0", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 			
@@ -236,17 +231,17 @@ public class SubF_Categories extends Fragment {
 				public void onClick(View v) {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 01", null))){
 						cultura.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_cultura_inactivo));
-						editorCategoriasBoolean.putString("Activa_Categoria 01", String.valueOf(false));
+						editor.putString("Activa_Categoria 01", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 1", "b");
+						editor.putString("Categories 1", "b");
 					} else {
 						cultura.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_cultura_activo));
-						editorCategoriasBoolean.putString("Activa_Categoria 01", String.valueOf(true));
+						editor.putString("Activa_Categoria 01", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 1", "");
+						editor.putString("Categories 1", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 
@@ -258,18 +253,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 02", null))){
 						cine.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_cineyteatro_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 02", String.valueOf(false));
+						editor.putString("Activa_Categoria 02", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 2", "c");
+						editor.putString("Categories 2", "c");
 					} else {
 						cine.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_cineyteatro_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 02", String.valueOf(true));
+						editor.putString("Activa_Categoria 02", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 2", "");
+						editor.putString("Categories 2", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 
@@ -281,18 +276,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 10", null))){
 						deportes.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_deportes_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 10", String.valueOf(false));
+						editor.putString("Activa_Categoria 10", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 3", "d");
+						editor.putString("Categories 3", "d");
 					} else {
 						deportes.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_deportes_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 10", String.valueOf(true));
+						editor.putString("Activa_Categoria 10", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 3", "");
+						editor.putString("Categories 3", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 			
@@ -304,18 +299,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 11", null))){
 						negocios.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_emprendedoresynegocios_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 11", String.valueOf(false));
+						editor.putString("Activa_Categoria 11", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 4", "e");
+						editor.putString("Categories 4", "e");
 					} else {
 						negocios.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_emprendedoresynegocios_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 11", String.valueOf(true));
+						editor.putString("Activa_Categoria 11", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 4", "");
+						editor.putString("Categories 4", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 
@@ -327,18 +322,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 12", null))){
 						peques.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_eventosinfantiles_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 12", String.valueOf(false));
+						editor.putString("Activa_Categoria 12", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 5", "f");
+						editor.putString("Categories 5", "f");
 					} else {
 						peques.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_eventosinfantiles_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 12", String.valueOf(true));
+						editor.putString("Activa_Categoria 12", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 5", "");
+						editor.putString("Categories 5", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 
@@ -350,18 +345,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 20", null))){
 						gastronomia.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_gastronomia_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 20", String.valueOf(false));
+						editor.putString("Activa_Categoria 20", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 6", "g");
+						editor.putString("Categories 6", "g");
 					} else {
 						gastronomia.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_gastronomia_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 20", String.valueOf(true));
+						editor.putString("Activa_Categoria 20", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 6", "");
+						editor.putString("Categories 6", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 
@@ -373,18 +368,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 21", null))){
 						musica.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_musica_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 21", String.valueOf(false));
+						editor.putString("Activa_Categoria 21", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 7", "h");
+						editor.putString("Categories 7", "h");
 					} else {
 						musica.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_musica_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 21", String.valueOf(true));
+						editor.putString("Activa_Categoria 21", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 7", "");
+						editor.putString("Categories 7", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 
@@ -396,18 +391,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 22", null))){
 						salud.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_salud_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 22", String.valueOf(false));
+						editor.putString("Activa_Categoria 22", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 8", "i");
+						editor.putString("Categories 8", "i");
 					} else {
 						salud.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_salud_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 22", String.valueOf(true));
+						editor.putString("Activa_Categoria 22", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 8", "");
+						editor.putString("Categories 8", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 
@@ -419,18 +414,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 30", null))){
 						sociales.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_sociales_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 30", String.valueOf(false));
+						editor.putString("Activa_Categoria 30", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 9", "j");
+						editor.putString("Categories 9", "j");
 					} else {
 						sociales.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_sociales_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 30", String.valueOf(true));
+						editor.putString("Activa_Categoria 30", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 9", "");
+						editor.putString("Categories 9", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 
@@ -442,18 +437,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 31", null))){
 						tecnologia.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_tecnologia_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 31", String.valueOf(false));
+						editor.putString("Activa_Categoria 31", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 10", "k");
+						editor.putString("Categories 10", "k");
 					} else {
 						tecnologia.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_tecnologia_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 31", String.valueOf(true));
+						editor.putString("Activa_Categoria 31", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 10", "");
+						editor.putString("Categories 10", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();
+					editor.commit();
+					editor.commit();
 				}
 			});
 			
@@ -465,18 +460,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 32", null))){
 						verde.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_verde_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 32", String.valueOf(false));
+						editor.putString("Activa_Categoria 32", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 11", "l");
+						editor.putString("Categories 11", "l");
 					} else {
 						verde.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_verde_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 32", String.valueOf(true));
+						editor.putString("Activa_Categoria 32", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 11", "");
+						editor.putString("Categories 11", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();				
+					editor.commit();
+					editor.commit();				
 				}
 			});
 			
@@ -487,18 +482,18 @@ public class SubF_Categories extends Fragment {
 					if(Boolean.parseBoolean(sharedPreferences.getString("Activa_Categoria 40", null))){
 						other.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_sociales_inactivo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 40", String.valueOf(false));
+						editor.putString("Activa_Categoria 40", String.valueOf(false));
 						
-						editorCategoriasString.putString("Categories 12", "m");
+						editor.putString("Categories 12", "m");
 					} else {
 						other.setImageBitmap(getScaledBitmap(R.drawable.ic_categorias_sociales_activo));
 						
-						editorCategoriasBoolean.putString("Activa_Categoria 40", String.valueOf(true));
+						editor.putString("Activa_Categoria 40", String.valueOf(true));
 						
-						editorCategoriasString.putString("Categories 12", "");
+						editor.putString("Categories 12", "");
 					}
-					editorCategoriasBoolean.commit();
-					editorCategoriasString.commit();				
+					editor.commit();
+					editor.commit();				
 				}
 			});
 		}

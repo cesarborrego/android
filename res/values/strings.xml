@@ -88,11 +88,12 @@
     <string name="title_activity_map">MapActivity</string>
     <string name="NoInternetToastMessage">Verificar la conexión a internet.</string>
     <string name="errorUbicacion">No se puede obtener la ubicación.</string>
-    <string name="gpsDesactivado">El GPS está desactivado, ¿ir a configuración del dispositivo?</string>
-    <string name="alertGpsTitle">GPS</string>
+    <string name="gpsDesactivado">El servicio de localización está desactivado, ¿ir a configuración del dispositivo?</string>
+    <string name="conexionRedDesactivada">La conexión de red está desactivada, ¿ir a configuración del dispositivo?</string>
     <string name="btnTextAceptar">Aceptar</string>
     <string name="btnTextCancelar">Cancelar</string>
     <string name="errorVerificarConexion">Verificar la conexión a internet.</string>
     <string name="errorTelefonoNoDisponible">Número teléfonico no disponible.</string>
+    <string name="progressDialogBusqueda">Procesando nueva búsqueda.</string>
 
 </resources>

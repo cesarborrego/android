@@ -64,8 +64,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	private boolean loadingMore = false;
 	private LocationHelper locationHelper;
 	private ListView listView_Eventos;
-	public static boolean refresh = false;
-	private boolean headerAdded = false;
+	public static boolean isSwipeToRefreshEvent = false;
 	private float startY;
 	public static String activaUbicate = "no";
 	public static String activaRuta = "no";
@@ -74,12 +73,9 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public static double latOrigin;
 	public static double lonOrigin;
 
-	private SharedPreferences shrpref_fav;
-
 	private View view;
 	private View headerView;
 	private View footerView;
-	private View footerAddView;
 
 	private boolean isLoading = true;
 
@@ -105,7 +101,6 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	// dependiendo de su resultado activara
 	// las funciones en el hilo principal UI, ya sea mandar un toast avisando
 	// que trono o si todo sale bien, llenar la lista de eventos
-	private boolean bandera = false;
 	private int currentFirstVisibleItem;
 	private int currentVisibleItemCount;
 	private int totalItemCount;
@@ -116,22 +111,6 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	CheckInternetConnection checkInternetConnection;
 	ProgressBar progressFooter;
 	TextView footerNoInternet, footerNoInternetClic;
-	
-	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-		 
-	    @Override 
-	    public void onReceive(Context context, Intent intent) {
-	        listaEventos = getListaEventosFromDB();
-	        fillFavoritosFromDB();
-	        
-	        if(listaEventos != null){
-	        	fillEventsAdapter(listaEventos);
-	        }
-	    } 
-	}; 
-
-	public Page_TimeLine() {
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -166,7 +145,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 			@Override
 			public void onRefresh() {
-				refresh = true;
+				isSwipeToRefreshEvent = true;
 				
 				refreshTimeLine();
 				// TODO Auto-generated method stub
@@ -233,11 +212,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	
 	
 	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
-			      new IntentFilter(BROADCAST_INTENT_NAME));
-		
+	public void onResume() {		
 		listaEventos = getListaEventosFromDB();
 		
 		listaFavoritos = fillFavoritosFromDB();
@@ -252,9 +227,6 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	
 	@Override
 	public void onPause() {
-		super.onPause(); 
-		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
-		
 		if(addMoreTask != null && addMoreTask.getStatus() == AsyncTask.Status.RUNNING){
 			addMoreTask.cancel(true);
 		}
@@ -262,6 +234,8 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		if(refreshTask != null && refreshTask.getStatus() == AsyncTask.Status.RUNNING){
 			refreshTask.cancel(true);
 		}
+		
+		super.onPause();
 	};
 
 	public void addMoreEvents(final double lat, final double lon) {
@@ -283,7 +257,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public void refreshTimeLine() {
 		
 		if(!verificarConexiones()){
-			refresh = false;
+			isSwipeToRefreshEvent = false;
 			swipeLayout.setRefreshing(false);
 			return;
 		}
@@ -297,7 +271,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		refreshTask.execute(getRequestUrl(latOrigin, lonOrigin, "0", "0"));
 	}
 	
-	private void fillEventsAdapter(ArrayList<EventoObjeto> eventos){
+	public void fillEventsAdapter(ArrayList<EventoObjeto> eventos){
 		arrayAdapterEvents.clear();
 		arrayAdapterEvents.addAll(eventos);
 		arrayAdapterEvents.notifyDataSetChanged();
@@ -305,12 +279,12 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	}
 	
 	private ArrayList<EventoObjeto> getListaEventosFromDB(){
-		reader = new ReadTableDB(Application.getInstance());
+		reader = new ReadTableDB(getActivity());
 		return reader.fillEventListFromDB();
 	}
 	
 	private ArrayList<String> fillFavoritosFromDB(){
-		reader = new ReadTableDB(Application.getInstance());
+		reader = new ReadTableDB(getActivity());
 		return reader.fillFavoriteListFromDB();
 	}
 	
@@ -548,7 +522,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 				}
 				swipeLayout.setRefreshing(false);
 			}
-			refresh = false;
+			isSwipeToRefreshEvent = false;
 		}
 
 	}

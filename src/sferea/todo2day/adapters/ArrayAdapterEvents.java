@@ -121,10 +121,6 @@ public class ArrayAdapterEvents extends ArrayAdapter<EventoObjeto> {
 		DataBaseSQLiteManagerFavorites managerDBFavorites = new DataBaseSQLiteManagerFavorites(
 				thisContext);
 
-		/* Nuevos */
-
-		SubF_Events.iFavoritos = new int[this.getCount()];
-
 		// Asignamos al view las variables intermedias
 		eventView.nombreEvento.setText(getItem(position).getNombreEvento());
 		eventView.categoriaEvento.setText(getItem(position).getCategoriaEvento());

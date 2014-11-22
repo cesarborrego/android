@@ -62,7 +62,7 @@ public class JsonParserHelper {
 					if (!readTableDB.isIndexOfEventsExist(listaEventos.get(i)
 							.getIdOfEvent())) {
 
-						if (Page_TimeLine.refresh) {
+						if (Page_TimeLine.isSwipeToRefreshEvent) {
 							listaEventos.get(i).setIsNewEvent(1);
 						} else {
 							listaEventos.get(i).setIsNewEvent(0);

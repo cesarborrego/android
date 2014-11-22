@@ -1,40 +1,40 @@
 package sferea.todo2day.fragments;
 
+import java.util.ArrayList;
+
 import sferea.todo2day.R;
 import sferea.todo2day.adapters.PagerAdapterEvents;
+import sferea.todo2day.beans.EventoObjeto;
+import sferea.todo2day.helpers.ReadTableDB;
+import android.annotation.TargetApi;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.annotation.TargetApi;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 
 public class SubF_Events extends Fragment {
 	
 	private ViewPager viewPager;
 	private PagerAdapterEvents pagerAdapter;
-	public static final int TIMELINE = 0;
-	public static final int FAVORITOS = 1;
+	private static final int TIMELINE = 0;
+	private static final int FAVORITOS = 1;
 	
-	public static View selectorTimeline;
-	public static View selectorFavorites;
-	public static TextView textoTimeline;
-	public static TextView textoFavorites;
+	private static View selectorTimeline;
+	private static View selectorFavorites;
+	private static TextView textoTimeline;
+	private static TextView textoFavorites;
 	
-	public static int iFavoritos[] = null;
+	private Page_TimeLine fragmentTimeline;
+	private ReadTableDB reader;
 
 	public SubF_Events(){}
 
@@ -164,22 +164,20 @@ public class SubF_Events extends Fragment {
 		super.onStop();
 	}
 	
-	private void refreshFavoritesFragment(int id){
-		 //inicializamos la varible
-		 Fragment fragment = null;
-		 
-		 switch(id){
-		 case TIMELINE :
-			 fragment = new Page_TimeLine();
-			 break;
-		 case FAVORITOS:
-			 fragment = new Page_Favorites();
-			 
-		 }
-
-		 if(fragment!=null){
-			 FragmentManager fragmentManager = getChildFragmentManager();
-			 fragmentManager.beginTransaction().replace(R.id.content_Favorites, fragment).commit();
-		 }		 
-	 }
+	private ArrayList<EventoObjeto> getListaEventosFromDB(){
+		reader = new ReadTableDB(getActivity());
+		return reader.fillEventListFromDB();
+	}
+	
+	public void updateTimelineFragment(){
+		getTimelineFragment();
+		ArrayList<EventoObjeto> listaEventos = getListaEventosFromDB();
+		fragmentTimeline.fillEventsAdapter(listaEventos);
+	}
+	
+	private void getTimelineFragment(){
+		if(fragmentTimeline == null){
+			fragmentTimeline = new Page_TimeLine();
+		}
+	}
 }
