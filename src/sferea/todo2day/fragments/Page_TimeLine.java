@@ -52,11 +52,10 @@ import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 public class Page_TimeLine extends Fragment implements OnTouchListener,
 		OnScrollListener, UpdateableFragmentListener {
 
-	public static ArrayList<EventoObjeto> listaEventos;
+	private static ArrayList<EventoObjeto> listaEventos;
 	public static ArrayList<String> listaFavoritos;
-	public static ArrayAdapterEvents arrayAdapterEvents;
+	private static ArrayAdapterEvents arrayAdapterEvents;
 	public static boolean eventsLoaded = false;
-	private static final String BROADCAST_INTENT_NAME = "actualiza_timeline";
 	private static final String SHARED_PREFS_NAME = "YIEPPA_PREFERENCES";
 	private SharedPreferences preferences;
 	private AddMoreEventsTask addMoreTask;
@@ -64,7 +63,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	private boolean loadingMore = false;
 	private LocationHelper locationHelper;
 	private ListView listView_Eventos;
-	public static boolean isSwipeToRefreshEvent = false;
+	public static boolean isRefreshEvent = false;
 	private float startY;
 	public static String activaUbicate = "no";
 	public static String activaRuta = "no";
@@ -145,7 +144,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 			@Override
 			public void onRefresh() {
-				isSwipeToRefreshEvent = true;
+				isRefreshEvent = true;
 				
 				refreshTimeLine();
 				// TODO Auto-generated method stub
@@ -257,7 +256,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public void refreshTimeLine() {
 		
 		if(!verificarConexiones()){
-			isSwipeToRefreshEvent = false;
+			isRefreshEvent = false;
 			swipeLayout.setRefreshing(false);
 			return;
 		}
@@ -522,7 +521,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 				}
 				swipeLayout.setRefreshing(false);
 			}
-			isSwipeToRefreshEvent = false;
+			isRefreshEvent = false;
 		}
 
 	}
