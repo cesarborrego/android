@@ -16,11 +16,13 @@ import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.beans.FavoritosObjeto;
 import sferea.todo2day.config.CategoriasConfig;
 import sferea.todo2day.config.Constants_Settings;
-import sferea.todo2day.config.DataBaseSQLiteManager;
+import sferea.todo2day.config.DataBaseSQLiteManagerFavorites;
 import sferea.todo2day.config.SharedPreferencesHelper;
 import sferea.todo2day.fragments.Page_Favorites;
 import sferea.todo2day.fragments.Page_TimeLine;
 import sferea.todo2day.helpers.CheckInternetConnection;
+import sferea.todo2day.helpers.ReadTableDB;
+import sferea.todo2day.utils.DateUtil;
 import sferea.todo2day.utils.ImageUtil;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -69,7 +71,8 @@ public class DetailActivity extends ActionBarActivity {
 	ArrayAdapterFavorites arrayAdapterFavorites;
 	GoogleMap mMap;
 	public static boolean activaRefreshFavorites_Details = false;
-	DataBaseSQLiteManager manager = null;
+	DataBaseSQLiteManagerFavorites manager = null;
+	ReadTableDB readTableDB;
 
 	FavoritosObjeto favoritosObjeto;
 	TextView tel;
@@ -79,6 +82,8 @@ public class DetailActivity extends ActionBarActivity {
 	ImageLoader imageloader;
 	DisplayImageOptions options;
 	String tweetString;
+	
+	DateUtil dateUtil;
 	
 	
 	CheckInternetConnection checkInternetConnection;
@@ -109,9 +114,10 @@ public class DetailActivity extends ActionBarActivity {
 		btnF = (ImageView)findViewById(R.id.favoritoImgId);
 		phoneOrg = (ImageView) findViewById(R.id.organizadorImgId);
 		
-		manager = new DataBaseSQLiteManager(getApplicationContext());
-		
-		DataBaseSQLiteManager managerDBFavorites = new DataBaseSQLiteManager(
+		manager = new DataBaseSQLiteManagerFavorites(getApplicationContext());
+		readTableDB = new ReadTableDB(getApplicationContext());
+		dateUtil = new DateUtil();
+		DataBaseSQLiteManagerFavorites managerDBFavorites = new DataBaseSQLiteManagerFavorites(
 				getApplicationContext());
 		
 		Cursor cursor = null;
@@ -130,7 +136,7 @@ public class DetailActivity extends ActionBarActivity {
 					editor.commit(); 
 				}
 				
-				cursor = managerDBFavorites.queryEventByIndex(evento.getIdOfEvent());
+				cursor = managerDBFavorites.queryFavoriteByIndex(evento.getIdOfEvent());
 				
 				if (cursor.getCount() > 0) {
 					btnF.setImageResource(R.drawable.favorito_encendido);
@@ -143,9 +149,14 @@ public class DetailActivity extends ActionBarActivity {
 				imageloader.displayImage(evento.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
 				imagenCategoria(evento.getCategoriaIDEvento());
 				((TextView)findViewById(R.id.detallesCategoria)).setText(evento.getCategoriaEvento());
-				((TextView)findViewById(R.id.detallesFecha)).setText(evento.getFechaEvento());
+				((TextView)findViewById(R.id.detallesFecha)).setText(dateUtil.dateTransform(evento.getFechaEvento()));
 				((TextView)findViewById(R.id.detallesLugar)).setText(evento.getLugarEvento());
 				((TextView)findViewById(R.id.detallesDescripcion)).setText(evento.getDescripcion());
+				
+				((TextView)findViewById(R.id.tipoBoleto)).setText(evento.getTipoBoleto().getListaBoletos().get(0).getTipo());
+				((TextView)findViewById(R.id.precioBoleto)).setText(String.valueOf(evento.getTipoBoleto().getListaBoletos().get(0).getPrecio()));
+				((TextView)findViewById(R.id.cantidadBoletosId)).setText(evento.getTipoBoleto().getListaBoletos().get(0).getCantidad());
+				
 //				((TextView)findViewById(R.id.detallesFuente)).setText(evento.getFuente());
 				((TextView)findViewById(R.id.detallesDireccion)).setText(evento.getDireccion());
 				((TextView)findViewById(R.id.detallesTelefono)).setText(evento.getTelefono());
@@ -196,7 +207,7 @@ public class DetailActivity extends ActionBarActivity {
 					editor.commit(); 
 				}
 				
-				cursor = managerDBFavorites.queryEventByIndex(favoritosObjeto.getIndexOfEvent());
+				cursor = managerDBFavorites.queryFavoriteByIndex(favoritosObjeto.getIndexOfEvent());
 				
 				if (cursor.getCount() > 0) {
 					btnF.setImageResource(R.drawable.favorito_encendido);
@@ -208,13 +219,17 @@ public class DetailActivity extends ActionBarActivity {
 				imageloader.displayImage(favoritosObjeto.getUrlImagen(), (ImageView)findViewById(R.id.imagenHeader), options);
 				imagenCategoria(favoritosObjeto.getCategoriaIDEvento());
 				((TextView)findViewById(R.id.detallesCategoria)).setText(favoritosObjeto.getCategoriaEvento());
-				((TextView)findViewById(R.id.detallesFecha)).setText(favoritosObjeto.getFechaEvento());
+				((TextView)findViewById(R.id.detallesFecha)).setText(dateUtil.dateTransform(favoritosObjeto.getFechaEvento()));
 				((TextView)findViewById(R.id.detallesLugar)).setText(favoritosObjeto.getLugarEvento());
 				((TextView)findViewById(R.id.detallesDescripcion)).setText(favoritosObjeto.getDescripcion());
+				
+				((TextView)findViewById(R.id.tipoBoleto)).setText(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos().get(0).getTipo());
+				((TextView)findViewById(R.id.precioBoleto)).setText(String.valueOf(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos().get(0).getPrecio()));
+				((TextView)findViewById(R.id.cantidadBoletosId)).setText(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos().get(0).getCantidad());
+				
 //				((TextView)findViewById(R.id.detallesFuente)).setText(favoritosObjeto.getFuente());
 				((TextView)findViewById(R.id.detallesDireccion)).setText(favoritosObjeto.getDireccion());
 				((TextView)findViewById(R.id.detallesTelefono)).setText(favoritosObjeto.getTelefono());
-				((TextView)findViewById(R.id.etiquetaBoletos)).setText(favoritosObjeto.getBoleto());
 				((TextView)findViewById(R.id.detallesDistancia)).setText("a "+String.valueOf(favoritosObjeto.getDistanciaEvento()));
 				tel = (TextView)findViewById(R.id.detallesTelefono);
 				tel.setText(favoritosObjeto.getTelefono());
@@ -545,7 +560,7 @@ public class DetailActivity extends ActionBarActivity {
 		Cursor cursor;
 		//Validamos si entro por time_line
 		if(Page_TimeLine.eventoActivo){			
-			cursor = manager.queryEventByIndex(evento.getIdOfEvent());
+			cursor = manager.queryFavoriteByIndex(evento.getIdOfEvent());
 			//Entro en time_line y ahora obtenemos el estado de la estrella 
 			if(cursor.getCount() > 0){
 				//Si esta prendida solo apaga y elimina el registro
@@ -558,25 +573,25 @@ public class DetailActivity extends ActionBarActivity {
 				btnF.setImageResource(R.drawable.favorito);
 			}else{
 				//Si esta apagada solo prendemos e insertamos
-//				manager.insertar(evento.getIdOfEvent(),
-//						evento.getNombreEvento(), 
-//						evento.getCategoriaEvento(),
-//						evento.getCategoriaIDEvento(),
-//						evento.getFechaEvento(), 
-//						evento.getDescripcion(), 
-//						evento.getFuente(), 
-//						evento.getLugarEvento(), 
-//						evento.getDireccion(), 
-//						evento.getTelefono(), 
-//						String.valueOf(evento.getDistancia()), 
-//						String.valueOf(evento.getLatEvento()), 
-//						String.valueOf(evento.getLonEvento()),
-//						evento.getUrlImagen(),
-//						String.valueOf(evento.getPosicion()),
-//						String.valueOf(evento.getIdOfEvent()),
-//						String.valueOf(evento.getFechaUnix()),
-//						String.valueOf(evento.getTipoBoleto().getId()));
-//				Log.d(null, "Registro Insertado en DB");						
+				manager.insertar(evento.getIdOfEvent(),
+						evento.getNombreEvento(), 
+						evento.getCategoriaEvento(),
+						evento.getCategoriaIDEvento(),
+						evento.getFechaEvento(), 
+						evento.getDescripcion(), 
+						evento.getFuente(), 
+						evento.getLugarEvento(), 
+						evento.getDireccion(), 
+						evento.getTelefono(), 
+						String.valueOf(evento.getDistancia()), 
+						String.valueOf(evento.getLatEvento()), 
+						String.valueOf(evento.getLonEvento()),
+						evento.getUrlImagen(),
+						String.valueOf(evento.getPosicion()),
+						String.valueOf(evento.getIdOfEvent()),
+						String.valueOf(evento.getFechaUnix()),
+						String.valueOf(evento.getTipoBoleto().getId()));
+				Log.d(null, "Registro Insertado en DB");						
 								
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;
@@ -585,7 +600,7 @@ public class DetailActivity extends ActionBarActivity {
 			}
 		} else {
 			//Entro por favoritos y ahora obtenemos el estado de la estrella 
-			cursor = manager.queryEventByIndex(favoritosObjeto.getIndexOfEvent());
+			cursor = manager.queryFavoriteByIndex(favoritosObjeto.getIndexOfEvent());
 			
 			if(cursor.getCount() > 0){
 				//Si esta prendida solo apaga y elimina el registro
@@ -598,26 +613,26 @@ public class DetailActivity extends ActionBarActivity {
 				btnF.setImageResource(R.drawable.favorito);
 			}else{
 				//Si esta apagada solo prendemos e insertamos
-//				manager.insertar(
-//						favoritosObjeto.getIdEvento(),
-//						favoritosObjeto.getNombreEvento(), 
-//						favoritosObjeto.getCategoriaEvento(),
-//						favoritosObjeto.getCategoriaIDEvento(),
-//						favoritosObjeto.getFechaEvento(), 
-//						favoritosObjeto.getDescripcion(), 
-//						favoritosObjeto.getFuente(), 
-//						favoritosObjeto.getLugarEvento(), 
-//						favoritosObjeto.getDireccion(), 
-//						favoritosObjeto.getTelefono(), 
-//						favoritosObjeto.getBoleto(), 
-//						String.valueOf(favoritosObjeto.getDistanciaEvento()), 
-//						String.valueOf(favoritosObjeto.getLatEvento()), 
-//						String.valueOf(favoritosObjeto.getLonEvento()),
-//						favoritosObjeto.getUrlImagen(),
-//						String.valueOf(favoritosObjeto.getPosicion()),
-//						String.valueOf(favoritosObjeto.getIndexOfEvent()),
-//						String.valueOf(favoritosObjeto.getFechaUnix()));
-//				Log.d(null, "Registro Insertado en DB");						
+				manager.insertar(
+						favoritosObjeto.getIdEvento(),
+						favoritosObjeto.getNombreEvento(), 
+						favoritosObjeto.getCategoriaEvento(),
+						favoritosObjeto.getCategoriaIDEvento(),
+						favoritosObjeto.getFechaEvento(), 
+						favoritosObjeto.getDescripcion(), 
+						favoritosObjeto.getFuente(), 
+						favoritosObjeto.getLugarEvento(), 
+						favoritosObjeto.getDireccion(), 
+						favoritosObjeto.getTelefono(), 
+						String.valueOf(favoritosObjeto.getDistanciaEvento()), 
+						String.valueOf(favoritosObjeto.getLatEvento()), 
+						String.valueOf(favoritosObjeto.getLonEvento()),
+						favoritosObjeto.getUrlImagen(),
+						String.valueOf(favoritosObjeto.getPosicion()),
+						String.valueOf(favoritosObjeto.getIndexOfEvent()),
+						String.valueOf(favoritosObjeto.getFechaUnix()),
+						String.valueOf(favoritosObjeto.getTipoBoletoObjeto().getId()));
+				Log.d(null, "Registro Insertado en DB");						
 				
 				//Activamos que se refresque favoritos
 				activaRefreshFavorites_Details = true;

@@ -9,8 +9,8 @@
     <string name="eventos">Eventos</string>
     <string name="categorias">Categorías</string>
     <string name="ajustes">Ajustes</string>
-    <string name="categorias_titulo1">Elige las categorías de tu elección</string>
-    <string name="categorias_texto">Toca en las categorías que más te gusten para que recibas los eventos más próximos a ti relacionados a esa categoría y disfruta de miles de espectaculos y eventos de tu elección</string>
+    <string name="categorias_titulo1">Elige tus categorías favoritas</string>
+    <string name="categorias_texto">Activa las categorías que más te gusten y visualiza únicamente los eventos que realmente te interesan.</string>
 
     <string-array name="categorias">
         <item>Antros y Bares</item>
@@ -31,7 +31,7 @@
     <string name="cineYTeatro">Cine y Teatro</string>
     <string name="cultura">Cultura</string>
     <string name="deportes">Deportes</string>
-    <string name="emprendedoresYNegocios">Negocios</string>
+    <string name="emprendedoresYNegocios">Emprendedores y Negocios</string>
     <string name="eventosInfantiles">Con niños</string>
     <string name="gastronomia">Gastronomía</string>
     <string name="musica">Música</string>
@@ -40,17 +40,19 @@
     <string name="tecnologia">Tecnología</string>
     <string name="verdeYResponsabilidadSocial">Verde</string>
     <string name="Otros">Otros</string>
+    <string name="tituloSettings">Configuración</string>
+    <string name="descripcionSettings">Disfruta de los mejores eventos personalizando tu experiencia.</string>
     <string name="distancia">Distancia</string>
     <string name="que_distancia">¿Distancia de qué?</string>
-    <string name="kmDistancia">5km</string>
+    <string name="kmDistancia">5 km</string>
     <string name="tiempo">Tiempo</string>
     <string name="que_tiempo">¿Tiempo de qué?</string>
     <string name="hrsTiempo">1 hrs</string>
     <string name="defaultUser">\&#64;Usuario</string>
     <string name="donde_ubicacion">¿De dónde?</string>
-    <string name="sesion">Sesión</string>
+    <string name="sesion">Regístrate</string>
     <string name="que_sesion">¿Para qué?</string>
-    <string name="titSesion">Iniciar Sesión</string>
+    <string name="titSesion"></string>
     <string name="textSesion">Iniciar sesión con Twitter</string>
     <string name="textCerrarSesion">Cerrar sesión</string>
     <string name="bienvenido">Bienvenid@ </string>
@@ -75,6 +77,8 @@
     <string name="defaultPrecio">100</string>
     <string name="signoPesos">$</string>
     <string name="defaultTipoBoleto">Entrada General</string>
+    <string name="etiquetaCantidadBoletos">Cantidad de Boletos:</string>
+    <string name="defaultCantidadBoletos">20</string>
     <string name="defaultOrganizador">Organizado por:</string>
     <string name="nombreOrganizador">Sferea Studios</string>
     <string name="defaultDireccion">Paseo de la Reforma 325, Lomas Virreyes, Miguel Hidalgo, D.F.</string>

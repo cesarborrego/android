@@ -16,29 +16,47 @@ import android.os.Parcelable;
 public class FavoritosObjeto implements Parcelable{
 	
 	String idEvento;
-	String nombreEvento; String categoriaEvento; String fechaEvento; String horaEvento; String DistanciaEvento;
-	String lugarEvento; double latEvento; double lonEvento;
-	double distancia; Bitmap imagenEvento, btnRetweet, btnFav; int imagenCategoria, iContaRet, iContaFav;
+	String nombreEvento;
+	String categoriaEvento;
+	String fechaEvento;
+	String horaEvento;
+	String DistanciaEvento;
+	String lugarEvento;
+	double latEvento;
+	double lonEvento;
+	double distancia;
+	Bitmap imagenEvento, btnRetweet, btnFav; 
+	int imagenCategoria, iContaRet, iContaFav;
 	String categoriaIDEvento;
+	TipoBoletoObjeto tipoBoletoObjeto;
 	
 	//Nuevos campos para el nuevo constructor
 	String descripcion, fuente, direccion, telefono, boleto, urlImagen;
 	
 	int posicion, fechaUnix;
-	String indexOfEvent, precio;
+	String indexOfEvent;
 	
-	public FavoritosObjeto(String nombreEvento, String categoria, String fecha, String lugar, double distancia){
-		this.nombreEvento = nombreEvento;
-		this.categoriaEvento = categoria;
-		this.fechaEvento = fecha;
-		this.lugarEvento = lugar;
-		this.distancia = distancia;
-	}
+	public FavoritosObjeto(){}
 	
-	public FavoritosObjeto(String idEvento, String nombreEvento, String catEvento, String catIDEvento, String fecha_horaEvento, String descripcionEvento, 
-			String fuenteEvento, String LugarEvento, 
-			String direccionEvento, String telefonoEvento, String dist, String boletoEvento, double lon, double lat,
-			String urlImagen, int posicion, String indexOfEvent, int fechaUnix){
+	public FavoritosObjeto(String idEvento, 
+			String nombreEvento, 
+			String catEvento, 
+			String catIDEvento, 
+			String fecha_horaEvento, 
+			String descripcionEvento, 
+			String fuenteEvento, 
+			String LugarEvento, 
+			String direccionEvento, 
+			String telefonoEvento, 
+			String dist, 
+			double lon, 
+			double lat,
+			String urlImagen, 
+			int posicion, 
+			String indexOfEvent, 
+			int fechaUnix, 
+			int imagenCategoria,
+			TipoBoletoObjeto tipoBoletoObjeto){
 		setIdEvento(idEvento);
 		setNombreEvento(nombreEvento);
 		setCategoriaEvento(catEvento);
@@ -50,13 +68,13 @@ public class FavoritosObjeto implements Parcelable{
 		setDireccion(direccionEvento);
 		setTelefono(telefonoEvento);
 		setDistanciaEvento(dist);
-		setBoleto(boletoEvento);
 		setLonEvento(lon);
 		setLatEvento(lat);
 		setPosicion(posicion);
 		setUrlImagen(urlImagen);
 		setIndexOfEvent(indexOfEvent);
 		setFechaUnix(fechaUnix);
+		setTipoBoletoObjeto(tipoBoletoObjeto);
 	}
 
 	/** Setter & getters*/
@@ -111,9 +129,6 @@ public class FavoritosObjeto implements Parcelable{
 
 	public String getTelefono() {return telefono;}
 	public void setTelefono(String telefono) {this.telefono = telefono;}
-
-	public String getBoleto() {return boleto;}
-	public void setBoleto(String boleto) {this.boleto = boleto;}	
 	
 	public Bitmap getBtnRetweet() {return btnRetweet;}
 	public void setBtnRetweet(Bitmap btnRetweet) {this.btnRetweet = btnRetweet;}
@@ -139,8 +154,6 @@ public class FavoritosObjeto implements Parcelable{
 	public void setPosicion(int posicion) {
 		this.posicion = posicion;
 	}
-	
-	
 
 	public String getUrlImagen() {
 		return urlImagen;
@@ -165,13 +178,13 @@ public class FavoritosObjeto implements Parcelable{
 	public void setFechaUnix(int fechaUnix) {
 		this.fechaUnix = fechaUnix;
 	}
-
-	public String getPrecio() {
-		return precio;
+	
+	public TipoBoletoObjeto getTipoBoletoObjeto() {
+		return tipoBoletoObjeto;
 	}
 
-	public void setPrecio(String precio) {
-		this.precio = precio;
+	public void setTipoBoletoObjeto(TipoBoletoObjeto tipoBoletoObjeto) {
+		this.tipoBoletoObjeto = tipoBoletoObjeto;
 	}
 
 	@Override
@@ -192,7 +205,6 @@ public class FavoritosObjeto implements Parcelable{
 		dest.writeString(fuente);
 		dest.writeString(direccion);
 		dest.writeString(telefono);
-		dest.writeString(boleto);
 		dest.writeDouble(latEvento);
 		dest.writeDouble(lonEvento);
 		dest.writeInt(posicion);
@@ -201,6 +213,7 @@ public class FavoritosObjeto implements Parcelable{
 		dest.writeInt(fechaUnix);
 		dest.writeString(categoriaIDEvento);
 		dest.writeInt(imagenCategoria);
+		dest.writeSerializable(tipoBoletoObjeto);
 		
 		
 	}	
@@ -226,7 +239,6 @@ public class FavoritosObjeto implements Parcelable{
 		setFuente(pc.readString());
 		setDireccion(pc.readString());
 		setTelefono(pc.readString());
-		setBoleto(pc.readString());
 		setLatEvento(pc.readDouble());
 		setLonEvento(pc.readDouble());
 		setPosicion(pc.readInt());
@@ -235,6 +247,6 @@ public class FavoritosObjeto implements Parcelable{
 		setFechaUnix(pc.readInt());
 		setCategoriaIDEvento(pc.readString());
 		setImagenCategoria(pc.readInt());
-		
+		setTipoBoletoObjeto((TipoBoletoObjeto) pc.readSerializable());
 	}
 }
