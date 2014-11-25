@@ -121,6 +121,10 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		options = ImageUtil.getOptionsImageLoader();
 		
 		locationHelper = new LocationHelper(getActivity());
+		locationHelper.getLocation();
+		
+		latOrigin = locationHelper.getLatitude();
+		lonOrigin = locationHelper.getLongitude();
 		listaEventos = new ArrayList<EventoObjeto>();
 		listaFavoritos = new ArrayList<String>();
 	

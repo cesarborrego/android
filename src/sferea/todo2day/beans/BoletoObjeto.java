@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class BoletoObjeto implements Serializable {
 	private String tipo;
 	private String cantidad;
-	private double precio;
+	private int precio;
 	
 	public String getTipo() {
 		return tipo;
@@ -21,10 +21,10 @@ public class BoletoObjeto implements Serializable {
 		this.cantidad = cantidad;
 	}
 	
-	public double getPrecio() {
+	public int getPrecio() {
 		return precio;
 	}
-	public void setPrecio(double precio) {
+	public void setPrecio(int precio) {
 		this.precio = precio;
 	}
 	

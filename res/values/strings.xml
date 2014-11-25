@@ -77,8 +77,13 @@
     <string name="defaultPrecio">100</string>
     <string name="signoPesos">$</string>
     <string name="defaultTipoBoleto">Entrada General</string>
+    <string name="leyendaVariosPrecios">Los precios van desde </string>
+    <string name="hastaVarios">hasta </string>
     <string name="etiquetaCantidadBoletos">Cantidad de Boletos:</string>
     <string name="defaultCantidadBoletos">20</string>
+    <string name="gratis">Gratis, Entrada Libre.</string>
+    <string name="general">Entrada General </string>
+    <string name="no_disponible">No disponible </string>
     <string name="defaultOrganizador">Organizado por:</string>
     <string name="nombreOrganizador">Sferea Studios</string>
     <string name="defaultDireccion">Paseo de la Reforma 325, Lomas Virreyes, Miguel Hidalgo, D.F.</string>

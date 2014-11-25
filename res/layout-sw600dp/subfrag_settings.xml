@@ -173,8 +173,38 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
+                    
+                    <RadioGroup
+                        android:layout_marginTop="35dp"
+                        android:id="@+id/radioGroupID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center" >
 
-                    <TextView
+                        <RadioButton
+                            android:id="@+id/automaticoID"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="onRadioButtonClicked"
+                            android:text="Automático"
+                            android:textColor="#424242"
+                            android1:textSize="25sp" />
+
+                        <RadioButton
+                            android:layout_marginLeft="15dp"
+                            android:id="@+id/ubicateID"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:onClick="onRadioButtonClicked"
+                            android:text="Ubícate"
+                            android:textColor="#424242"
+                            android1:textSize="25sp" />
+
+                    </RadioGroup>
+
+                    <!--TextView
                         android:id="@+id/textoUbicacionDispositivo_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -202,7 +232,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@id/textoUbicacionDispositivo_2"
                         android:layout_toRightOf="@id/textoUbicacionDispositivo_1"
-                        android:max="1" />
+                        android:max="1" /-->
                 </RelativeLayout>
             </LinearLayout>
 

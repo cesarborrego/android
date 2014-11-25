@@ -17,6 +17,7 @@ import sferea.todo2day.SplashActivity;
 import sferea.todo2day.config.Constants_Settings;
 import sferea.todo2day.config.SharedPreferencesHelper;
 import sferea.todo2day.config.TwitterManager;
+import sferea.todo2day.helpers.LocationHelper;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,8 +36,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,16 +64,28 @@ public class SubF_Settings extends Fragment {
 	TextView statusSesion;
 	
 	SeekBar seekbarDistancia;
-	SeekBar seekbarUbicacion;
+//	SeekBar seekbarUbicacion;
+	RadioButton automaticoBtn;
+	RadioButton ubicateBtn;
 	TextView textoDistancia, preguntaDistancia, preguntaUbicacion, preguntaSesion;
 
 	String categorias = "";
 	
 	public static boolean seActivoSettings = false; 
+	
+	LocationHelper locationHelper;
+	double latOrigin;
+	double lonOrigin;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		final View view = inflater.inflate(R.layout.subfrag_settings, container, false);
+		locationHelper = new LocationHelper(getActivity().getApplicationContext());
+		
+		locationHelper.getLocation();
+
+		latOrigin = locationHelper.getLatitude();
+		lonOrigin= locationHelper.getLongitude();
 		
 		System.out.println(Page_TimeLine.activaRuta);
 		System.out.println(Page_TimeLine.activaUbicate);
@@ -79,7 +94,12 @@ public class SubF_Settings extends Fragment {
 		statusSesion = ((TextView)view.findViewById(R.id.statusSesion));
 		
 		seekbarDistancia = ((SeekBar)view.findViewById(R.id.seekbarDistancia));
-		seekbarUbicacion = ((SeekBar)view.findViewById(R.id.seekbarUbicacion));
+		
+//		seekbarUbicacion = ((SeekBar)view.findViewById(R.id.seekbarUbicacion));
+		automaticoBtn = (RadioButton)view.findViewById(R.id.automaticoID);
+		ubicateBtn = (RadioButton)view.findViewById(R.id.ubicateID);
+		automaticoBtn.setChecked(true);
+		
 		textoDistancia = ((TextView)view.findViewById(R.id.textoDistancia));
 		
 		preguntaDistancia = ((TextView)view.findViewById(R.id.preguntaDistanciaID));
@@ -98,8 +118,7 @@ public class SubF_Settings extends Fragment {
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setMessage("Puedes obtener tu ubicaci??n de manera automatica por medio del GPS " +
-						"o si lo prefieres, puedes ubicarte desde otra posici??n, por ejemplo, la casa de un amigo, escuela, etc.")
+				builder.setMessage("Yieppa! en automático detecta tu ubicación para mostrarte los mejores eventos cerca de ti, pero puedes cambiar tu posición y conocer eventos cercanos a la casa de un amigo o en otro lugar. ¡Diviértete!")
 //				        .setTitle("Atenci???n!!")
 				        .setCancelable(false)
 				        .setNeutralButton("Aceptar",
@@ -118,7 +137,7 @@ public class SubF_Settings extends Fragment {
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setMessage("Aumenta el radio de b??squeda de eventos respecto a tu posici??n. ??Pru??balo!")
+				builder.setMessage("Considerando tu ubicación y distancia te mostraremos los mejores eventos cerca de ti. ¡Prueba incrementando la distancia y visualiza más eventos!")
 				//				        .setTitle("Atenci???n!!")
 				.setCancelable(false)
 				.setNeutralButton("Aceptar",
@@ -137,7 +156,7 @@ public class SubF_Settings extends Fragment {
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setMessage("Logueate con tu cuenta de Twitter y comparte con todos tus amigos los eventos que m??s te gusten!")
+				builder.setMessage("Registra tu cuenta de Twitter e invita a tus amigos a los mejores eventos cerca de ti.")
 				//		        .setTitle("Atenci???n!!")
 				.setCancelable(false)
 				.setNeutralButton("Aceptar",
@@ -205,27 +224,27 @@ public class SubF_Settings extends Fragment {
 				case 0:
 					textoDistancia.setText("5km");
 					editorCategoriasString.putInt("Distancia", 5);
-					seekbarUbicacion.setSaveEnabled(true);
+//					ubicateBtn.setSaveEnabled(true);
 					break;
 				case 1:
 					textoDistancia.setText("10km");
 					editorCategoriasString.putInt("Distancia", 10);
-					seekbarUbicacion.setSaveEnabled(true);
+//					seekbarUbicacion.setSaveEnabled(true);
 					break;
 				case 2:
 					textoDistancia.setText("15km");
 					editorCategoriasString.putInt("Distancia", 15);
-					seekbarUbicacion.setSaveEnabled(true);
+//					seekbarUbicacion.setSaveEnabled(true);
 					break;
 				case 3:
 					textoDistancia.setText("20km");
 					editorCategoriasString.putInt("Distancia", 20);
-					seekbarUbicacion.setSaveEnabled(true);
+//					seekbarUbicacion.setSaveEnabled(true);
 					break;
 				case 4:
 					textoDistancia.setText("50km");
 					editorCategoriasString.putInt("Distancia", 50);
-					seekbarUbicacion.setSaveEnabled(true);
+//					seekbarUbicacion.setSaveEnabled(true);
 					break;
 				}
 				
@@ -236,42 +255,68 @@ public class SubF_Settings extends Fragment {
 		});
         
         if(Page_TimeLine.activaUbicate.equals("si")){
-        	seekbarUbicacion.setProgress(1);
+//        	seekbarUbicacion.setProgress(1);
+        	ubicateBtn.setSelected(true);
         }
         
-        seekbarUbicacion.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+        automaticoBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {}
-			
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {}
-			
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				
-				switch (progress) {				
-				case 0:
-					//Activa gps
-					Page_TimeLine.activaUbicate="no";
-					seekbarUbicacion.setSaveEnabled(true);
-					Page_TimeLine.latOrigin = 19.355582;
-					Page_TimeLine.lonOrigin = -99.186726;
-					break;
-
-				case 1:
-					//Clic largo en mapa	
-					Page_TimeLine.activaUbicate="si";
-					Page_TimeLine.activaRuta="no";
-					seekbarUbicacion.setSaveEnabled(true);					
-					Intent intent = new Intent(view.getContext(), MapActivity.class);
-					startActivity(intent);
-					break;
-				}
-				
+			public void onClick(View v) {
+				Page_TimeLine.activaUbicate="no";
+				automaticoBtn.setSaveEnabled(true);
+				Page_TimeLine.latOrigin = latOrigin;
+				Page_TimeLine.lonOrigin = lonOrigin;
 			}
 		});
+        
+        ubicateBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Page_TimeLine.activaUbicate="si";
+				Page_TimeLine.activaRuta="no";
+				ubicateBtn.setSaveEnabled(true);					
+				Intent intent = new Intent(view.getContext(), MapActivity.class);
+				startActivity(intent);
+			}
+		});
+        
+        
+        
+//        seekbarUbicacion.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+//			
+//			@Override
+//			public void onStopTrackingTouch(SeekBar seekBar) {}
+//			
+//			@Override
+//			public void onStartTrackingTouch(SeekBar seekBar) {}
+//			
+//			@Override
+//			public void onProgressChanged(SeekBar seekBar, int progress,
+//					boolean fromUser) {
+//				
+//				switch (progress) {				
+//				case 0:
+//					//Activa gps
+//					Page_TimeLine.activaUbicate="no";
+//					seekbarUbicacion.setSaveEnabled(true);
+//					Page_TimeLine.latOrigin = 19.355582;
+//					Page_TimeLine.lonOrigin = -99.186726;
+//					break;
+//
+//				case 1:
+//					//Clic largo en mapa	
+//					Page_TimeLine.activaUbicate="si";
+//					Page_TimeLine.activaRuta="no";
+//					seekbarUbicacion.setSaveEnabled(true);					
+//					Intent intent = new Intent(view.getContext(), MapActivity.class);
+//					startActivity(intent);
+//					break;
+//				}
+//				
+//			}
+//		});
         
         seActivoSettings = true;
 		return view;

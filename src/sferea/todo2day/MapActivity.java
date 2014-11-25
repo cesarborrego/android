@@ -15,6 +15,8 @@ import org.json.JSONObject;
 
 import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.fragments.Page_TimeLine;
+import sferea.todo2day.helpers.LocationHelper;
+import sferea.todo2day.utils.TypefaceSpan;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -24,6 +26,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -43,23 +47,48 @@ public class MapActivity extends ActionBarActivity {
 	GoogleMap mMap;
 	EventoObjeto eventoObjeto;
 	Marker marcadorNuevoPunto;
+	LocationHelper locationHelper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		
-		ActionBar actionBar = getSupportActionBar();	//Obtiene el ActionBar para < Android 4.0
-		//actionBar.setDisplayHomeAsUpEnabled(true);		//Habilitar el boton superior
+//		ActionBar actionBar = getSupportActionBar();	//Obtiene el ActionBar para < Android 4.0
+//		//actionBar.setDisplayHomeAsUpEnabled(true);		//Habilitar el boton superior
+//		actionBar.setHomeButtonEnabled(true);
+//		actionBar.setTitle(R.string.titleColors);
+//		actionBar.setIcon(R.drawable.ic_action_go_to_today_dark);
+//		actionBar.setBackgroundDrawable(new ColorDrawable(0xFFF78326));
+//		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+//		if(actionBarTitleId > 0 ){
+//			TextView title = (TextView)findViewById(actionBarTitleId);
+//			if(title!=null){title.setTextColor(Color.WHITE);}
+//		}
+		
+		SpannableString appName = new SpannableString(getResources().getString(R.string.titleColors));
+	    appName.setSpan(new TypefaceSpan(this, "BubblegumSans-Regular.ttf"), 0, appName.length(),
+	            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		
+		ActionBar actionBar = getSupportActionBar(); // Obtiene el ActionBar
+														// para <Android4.0
+		actionBar.setDisplayHomeAsUpEnabled(true); // Habilitar el boton
+													// superior
 		actionBar.setHomeButtonEnabled(true);
-		actionBar.setTitle(R.string.titleColors);
+		actionBar.setTitle(appName);
 		actionBar.setIcon(R.drawable.ic_action_go_to_today_dark);
 		actionBar.setBackgroundDrawable(new ColorDrawable(0xFFF78326));
-		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-		if(actionBarTitleId > 0 ){
-			TextView title = (TextView)findViewById(actionBarTitleId);
-			if(title!=null){title.setTextColor(Color.WHITE);}
+		int actionBarTitleId = Resources.getSystem().getIdentifier(
+				"action_bar_title", "id", "android");
+		if (actionBarTitleId > 0) {
+			TextView title = (TextView) findViewById(actionBarTitleId);
+			if (title != null) {
+				title.setTextColor(Color.WHITE);
+			}
 		}
+		
+		locationHelper = new LocationHelper(getApplicationContext());
+		locationHelper.getLocation();
 		
 		setUpMapIfNeeded();
 	}
@@ -82,13 +111,15 @@ public class MapActivity extends ActionBarActivity {
         	if(Page_TimeLine.activaUbicate.equals("si")&Page_TimeLine.activaRuta.equals("no")){
         		//Creamos marcador para que indique la posicion
         		final Marker marcadorOrigen = mMap.addMarker(new MarkerOptions()
-		        .position(new LatLng(Page_TimeLine.latOrigin, Page_TimeLine.lonOrigin))
-		        .title("Tu posici��n"));
+//		        .position(new LatLng(Page_TimeLine.latOrigin, Page_TimeLine.lonOrigin))
+        		.position(new LatLng(locationHelper.getLatitude(), locationHelper.getLongitude()))
+		        .title("Tu posición"));
         		marcadorOrigen.showInfoWindow();
         		
         		Toast.makeText(getApplicationContext(), "Presiona sobre el nuevo lugar", Toast.LENGTH_LONG).show();
         		//Debe enfocar la posicion actual        		
-        		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Page_TimeLine.latOrigin, Page_TimeLine.lonOrigin), 14));
+//        		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Page_TimeLine.latOrigin, Page_TimeLine.lonOrigin), 14));
+        		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationHelper.getLatitude(), locationHelper.getLongitude()), 14));
         		mMap.setOnMapLongClickListener(new OnMapLongClickListener() {
     				
     				@Override

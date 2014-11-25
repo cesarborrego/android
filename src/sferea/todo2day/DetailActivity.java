@@ -12,6 +12,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import sferea.todo2day.adapters.ArrayAdapterFavorites;
+import sferea.todo2day.adapters.ArrayAdapterVariosBoletos;
 import sferea.todo2day.beans.EventoObjeto;
 import sferea.todo2day.beans.FavoritosObjeto;
 import sferea.todo2day.config.CategoriasConfig;
@@ -23,7 +24,9 @@ import sferea.todo2day.fragments.Page_TimeLine;
 import sferea.todo2day.helpers.CheckInternetConnection;
 import sferea.todo2day.helpers.ReadTableDB;
 import sferea.todo2day.utils.DateUtil;
+import sferea.todo2day.utils.EnumUtil;
 import sferea.todo2day.utils.ImageUtil;
+import sferea.todo2day.utils.TypefaceSpan;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -51,12 +54,17 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
+import android.text.Layout;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,6 +93,9 @@ public class DetailActivity extends ActionBarActivity {
 	
 	DateUtil dateUtil;
 	
+	ListView listaVariosBoletos;
+	ArrayAdapterVariosBoletos arrayAdapterVariosBoletos;
+	
 	
 	CheckInternetConnection checkInternetConnection;
 	
@@ -98,16 +109,37 @@ public class DetailActivity extends ActionBarActivity {
 		options = ImageUtil.getOptionsImageLoader();
 		checkInternetConnection = new CheckInternetConnection(this);
 				
-		ActionBar actionBar = getSupportActionBar();	//Obtiene el ActionBar para < Android 4.0
-		actionBar.setDisplayHomeAsUpEnabled(true);		//Habilitar el boton superior
+//		ActionBar actionBar = getSupportActionBar();	//Obtiene el ActionBar para < Android 4.0
+//		actionBar.setDisplayHomeAsUpEnabled(true);		//Habilitar el boton superior
+//		actionBar.setHomeButtonEnabled(true);
+//		actionBar.setTitle(R.string.titleColors);
+//		actionBar.setIcon(R.drawable.ic_action_go_to_today_dark);
+//		actionBar.setBackgroundDrawable(new ColorDrawable(0xFFF78326));
+//		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+//		if(actionBarTitleId > 0 ){ 
+//			TextView title = (TextView)findViewById(actionBarTitleId);
+//			if(title!=null){title.setTextColor(Color.WHITE);}
+//		}
+		
+		SpannableString appName = new SpannableString(getResources().getString(R.string.titleColors));
+	    appName.setSpan(new TypefaceSpan(this, "BubblegumSans-Regular.ttf"), 0, appName.length(),
+	            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		
+		ActionBar actionBar = getSupportActionBar(); // Obtiene el ActionBar
+														// para <Android4.0
+		actionBar.setDisplayHomeAsUpEnabled(true); // Habilitar el boton
+													// superior
 		actionBar.setHomeButtonEnabled(true);
-		actionBar.setTitle(R.string.titleColors);
+		actionBar.setTitle(appName);
 		actionBar.setIcon(R.drawable.ic_action_go_to_today_dark);
 		actionBar.setBackgroundDrawable(new ColorDrawable(0xFFF78326));
-		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-		if(actionBarTitleId > 0 ){ 
-			TextView title = (TextView)findViewById(actionBarTitleId);
-			if(title!=null){title.setTextColor(Color.WHITE);}
+		int actionBarTitleId = Resources.getSystem().getIdentifier(
+				"action_bar_title", "id", "android");
+		if (actionBarTitleId > 0) {
+			TextView title = (TextView) findViewById(actionBarTitleId);
+			if (title != null) {
+				title.setTextColor(Color.WHITE);
+			}
 		}
 		
 		btnR = (ImageView)findViewById(R.id.tweetImgId);
@@ -123,8 +155,13 @@ public class DetailActivity extends ActionBarActivity {
 		Cursor cursor = null;
 		int pantalla = getResources().getConfiguration().screenLayout;
 		
+		listaVariosBoletos = (ListView)findViewById(R.id.variosBoletosListID);
+		arrayAdapterVariosBoletos = new ArrayAdapterVariosBoletos(getApplicationContext());
+		listaVariosBoletos.setAdapter(arrayAdapterVariosBoletos);
+		
 		if(this!=null){
-			if(Page_TimeLine.eventoActivo){			
+			if(Page_TimeLine.eventoActivo){	
+				
 				Log.d(null, "Entra por time_line");
 				Bundle extras = getIntent().getExtras();
 				evento = extras.getParcelable("Event");
@@ -153,9 +190,9 @@ public class DetailActivity extends ActionBarActivity {
 				((TextView)findViewById(R.id.detallesLugar)).setText(evento.getLugarEvento());
 				((TextView)findViewById(R.id.detallesDescripcion)).setText(evento.getDescripcion());
 				
-				((TextView)findViewById(R.id.tipoBoleto)).setText(evento.getTipoBoleto().getListaBoletos().get(0).getTipo());
-				((TextView)findViewById(R.id.precioBoleto)).setText(String.valueOf(evento.getTipoBoleto().getListaBoletos().get(0).getPrecio()));
-				((TextView)findViewById(R.id.cantidadBoletosId)).setText(evento.getTipoBoleto().getListaBoletos().get(0).getCantidad());
+				
+				etiquetas_Tipo_Boleto(evento.getTipoBoleto().getId());
+				
 				
 //				((TextView)findViewById(R.id.detallesFuente)).setText(evento.getFuente());
 				((TextView)findViewById(R.id.detallesDireccion)).setText(evento.getDireccion());
@@ -223,9 +260,7 @@ public class DetailActivity extends ActionBarActivity {
 				((TextView)findViewById(R.id.detallesLugar)).setText(favoritosObjeto.getLugarEvento());
 				((TextView)findViewById(R.id.detallesDescripcion)).setText(favoritosObjeto.getDescripcion());
 				
-				((TextView)findViewById(R.id.tipoBoleto)).setText(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos().get(0).getTipo());
-				((TextView)findViewById(R.id.precioBoleto)).setText(String.valueOf(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos().get(0).getPrecio()));
-				((TextView)findViewById(R.id.cantidadBoletosId)).setText(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos().get(0).getCantidad());
+				etiquetas_Tipo_Boleto(favoritosObjeto.getTipoBoletoObjeto().getId());
 				
 //				((TextView)findViewById(R.id.detallesFuente)).setText(favoritosObjeto.getFuente());
 				((TextView)findViewById(R.id.detallesDireccion)).setText(favoritosObjeto.getDireccion());
@@ -337,7 +372,7 @@ public class DetailActivity extends ActionBarActivity {
 	 * @param urlMapaEstatico
 	 */
 	public void downloadPicture(final String urlMapaEstatico) {
-        new Thread(new Runnable() {
+        new Thread(new Runnable() { 
             @Override
             public void run() {
                 try {
@@ -696,6 +731,79 @@ public class DetailActivity extends ActionBarActivity {
 			
 		case M:
 			((ImageView)findViewById(R.id.iconCategoria)).setImageResource(R.drawable.sociales);
+			break;
+		}
+	}
+	
+	private void etiquetas_Tipo_Boleto(int ID){
+		switch (ID) {
+		case 1:
+			((TextView)findViewById(R.id.tipoBoleto)).setText(R.string.gratis);
+			
+			((LinearLayout)findViewById(R.id.descBoletos)).setVisibility(View.VISIBLE);
+			
+			((TextView)findViewById(R.id.signoMoneda)).setVisibility(View.GONE);
+			((TextView)findViewById(R.id.precioBoleto)).setVisibility(View.GONE);
+			
+			((LinearLayout)findViewById(R.id.descBoletosVarios)).setVisibility(View.GONE);
+			break;
+
+		case 2:
+			((TextView)findViewById(R.id.tipoBoleto)).setText(R.string.general);
+			
+			((LinearLayout)findViewById(R.id.descBoletos)).setVisibility(View.VISIBLE);
+			
+			((TextView)findViewById(R.id.signoMoneda)).setVisibility(View.VISIBLE);
+			((TextView)findViewById(R.id.precioBoleto)).setVisibility(View.VISIBLE);
+			
+			if(Page_TimeLine.eventoActivo){
+				((TextView)findViewById(R.id.precioBoleto)).setText(String.valueOf(evento.getTipoBoleto().getListaBoletos().get(0).getPrecio()));
+			} else {
+				((TextView)findViewById(R.id.precioBoleto)).setText(String.valueOf(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos().get(0).getPrecio()));
+			}
+			
+			((LinearLayout)findViewById(R.id.descBoletosVarios)).setVisibility(View.GONE);
+			break;
+			
+		case 3:
+			if (Page_TimeLine.eventoActivo) {
+				for (int i = 0; i < evento.getTipoBoleto().getListaBoletos()
+						.size(); i++) {
+					((TextView) findViewById(R.id.segundoPrecioTxt)).setText(String.valueOf(evento.getTipoBoleto()
+									.getListaBoletos().get(i).getPrecio()));
+				}
+				((TextView) findViewById(R.id.primerPrecioTxt)).setText(String.valueOf(evento.getTipoBoleto().getListaBoletos()
+								.get(0).getPrecio()));
+			} else {
+				for (int i = 0; i < favoritosObjeto.getTipoBoletoObjeto().getListaBoletos()
+						.size(); i++) {
+					((TextView) findViewById(R.id.segundoPrecioTxt)).setText(String.valueOf(favoritosObjeto.getTipoBoletoObjeto()
+									.getListaBoletos().get(i).getPrecio()));
+				}
+				((TextView) findViewById(R.id.primerPrecioTxt)).setText(String.valueOf(favoritosObjeto.getTipoBoletoObjeto().getListaBoletos()
+								.get(0).getPrecio()));
+			}
+
+				((LinearLayout) findViewById(R.id.descBoletos)).setVisibility(View.GONE);
+
+				((TextView) findViewById(R.id.signoMoneda)).setVisibility(View.GONE);
+				((TextView) findViewById(R.id.precioBoleto)).setVisibility(View.GONE);
+
+				((LinearLayout) findViewById(R.id.descBoletosVarios)).setVisibility(View.VISIBLE);
+			
+			
+			
+			break;
+			
+		case 4:
+			((TextView)findViewById(R.id.tipoBoleto)).setText(R.string.no_disponible);
+			
+			((LinearLayout)findViewById(R.id.descBoletos)).setVisibility(View.VISIBLE);
+			
+			((TextView)findViewById(R.id.signoMoneda)).setVisibility(View.GONE);
+			((TextView)findViewById(R.id.precioBoleto)).setVisibility(View.GONE);
+			
+			((LinearLayout)findViewById(R.id.descBoletosVarios)).setVisibility(View.GONE);
 			break;
 		}
 	}

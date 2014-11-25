@@ -378,9 +378,81 @@
                     android:text="@string/defaultPrecio"
                     android:textColor="#A8A2A2"
                     android:textSize="17sp" /> 
-         
+                    
+                <LinearLayout
+                android:id="@+id/descBoletosVarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/leyenda_Precios_ID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="35dp"
+                    android:paddingTop="2dp"
+                    android:text="@string/leyendaVariosPrecios"
+                    android:textColor="#A8A2A2"
+                    android:textSize="17sp" />
                 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                   	android:layout_marginLeft="5dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/signoPesos"
+                    android:textColor="#A8A2A2"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/primerPrecioTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                   	android:layout_marginLeft="1dp"
+                   	android:text="100"
+                    android:paddingTop="3dp"
+                    android:textColor="#A8A2A2"
+                    android:textSize="17sp" />
+                                
+                <TextView
+                    android:id="@+id/hastaTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                   	android:layout_marginLeft="5dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/hastaVarios"
+                    android:textColor="#A8A2A2"
+                    android:textSize="17sp" />
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                   	android:layout_marginLeft="5dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/signoPesos"
+                    android:textColor="#A8A2A2"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/segundoPrecioTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="1dp"
+                    android:paddingTop="3dp"
+                    android:text="100"
+                    android:textColor="#A8A2A2"
+                    android:textSize="17sp" />
+            </LinearLayout>
+         
+                
+                <!--TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/etiquetaCantidadBoletos"
@@ -395,7 +467,7 @@
                     android:text="@string/defaultCantidadBoletos"
                     android:textColor="#A8A2A2"
                     android:paddingLeft="8dp"
-                    android:textSize="17sp"/>
+                    android:textSize="17sp"/-->
                 
             </LinearLayout>
         </RelativeLayout>
@@ -432,7 +504,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:lines="2"
                 android:text="@string/defaultDireccion"
                 android:textColor="#575757"
                 android:textSize="17sp" />

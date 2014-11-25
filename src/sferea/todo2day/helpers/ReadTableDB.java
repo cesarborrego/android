@@ -246,7 +246,7 @@ public class ReadTableDB {
 	private BoletoObjeto getBoletoObjeto (Cursor cursor){
 		BoletoObjeto boletoObjeto = new BoletoObjeto();
 		boletoObjeto.setTipo(cursor.getString(cursor.getColumnIndex("TIPO_BOLETO")));
-		boletoObjeto.setPrecio(Double.parseDouble(cursor.getString(cursor.getColumnIndex("PRECIO_BOLETO"))));
+		boletoObjeto.setPrecio(Integer.parseInt(cursor.getString(cursor.getColumnIndex("PRECIO_BOLETO"))));
 		boletoObjeto.setCantidad(cursor.getString(cursor.getColumnIndex("CANTIDAD_BOLETO")));
 		return boletoObjeto;	
 	}

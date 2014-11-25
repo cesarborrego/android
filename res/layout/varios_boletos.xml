@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+    <TextView
+                    android:id="@+id/varBoletoID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="35dp"
+                    android:paddingTop="2dp"
+                    android:text="@string/defaultTipoBoleto"
+                    android:textColor="#A8A2A2" />
+
+                <TextView
+                    android:id="@+id/signoMoneda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                   	android:layout_marginLeft="35dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/signoPesos"
+                    android:textColor="#A8A2A2"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/varPrecioBoletoID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="1dp"
+                    android:paddingTop="3dp"
+                    android:text="@string/defaultPrecio"
+                    android:textColor="#A8A2A2"
+                    android:visibility="visible"/>
+    
+
+</LinearLayout>

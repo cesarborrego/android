@@ -19,7 +19,7 @@ public class TipoBoletoParser {
 	public static final int GRATIS = 1;
 	public static final int GENERAL = 2;
 	public static final int VARIOS = 3;
-	public static final int NO_DISPONIBLE = 1;
+	public static final int NO_DISPONIBLE = 4;
 	
 	public static TipoBoletoObjeto parseJsonTipoBoletos(JSONObject json) throws JSONException{
 		TipoBoletoObjeto tipoBoleto = new TipoBoletoObjeto();
@@ -48,7 +48,7 @@ public class TipoBoletoParser {
 	private static BoletoObjeto parseJSONBoleto(JSONObject objeto) throws JSONException{
 		BoletoObjeto boleto = new BoletoObjeto();
 		boleto.setTipo(objeto.getString(KEY_TICKET_TYPE));
-		boleto.setPrecio(objeto.optDouble(KEY_PRICE, 0.0));
+		boleto.setPrecio(objeto.optInt(KEY_PRICE, 0));
 		boleto.setCantidad(objeto.getString(KEY_QUANTITY));
 		
 		return boleto;
