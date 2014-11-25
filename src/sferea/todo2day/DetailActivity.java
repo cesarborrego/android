@@ -54,10 +54,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
-<<<<<<< HEAD
 import android.text.Layout;
-=======
->>>>>>> f090d48618be8f7d849521b7028efac326c1be9c
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -112,7 +109,6 @@ public class DetailActivity extends ActionBarActivity {
 		options = ImageUtil.getOptionsImageLoader();
 		checkInternetConnection = new CheckInternetConnection(this);
 				
-<<<<<<< HEAD
 //		ActionBar actionBar = getSupportActionBar();	//Obtiene el ActionBar para < Android 4.0
 //		actionBar.setDisplayHomeAsUpEnabled(true);		//Habilitar el boton superior
 //		actionBar.setHomeButtonEnabled(true);
@@ -145,9 +141,7 @@ public class DetailActivity extends ActionBarActivity {
 				title.setTextColor(Color.WHITE);
 			}
 		}
-=======
 		setActionBar();
->>>>>>> f090d48618be8f7d849521b7028efac326c1be9c
 		
 		btnR = (ImageView)findViewById(R.id.tweetImgId);
 		btnF = (ImageView)findViewById(R.id.favoritoImgId);
