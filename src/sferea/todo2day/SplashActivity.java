@@ -48,6 +48,7 @@ public class SplashActivity extends FragmentActivity {
 	private static final int LOCATION_SETTINGS_DIALOG = 1;
 	private static final int WIRELESS_SETTINGS_DIALOG = 2;
 	private static final String SHARED_PREFS_NAME = "YIEPPA_PREFERENCES";
+	private SharedPreferencesHelperFinal prefsHelper;
 
 	ReadTableDB readTableDB;
 	CheckInternetConnection checkInternetConnection;
@@ -66,6 +67,8 @@ public class SplashActivity extends FragmentActivity {
 		
 		preferences = getSharedPreferences(SHARED_PREFS_NAME,
 				Context.MODE_PRIVATE);
+		
+		prefsHelper = new SharedPreferencesHelperFinal(this);
 	}
 
 	@Override

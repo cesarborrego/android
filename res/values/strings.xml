@@ -8,7 +8,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="eventos">Eventos</string>
     <string name="categorias">Categorías</string>
-    <string name="ajustes">Ajustes</string>
+    <string name="ajustes">Configuración</string>
     <string name="categorias_titulo1">Elige tus categorías favoritas</string>
     <string name="categorias_texto">Activa las categorías que más te gusten y visualiza únicamente los eventos que realmente te interesan.</string>
 
@@ -25,6 +25,23 @@
         <item>Sociales</item>
         <item>Tecnología</item>
         <item>Verde</item>
+        <item>Otros</item>
+    </string-array>
+    
+    <string-array name="clavesCategoria">
+        <item>a</item>
+        <item>b</item>
+        <item>c</item>
+        <item>d</item>
+        <item>e</item>
+        <item>f</item>
+        <item>g</item>
+        <item>h</item>
+        <item>i</item>
+        <item>j</item>
+        <item>k</item>
+        <item>l</item>
+        <item>m</item>
     </string-array>
 
     <string name="antrosYBares">Antros y Bares</string>

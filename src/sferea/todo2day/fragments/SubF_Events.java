@@ -48,7 +48,8 @@ public class SubF_Events extends Fragment {
 		textoFavorites = ((TextView)view.findViewById(R.id.title_Favorites));
 		
 		selectorTimeline.setVisibility(View.VISIBLE);
-		textoTimeline.setTextColor(Color.WHITE);
+		textoTimeline.setTextColor(Color.BLACK);
+		textoTimeline.setTypeface(null,Typeface.BOLD);
 		
 		pagerAdapter = new PagerAdapterEvents(getChildFragmentManager());
 		
@@ -88,10 +89,10 @@ public class SubF_Events extends Fragment {
 					selectorTimeline.setVisibility(View.VISIBLE);
 					selectorFavorites.setVisibility(View.INVISIBLE);
 					
-					textoTimeline.setTextColor(Color.WHITE);
+					textoTimeline.setTextColor(Color.BLACK);
 					textoTimeline.setTypeface(null,Typeface.BOLD);
 					
-					textoFavorites.setTextColor(Color.GRAY);
+					textoFavorites.setTextColor(Color.LTGRAY);
 					textoFavorites.setTypeface(null,Typeface.NORMAL);
 					
 					pagerAdapter.notifyDataSetChanged();
@@ -101,10 +102,10 @@ public class SubF_Events extends Fragment {
 					selectorTimeline.setVisibility(View.INVISIBLE);
 					selectorFavorites.setVisibility(View.VISIBLE);
 					
-					textoFavorites.setTextColor(Color.WHITE);
+					textoFavorites.setTextColor(Color.BLACK);
 					textoFavorites.setTypeface(null,Typeface.BOLD);
 					
-					textoTimeline.setTextColor(Color.parseColor("GRAY"));
+					textoTimeline.setTextColor(Color.LTGRAY);
 					textoTimeline.setTypeface(null,Typeface.NORMAL);
 					
 					pagerAdapter.notifyDataSetChanged();
@@ -165,7 +166,7 @@ public class SubF_Events extends Fragment {
 	}
 	
 	private ArrayList<EventoObjeto> getListaEventosFromDB(){
-		reader = new ReadTableDB(getActivity());
+		reader = new ReadTableDB(getActivity().getApplicationContext());
 		return reader.fillEventListFromDB();
 	}
 	

@@ -2,22 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E8E8E8"
     android:orientation="vertical" >
     
     <LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.3"
-        android:background="#00000000"
         android:orientation="horizontal">
         
         <RelativeLayout 
             android:id="@+id/botonTimeline"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#F78326">
+            android:layout_weight="1">
             		    
 		    <TextView 
 		        android:id="@+id/title_Timeline"
@@ -35,7 +32,7 @@
 		        android:layout_alignParentBottom="true"
 		        android:layout_height="2dp"
 		        android:visibility="invisible"
-		        android:background="#FFF"/>
+		        android:background="#F78326"/>
             
         </RelativeLayout>
         
@@ -43,8 +40,7 @@
             android:id="@+id/botonFavoritos"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#F78326">
+            android:layout_weight="1">	
 		    
 		    <TextView 
 		        android:id="@+id/title_Favorites"
@@ -62,7 +58,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="2dp"
 		        android:visibility="invisible"
-		        android:background="#FFF"/>
+		        android:background="#F78326"/>
             
         </RelativeLayout>
         

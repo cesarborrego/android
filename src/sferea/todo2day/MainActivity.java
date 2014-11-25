@@ -110,7 +110,6 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 		
 		Intent intent = getIntent();
-	    
 	    isDataLoadedFromSplash = intent.getBooleanExtra(KEY_INTENT_EXTRA, false);
 
 		listViewDrawer = (ListView) findViewById(R.id.listViewDrawer);
@@ -130,6 +129,7 @@ public class MainActivity extends ActionBarActivity {
 		arrayAdapterSettings = new ArrayAdapterSettings(
 				getApplicationContext(), R.layout.row_setting,
 				R.id.listViewDrawer, listaSettings);
+		
 		locationHelper = new LocationHelper(this);
 		internetConnectionCheck = new CheckInternetConnection(this);
 		
@@ -284,11 +284,7 @@ public class MainActivity extends ActionBarActivity {
 				getEventsFragment();
 				makeFragmentTransaction(eventsFragment);
 			}
-			
-			/*
-			 * Si la carga de datos no se ejecutó desde Splash.
-			 */
-			
+
 			if(!isDataLoadedFromSplash) {
 				downloadJSON();
 			}
@@ -426,13 +422,6 @@ public class MainActivity extends ActionBarActivity {
 			Toast.makeText(this, R.string.NoInternetToastMessage,
 					Toast.LENGTH_SHORT).show();
 			return;
-		}
-		
-		for (int x = 0; x < 13; x++) {
-			if (preferences.getString("Categories " + x, null) != null) {
-				sharedPreferencesHelperFinal.creaArchivoShared();
-				break;
-			}
 		}
 		
 		if (!atHome) {

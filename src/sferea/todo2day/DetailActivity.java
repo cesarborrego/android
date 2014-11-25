@@ -24,6 +24,7 @@ import sferea.todo2day.helpers.CheckInternetConnection;
 import sferea.todo2day.helpers.ReadTableDB;
 import sferea.todo2day.utils.DateUtil;
 import sferea.todo2day.utils.ImageUtil;
+import sferea.todo2day.utils.TypefaceSpan;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -51,6 +52,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -98,17 +101,7 @@ public class DetailActivity extends ActionBarActivity {
 		options = ImageUtil.getOptionsImageLoader();
 		checkInternetConnection = new CheckInternetConnection(this);
 				
-		ActionBar actionBar = getSupportActionBar();	//Obtiene el ActionBar para < Android 4.0
-		actionBar.setDisplayHomeAsUpEnabled(true);		//Habilitar el boton superior
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setTitle(R.string.titleColors);
-		actionBar.setIcon(R.drawable.ic_action_go_to_today_dark);
-		actionBar.setBackgroundDrawable(new ColorDrawable(0xFFF78326));
-		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-		if(actionBarTitleId > 0 ){ 
-			TextView title = (TextView)findViewById(actionBarTitleId);
-			if(title!=null){title.setTextColor(Color.WHITE);}
-		}
+		setActionBar();
 		
 		btnR = (ImageView)findViewById(R.id.tweetImgId);
 		btnF = (ImageView)findViewById(R.id.favoritoImgId);
@@ -330,6 +323,28 @@ public class DetailActivity extends ActionBarActivity {
 			});		
 		}
 	}	
+	
+	private void setActionBar(){
+		SpannableString appName = new SpannableString(getResources().getString(R.string.titleColors));
+	    appName.setSpan(new TypefaceSpan(this, "BubblegumSans-Regular.ttf"), 0, appName.length(),
+	            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		
+		ActionBar actionBar = getSupportActionBar(); // Obtiene el ActionBar
+														// para <Android4.0
+		actionBar.setDisplayHomeAsUpEnabled(true); // Habilitar el boton
+													// superior
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setTitle(appName);
+		actionBar.setBackgroundDrawable(new ColorDrawable(0xFFF78326));
+		int actionBarTitleId = Resources.getSystem().getIdentifier(
+				"action_bar_title", "id", "android");
+		if (actionBarTitleId > 0) {
+			TextView title = (TextView) findViewById(actionBarTitleId);
+			if (title != null) {
+				title.setTextColor(Color.WHITE);
+			}
+		}
+	}
 	
 	/**
 	 * Obtenemos un mapa est�tico con las coordenadas que indicaremos despues

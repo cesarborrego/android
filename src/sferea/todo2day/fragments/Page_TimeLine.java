@@ -68,7 +68,6 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public static String activaUbicate = "no";
 	public static String activaRuta = "no";
 
-	// Debemos obtener la lat y lon correcta desde el gps
 	public static double latOrigin;
 	public static double lonOrigin;
 
@@ -84,8 +83,6 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public static boolean eventoActivo = false;
 	public static boolean favoritoActivo = false;
 
-	java.text.DateFormat formatoDelTexto;
-
 	public static String fechaUnix = "";
 	public static String indexEvent = "";
 
@@ -95,21 +92,15 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	private ImageLoader imageloader;
 	private DisplayImageOptions options;
 	private SwipeRefreshLayout swipeLayout;
-
-	// bandera tomara el valor que retorna @parseFirstJson_AddDB(json) para que
-	// dependiendo de su resultado activara
-	// las funciones en el hilo principal UI, ya sea mandar un toast avisando
-	// que trono o si todo sale bien, llenar la lista de eventos
 	private int currentFirstVisibleItem;
 	private int currentVisibleItemCount;
 	private int totalItemCount;
 	private int currentScrollState;
-
 	private float y1;
 
-	CheckInternetConnection checkInternetConnection;
-	ProgressBar progressFooter;
-	TextView footerNoInternet, footerNoInternetClic;
+	private CheckInternetConnection checkInternetConnection;
+	private ProgressBar progressFooter;
+	private TextView footerNoInternet, footerNoInternetClic;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -129,12 +120,10 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		// infla el view del timeline
 		view = inflater.inflate(R.layout.page_timeline, container, false);
-		// Infla el view del header
+
 		headerView = LayoutInflater.from(getActivity()).inflate(
 				R.layout.listview_header, null);
-		// Infla el view del footer
 		footerView = LayoutInflater.from(getActivity()).inflate(
 				R.layout.listview_footer, null);
 
@@ -144,10 +133,8 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 
 			@Override
 			public void onRefresh() {
-				isRefreshEvent = true;
 				
 				refreshTimeLine();
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -211,7 +198,8 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	
 	
 	@Override
-	public void onResume() {		
+	public void onResume() {
+		
 		listaEventos = getListaEventosFromDB();
 		
 		listaFavoritos = fillFavoritosFromDB();
@@ -249,6 +237,8 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		footerNoInternet.setVisibility(View.GONE);
 		footerNoInternetClic.setVisibility(View.GONE);
 		
+		isRefreshEvent = false;
+		
 		addMoreTask = new AddMoreEventsTask();
 		addMoreTask.execute(getRequestUrl(latOrigin, lonOrigin, indexEvent, fechaUnix));
 	}
@@ -266,6 +256,8 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		latOrigin = locationHelper.getLatitude();
 		lonOrigin = locationHelper.getLongitude();
 		
+		isRefreshEvent = true;
+		
 		refreshTask = new RefreshTimeLineTask();
 		refreshTask.execute(getRequestUrl(latOrigin, lonOrigin, "0", "0"));
 	}
@@ -278,12 +270,12 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 	}
 	
 	private ArrayList<EventoObjeto> getListaEventosFromDB(){
-		reader = new ReadTableDB(getActivity());
+		reader = new ReadTableDB(getActivity().getApplicationContext());
 		return reader.fillEventListFromDB();
 	}
 	
 	private ArrayList<String> fillFavoritosFromDB(){
-		reader = new ReadTableDB(getActivity());
+		reader = new ReadTableDB(getActivity().getApplicationContext());
 		return reader.fillFavoriteListFromDB();
 	}
 	
@@ -293,7 +285,7 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		if(result.isEmpty())
 			return false;
 		
-		jsonParser = new JsonParserHelper(Application.getInstance());
+		jsonParser = new JsonParserHelper(getActivity().getApplicationContext());
 		return jsonParser.addEventsToDB(result);
 	}
 	
@@ -445,6 +437,10 @@ public class Page_TimeLine extends Fragment implements OnTouchListener,
 		return false;
 	}
 
+	/*
+	 * Método de callback que es llamado para actualizar el timeline cuando el ViewPager es posicionado en este
+	 * fragment.
+	 */
 	@Override
 	public void onUpdated() {
 		reader = new ReadTableDB(Application.getInstance());

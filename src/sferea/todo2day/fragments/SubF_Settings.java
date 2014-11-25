@@ -71,9 +71,7 @@ public class SubF_Settings extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		final View view = inflater.inflate(R.layout.subfrag_settings, container, false);
-		
-		System.out.println(Page_TimeLine.activaRuta);
-		System.out.println(Page_TimeLine.activaUbicate);
+
 		botonIniciarSesion = ((RelativeLayout)view.findViewById(R.id.botonIniciarSesion));
 		botonCerrarSesion = ((RelativeLayout)view.findViewById(R.id.botonCerrarSesion));
 		statusSesion = ((TextView)view.findViewById(R.id.statusSesion));
