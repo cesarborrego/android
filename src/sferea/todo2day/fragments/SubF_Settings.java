@@ -80,6 +80,7 @@ public class SubF_Settings extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		final View view = inflater.inflate(R.layout.subfrag_settings, container, false);
+<<<<<<< HEAD
 		locationHelper = new LocationHelper(getActivity().getApplicationContext());
 		
 		locationHelper.getLocation();
@@ -89,6 +90,9 @@ public class SubF_Settings extends Fragment {
 		
 		System.out.println(Page_TimeLine.activaRuta);
 		System.out.println(Page_TimeLine.activaUbicate);
+=======
+
+>>>>>>> f090d48618be8f7d849521b7028efac326c1be9c
 		botonIniciarSesion = ((RelativeLayout)view.findViewById(R.id.botonIniciarSesion));
 		botonCerrarSesion = ((RelativeLayout)view.findViewById(R.id.botonCerrarSesion));
 		statusSesion = ((TextView)view.findViewById(R.id.statusSesion));

@@ -74,28 +74,6 @@ public class ReadTableDB {
 		return lista;
 	}
 	
-	public void AddEventsToAdapterFromDB() {
-		Cursor cursor = dataBaseSQLiteManagerEvents.cargarTablas();
-		EventoObjeto evento;
-
-		try {
-			if (cursor.moveToFirst()) {
-
-				do {
-					
-					evento = getEventoObjetoFromDB(cursor);
-					if(Page_TimeLine.arrayAdapterEvents.getPosition(evento) != -1)
-						Page_TimeLine.arrayAdapterEvents.add(evento);
-					
-				} while (cursor.moveToNext());
-			}
-		} finally {
-			cursor.close();
-			Log.d("Lista Eventos", "Lista cargada desde DB!");
-			dataBaseSQLiteManagerEvents.cerrarDB();
-		}
-	}
-	
 	
 	private EventoObjeto getEventoObjetoFromDB(Cursor cursor){
 		EventoObjeto evento = new EventoObjeto();

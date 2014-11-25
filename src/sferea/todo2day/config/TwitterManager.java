@@ -106,7 +106,7 @@ public class TwitterManager {
 						@Override
 						protected Void doInBackground(Void... params) {
 							try {
-								shrpref.Write_String(AVATAR,((User)twitter.showUser(twitter.getId())).getProfileImageURL());
+								shrpref.Write_String(AVATAR,((User)twitter.showUser(twitter.getId())).getBiggerProfileImageURL());
 							} catch (IllegalStateException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
